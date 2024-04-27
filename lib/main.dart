@@ -13,11 +13,11 @@ void main() {
   DioHelper.init();
 
   CacheHelper.init();
-  runApp(const user_app());
+  runApp(const UserApp());
 }
 
-class user_app extends StatelessWidget {
-  const user_app({super.key});
+class UserApp extends StatelessWidget {
+  const UserApp({super.key});
 
   @override
   Widget build(BuildContext context) {
