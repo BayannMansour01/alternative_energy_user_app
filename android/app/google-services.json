@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "507096424541",
+    "project_id": "graduation-project-a8c71",
+    "storage_bucket": "graduation-project-a8c71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507096424541:android:8851577e5c02a637152db4",
+        "android_client_info": {
+          "package_name": "com.example.alternative_energy_user_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgvMBKwaCO2GT_LWWLsxXbvc2yX26Sosk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
