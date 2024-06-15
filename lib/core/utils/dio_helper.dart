@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:dio/dio.dart';
-// import 'package:http/http.dart' as http;
 
 class DioHelper {
   static Dio? dio;
@@ -22,6 +21,7 @@ class DioHelper {
     String? token,
     ResponseType? responseType,
   }) async {
+    log("AAAAAAAAAAA");
     var response = await dio!.get(
       url,
       queryParameters: query,
@@ -31,6 +31,7 @@ class DioHelper {
         headers: {'auth-token': token},
       ),
     );
+
     if (response.statusCode == 200) {
       log(response.data.toString());
       return response;

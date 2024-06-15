@@ -19,7 +19,7 @@ final class SizeConfig {
           ? screenHeight * .024
           : screenWidth * .024;
 
-      log("this is the default size $defaultSize");
+      // log("this is the default size $defaultSize");
     }
   }
 }
