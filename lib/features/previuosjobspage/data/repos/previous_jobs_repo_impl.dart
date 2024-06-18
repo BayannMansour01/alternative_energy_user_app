@@ -7,11 +7,13 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 class PreviousJobsRepoImpl extends PreviousJobsRepo {
+ 
   @override
-  Future<Either<Failure, List<Job>>> fetchPreviuosJobs() async {
+  Future<Either<Failure, List<Job>>> fetchPreviuosJobs(String token) async {
+    
     try {
       Response data =
-          await DioHelper.getData(url: AppConstants.showAllPrevJobs);
+          await DioHelper.getData(url: AppConstants.showAllPrevJobs,token: token);
       print("data:  $data");
       List<Job> jobs = [];
       for (var item in data.data['job']) {

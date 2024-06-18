@@ -8,12 +8,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'widgets/prev_jobs_body.dart';
 
 class JobListScreen extends StatelessWidget {
+  final String token;
+
+  const JobListScreen({super.key, required this.token});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => PreviousJobsCubit(
               getIt.get<PreviousJobsRepoImpl>(),
-            )..fetchAllPrevJobs(),
+            )..fetchAllPrevJobs(token: token),
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -22,7 +25,7 @@ class JobListScreen extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
           ),
-          body: PreviousJobsBody(),
+          body: PreviousJobsBody(token: token,),
         ));
   }
 }

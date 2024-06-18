@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 abstract class AppConstants {
+// <<<<<<< Bayan
   static const String ip = "192.168.1.107";
   static const String baseUrl = 'http://${ip}:8000/api/';
 
@@ -14,7 +15,7 @@ abstract class AppConstants {
 
   static const String showAllPrevJobs = 'PreviousJobs/showAll';
   static const String searchByTitlePrevJobs = 'PreviousJobs/searchByTitle';
-  static const String showDetailesPrevJobs = 'PreviousJobs/show';
+  static const String showDetailesPrevJobs = 'PreviousJobs/show/';
 
   static const String showAllProducts = 'Products/showAll';
   static const String searchProductById = 'Products/search';

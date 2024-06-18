@@ -1,4 +1,5 @@
 import 'package:alternative_energy_user_app/core/constants.dart';
+// <<<<<<< Bayan
 import 'package:alternative_energy_user_app/core/func/custom_progress_indicator.dart';
 import 'package:alternative_energy_user_app/core/func/custom_snack_bar.dart';
 import 'package:alternative_energy_user_app/core/utils/size_config.dart';
@@ -18,13 +19,15 @@ import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'product_item.dart';
 
 class HomePageBody extends StatelessWidget {
-  const HomePageBody({super.key});
+  final String token;
+  const HomePageBody({super.key, required this.token});
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<homepageCubit>(context);
     return BlocConsumer<homepageCubit, homepageState>(
       listener: (context, state) {
         cubit.listining = true;
+// <<<<<<< Bayan
         if ((state is GetProposedSystemLoading ||
                 state is GetProductsLoading) &&
             !CustomProgressIndicator.isOpen) {
@@ -38,6 +41,9 @@ class HomePageBody extends StatelessWidget {
                 message: state.errMessage);
           }
         }
+// =======
+       
+// >>>>>>> main
       },
       builder: (context, state) {
         return Scaffold(
@@ -51,7 +57,12 @@ class HomePageBody extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBar(
             items: cubit.bottomNavigationBarItems,
             onTap: (index) {
-              cubit.changeBottomNavigationBarIndex(index);
+               cubit.changeBottomNavigationBarIndex(index);
+              if (index == 1) {
+                GoRouter.of(context).push(
+                  AppRouter.kJobListScreen,
+               
+                );}
             },
             currentIndex: cubit.bottomNavigationBarIndex,
           ),
