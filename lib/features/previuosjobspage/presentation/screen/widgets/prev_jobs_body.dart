@@ -5,13 +5,15 @@ import 'package:alternative_energy_user_app/core/utils/app_router.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/data/models/job_model.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/manager/previous_jobs_cubit.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/manager/previous_jobs_state.dart';
+import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/widgets/prev_jobs_details/prev_jobs_details_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class PreviousJobsBody extends StatelessWidget {
+  final String token;
   const PreviousJobsBody({
-    super.key,
+    super.key, required this.token,
   });
 
   @override
@@ -36,7 +38,7 @@ class PreviousJobsBody extends StatelessWidget {
         return ListView.builder(
           itemCount: cubit.jobs.length,
           itemBuilder: (context, index) {
-            return jobItem(
+            return jobItem(token: token,
               job: cubit.jobs[index],
             );
           },
@@ -48,14 +50,16 @@ class PreviousJobsBody extends StatelessWidget {
 
 class jobItem extends StatelessWidget {
   final Job job;
+  final String token;
   const jobItem({
     super.key,
-    required this.job,
+    required this.job, required this.token,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      
       color: AppConstants.orangeColor.withOpacity(0.8),
       margin: EdgeInsets.all(10.0),
       child: Padding(
@@ -63,12 +67,26 @@ class jobItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '${job.title} ',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
+            TextButton(
+              child: Text(
+                '${job.title} ',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              onPressed: (){
+        //  GoRouter.of(context).push(
+        //           AppRouter.kJobDetailsScreen,
+               
+        //         );
+        Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JobDetailsScreen(token: token,jobId: job.id,)),
+                );
+        }
+
+              
             ),
             SizedBox(height: 5.0),
             Text('${job.disc} '),
@@ -88,7 +106,8 @@ class jobItem extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Image.network(
-                        'http://192.168.1.107:8000/' + job.images[index].image,
+                        'http://192.168.1.103:8000/' + 
+                        job.images[index].image,
                         fit: BoxFit.cover,
                       ),
                     );

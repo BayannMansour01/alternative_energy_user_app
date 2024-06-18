@@ -128,10 +128,11 @@ class LoginViewBody extends StatelessWidget {
                             text: 'تسجيل الدخول ',
                             color: Colors.blue,
                             onTap: () async {
+                              
                               if (cubit.formKey.currentState!.validate()) {
                                 await cubit.login();
                               }
-                              CacheHelper.deletData(key: 'Token');
+                              CacheHelper.getData(key: 'Token');
                             },
                             // log(CacheHelper.getData(key: 'Token').toString());
                             // if (cubit.formKey.currentState!.validate()) {

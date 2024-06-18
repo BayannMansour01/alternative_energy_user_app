@@ -11,6 +11,7 @@ class PreviousJobsInitial extends PreviousJobsState {}
 
 class PreviousJobsLoading extends PreviousJobsState {}
 
+
 class PreviousJobsFailure extends PreviousJobsState {
   final String errMessage;
 

@@ -12,4 +12,10 @@ class MessageModel {
       message: jsonData['msg'],
     );
   }
-}
+  Map<String, dynamic> toJson() {
+    return {
+      'token': token,
+      
+    
+    };
+}}

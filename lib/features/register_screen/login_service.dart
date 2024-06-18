@@ -19,8 +19,13 @@ abstract class LoginService {
         },
       );
       log(response.toString());
+        if (response.data['token'] != null) {
+        return right(MessageModel.fromJson(response.data));
+      } else {
+        return left(ServerFailure('Login failed, token not found.'));
+      }
 
-      return right(MessageModel.fromJson(response.data));
+  
     } catch (ex) {
       log('\nException: there is an error in login method');
       log('\n${ex.toString()}');
