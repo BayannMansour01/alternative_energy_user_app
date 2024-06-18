@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/message.dart';
-import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/api/notification_access_token.dart';
+import 'package:alternative_energy_user_app/core/utils/api/notification_access_token.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -139,6 +139,7 @@ class APIs {
   //for creating a new user
   static Future<void> createUser({String? userName, int? localUserID}) async {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
+
     final chatUser = ChatUser(
       image: user.photoURL.toString(),
       about: "Hey, I'm using We Chat",
@@ -149,7 +150,7 @@ class APIs {
       isOnline: false,
       pushToken: '',
       email: user.email.toString(),
-      // localUserID: localUserID ?? -1,
+      localUserID: localUserID ?? -1,
     );
     return await firesotre
         .collection('users')
@@ -171,10 +172,12 @@ class APIs {
       List<String> usersIDs) {
     try {
       log('Users IDs: $usersIDs');
+      log('user.id ${user.uid}');
+
       return firesotre
           .collection('users')
-          .where('id', whereIn: usersIDs)
-          // .where('id', isNotEqualTo: user.uid)
+          // .where('id', whereIn: usersIDs)
+          .where('id', isNotEqualTo: user.uid)
           .snapshots();
     } catch (ex) {
       log('getAllUsers Exception: $ex');
@@ -185,16 +188,20 @@ class APIs {
   //for adding a user to my known users when first message is sent
   static Future<void> sendFirstMessage(
       ChatUser chatUser, String msg, Type type) async {
-    await (firesotre
-        .collection('users')
-        .doc(chatUser.id)
-        .collection('my_users')
-        .doc(user.uid)
-        .set({})).then(
-      (value) {
-        sendMessage(chatUser, msg, type);
-      },
-    );
+    try {
+      log("sendFirstMessage ${chatUser.email} ${chatUser.id} ${user.uid}");
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(chatUser.id)
+          .collection('my_users')
+          .doc(user.uid)
+          .set({});
+
+      log("sendFirstMessage ${chatUser.email}");
+      await sendMessage(chatUser, msg, type);
+    } catch (e) {
+      log("sendFirstMessage Exception: $e");
+    }
   }
 
   //for updating user info
@@ -257,6 +264,7 @@ class APIs {
   /////////////// ***Chat View Related APIs***///////////////////////
 
   // chats(collection) --> conversation_id(doc) --> messages(collection) --> message(doc)
+
   //useful for getting conversation_id
   static String getConversationID(String id) => user.uid.hashCode <= id.hashCode
       ? '${user.uid}_$id'
@@ -276,6 +284,7 @@ class APIs {
       ChatUser chatUser, String msg, Type type) async {
     //message sending time (also used as id)
     final time = DateTime.now().millisecondsSinceEpoch.toString();
+
     final Message message = Message(
         msg: msg,
         read: '',
@@ -287,8 +296,8 @@ class APIs {
         .collection('chats/${getConversationID(chatUser.id)}/messages/');
     await ref.doc(time).set(message.toJson()).then(
       (value) {
-        sendPushNotification(
-            chatUser: chatUser, msg: type == Type.text ? msg : 'Sent an image');
+        // sendPushNotification(
+        //     chatUser: chatUser, msg: type == Type.text ? msg : 'Sent an image');
       },
     );
   }
@@ -374,7 +383,7 @@ class APIs {
         log('The account already exists for that email.');
       }
     } catch (e) {
-      log("singup ${e.toString()}");
+      log(e.toString());
       return null;
     }
     return null;

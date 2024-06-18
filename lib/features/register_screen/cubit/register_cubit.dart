@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/api/apis.dart';
+import 'package:alternative_energy_user_app/core/utils/api/apis.dart';
 import 'package:alternative_energy_user_app/features/register_screen/cubit/register_states.dart';
 import 'package:alternative_energy_user_app/features/register_screen/register_service.dart';
 import 'package:awesome_icons/awesome_icons.dart';
@@ -54,7 +54,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
               if (await APIs.userExists() == false) {
                 await APIs.createUser(
                   userName: name,
-                  // localUserID: userModel.id,
+                  // localUserID: 2,
                 ).then((value) {
                   emit(RegisterSuccess(userModel: userModel));
                 }).catchError(

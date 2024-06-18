@@ -12,11 +12,8 @@ class LoginView extends StatelessWidget {
       child: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: const Scaffold(
-              body: LoginViewBody(),
-            ),
+          child: const Scaffold(
+            body: LoginViewBody(),
           ),
         ),
       ),

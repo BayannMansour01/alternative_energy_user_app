@@ -1,0 +1,47 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "alternative_energy_user_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        
+        {
+            "name": "alternative_energy_user_app (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "alternative_energy_user_app (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "Flutter",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "toolArgs": [
+              "--disable-service-auth-codes",
+              "--enable-checked-mode",
+              "--verify-entry-points",
+              "--debug-log",
+              "Flutter",
+              "--no-preamble",
+              "--track-widget-creation"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "debugServer": 4711
+          }
+        
+    ]
+}

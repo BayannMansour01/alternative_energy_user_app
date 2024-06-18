@@ -1,12 +1,15 @@
+import 'package:alternative_energy_user_app/core/utils/app_router.dart';
+import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/chat_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/message.dart';
-import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/api/apis.dart';
+import 'package:alternative_energy_user_app/core/utils/api/apis.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/helper/my_date_util.dart';
 import 'package:alternative_energy_user_app/main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 //card to represent a single user in home screen
 class ChatUserCard extends StatefulWidget {
@@ -25,17 +28,15 @@ class _ChatUserCardState extends State<ChatUserCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: mq.width * .04, vertical: 4),
+      margin: EdgeInsets.symmetric(
+          horizontal: SizeConfig.screenHeight * .04, vertical: 4),
       // color: Colors.blue.shade100,
       elevation: 0.5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: InkWell(
           onTap: () {
             //for navigating to chat screen
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => ChatScreen(user: widget.user)));
+            context.push(AppRouter.kChatUserView, extra: widget.user);
           },
           child: StreamBuilder(
             stream: APIs.getLastMessages(widget.user),
@@ -54,20 +55,27 @@ class _ChatUserCardState extends State<ChatUserCard> {
                   //       builder: (_) => ProfileDialog(user: widget.user));
                   // },
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(mq.height * .03),
-                    child: CachedNetworkImage(
-                      width: mq.height * .055,
-                      height: mq.height * .055,
-                      imageUrl: widget.user.image,
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => const CircleAvatar(
-                          child: Icon(CupertinoIcons.person)),
+                    borderRadius:
+                        BorderRadius.circular(SizeConfig.screenHeight * .03),
+                    // child: CachedNetworkImage(
+                    //   width: SizeConfig.screenHeight * .055,
+                    //   height: SizeConfig.screenHeight * .055,
+                    //   imageUrl: widget.user.image,
+                    //   fit: BoxFit.cover,
+                    //   errorWidget: (context, url, error) => const CircleAvatar(
+                    //       child: Icon(CupertinoIcons.person)),
+                    // ),
+                    child: CircleAvatar(
+                      radius: 22,
+                      child: Icon(CupertinoIcons.person),
                     ),
                   ),
                 ),
 
                 //user name
-                title: Text(widget.user.name),
+                title: Text(
+                  widget.user.name,
+                ),
 
                 //last message
                 subtitle: Text(

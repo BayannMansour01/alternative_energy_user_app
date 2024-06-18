@@ -22,16 +22,17 @@ class CustomButton extends StatelessWidget {
     return Container(
       width: width ?? SizeConfig.defaultSize * 25,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRadius ?? 12),
-        gradient: const LinearGradient(
-          colors: [
-            Color.fromRGBO(26, 128, 223, 0.767),
-            Color.fromARGB(255, 44, 52, 163)
-          ],
-        ),
-      ),
+          borderRadius: BorderRadius.circular(borderRadius ?? 12),
+          gradient: color != null
+              ? null
+              : LinearGradient(
+                  colors: [
+                    Color.fromRGBO(26, 128, 223, 0.767),
+                    Color.fromARGB(255, 44, 52, 163)
+                  ],
+                )),
       child: Material(
-        color: const Color.fromRGBO(0, 0, 0, 0),
+        color: color ?? Color.fromARGB(0, 0, 0, 0),
         shadowColor: Colors.transparent,
         borderRadius: BorderRadius.circular(borderRadius ?? 12),
         child: InkWell(
@@ -46,7 +47,7 @@ class CustomButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: const Color.fromRGBO(255, 255, 255, 1),
-                  fontSize: SizeConfig.defaultSize * 2,
+                  fontSize: SizeConfig.defaultSize * 1.2,
                 ),
               ),
             ),

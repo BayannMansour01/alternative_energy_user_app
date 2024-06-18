@@ -134,11 +134,6 @@ class LoginViewBody extends StatelessWidget {
                               }
                               CacheHelper.getData(key: 'Token');
                             },
-                            // log(CacheHelper.getData(key: 'Token').toString());
-                            // if (cubit.formKey.currentState!.validate()) {
-                            //   await cubit.login();
-                            //    }
-                            //    },
                           ),
                           const VerticalSpace(3),
                           Row(

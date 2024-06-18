@@ -1,16 +1,19 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:alternative_energy_user_app/core/utils/app_router.dart';
+import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/message_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/message.dart';
-import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/api/apis.dart';
+import 'package:alternative_energy_user_app/core/utils/api/apis.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/helper/my_date_util.dart';
 import 'package:alternative_energy_user_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -57,7 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
           if (_showEmoji) {
             setState(() => _showEmoji = !_showEmoji);
           } else {
-            Navigator.of(context).pop();
+            context.pop();
           }
         },
 
@@ -98,15 +101,15 @@ class _ChatScreenState extends State<ChatScreen> {
                             return ListView.builder(
                                 reverse: true,
                                 itemCount: _list.length,
-                                padding: EdgeInsets.only(top: mq.height * .01),
+                                padding: EdgeInsets.only(
+                                    top: SizeConfig.screenHeight * .01),
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   return MessageCard(message: _list[index]);
                                 });
                           } else {
                             return const Center(
-                              child: Text('Say Hii! 👋',
-                                  style: TextStyle(fontSize: 20)),
+                              child: Text('👋', style: TextStyle(fontSize: 20)),
                             );
                           }
                       }
@@ -129,7 +132,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 //show emojis on keyboard emoji button click & vice versa
                 if (_showEmoji)
                   SizedBox(
-                    height: mq.height * .35,
+                    height: SizeConfig.screenHeight * .35,
                     child: EmojiPicker(
                       textEditingController: _textController,
                       config: const Config(),
@@ -147,79 +150,83 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _appBar() {
     return SafeArea(
       child: InkWell(
-          onTap: () {
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (_) => ViewProfileScreen(user: widget.user)));
-          },
-          child: StreamBuilder(
-              stream: APIs.getUserInfo(widget.user),
-              builder: (context, snapshot) {
-                final data = snapshot.data?.docs;
-                final list =
-                    data?.map((e) => ChatUser.fromJson(e.data())).toList() ??
-                        [];
+        onTap: () {
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (_) => ViewProfileScreen(user: widget.user)));
+        },
+        child: StreamBuilder(
+            stream: APIs.getUserInfo(widget.user),
+            builder: (context, snapshot) {
+              final data = snapshot.data?.docs;
+              final list =
+                  data?.map((e) => ChatUser.fromJson(e.data())).toList() ?? [];
 
-                return Row(
-                  children: [
-                    //back button
-                    IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(Icons.arrow_back,
-                            color: Colors.black54)),
+              return Row(
+                children: [
+                  //back button
+                  IconButton(
+                      onPressed: () =>
+                          context.pushReplacement(AppRouter.kChatView),
+                      icon:
+                          const Icon(Icons.arrow_back, color: Colors.black54)),
 
-                    //user profile picture
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(mq.height * .03),
-                      child: CachedNetworkImage(
-                        width: mq.height * .05,
-                        height: mq.height * .05,
-                        fit: BoxFit.cover,
-                        imageUrl:
-                            list.isNotEmpty ? list[0].image : widget.user.image,
-                        errorWidget: (context, url, error) =>
-                            const CircleAvatar(
-                                child: Icon(CupertinoIcons.person)),
-                      ),
-                    ),
+                  //user profile picture
+                  ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(SizeConfig.screenHeight * .03),
+                    // child: CachedNetworkImage(
+                    //   width: SizeConfig.screenHeight * .05,
+                    //   height: SizeConfig.screenHeight * .05,
+                    //   fit: BoxFit.cover,
+                    //   imageUrl:
+                    //       list.isNotEmpty ? list[0].image : widget.user.image,
+                    //   errorWidget: (context, url, error) =>
+                    //       const CircleAvatar(
+                    //           child: Icon(CupertinoIcons.person)),
+                    // ),
+                    child:
+                        const CircleAvatar(child: Icon(CupertinoIcons.person)),
+                  ),
 
-                    //for adding some space
-                    const SizedBox(width: 10),
+                  //for adding some space
+                  const SizedBox(width: 10),
 
-                    //user name & last seen time
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //user name
-                        Text(list.isNotEmpty ? list[0].name : widget.user.name,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w500)),
+                  //user name & last seen time
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //user name
+                      Text(list.isNotEmpty ? list[0].name : widget.user.name,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500)),
 
-                        //for adding some space
-                        const SizedBox(height: 2),
+                      //for adding some space
+                      const SizedBox(height: 2),
 
-                        //last seen time of user
-                        Text(
-                            list.isNotEmpty
-                                ? list[0].isOnline
-                                    ? 'Online'
-                                    : MyDateUtil.getLastActiveTime(
-                                        context: context,
-                                        lastActive: list[0].lastActive)
-                                : MyDateUtil.getLastActiveTime(
-                                    context: context,
-                                    lastActive: widget.user.lastActive),
-                            style: const TextStyle(
-                                fontSize: 13, color: Colors.black54)),
-                      ],
-                    )
-                  ],
-                );
-              })),
+                      //last seen time of user
+                      Text(
+                          list.isNotEmpty
+                              ? list[0].isOnline
+                                  ? 'Online'
+                                  : MyDateUtil.getLastActiveTime(
+                                      context: context,
+                                      lastActive: list[0].lastActive)
+                              : MyDateUtil.getLastActiveTime(
+                                  context: context,
+                                  lastActive: widget.user.lastActive),
+                          style: const TextStyle(
+                              fontSize: 13, color: Colors.black54)),
+                    ],
+                  )
+                ],
+              );
+            }),
+      ),
     );
   }
 
@@ -227,7 +234,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _chatInput() {
     return Padding(
       padding: EdgeInsets.symmetric(
-          vertical: mq.height * .01, horizontal: mq.width * .025),
+          vertical: SizeConfig.screenHeight * .01,
+          horizontal: SizeConfig.screenWidth * .025),
       child: Row(
         children: [
           //input field & buttons
@@ -247,28 +255,27 @@ class _ChatScreenState extends State<ChatScreen> {
                           color: Colors.blueAccent, size: 25)),
 
                   Expanded(
-                      child: TextField(
-                    controller: _textController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    onTap: () {
-                      if (_showEmoji) setState(() => _showEmoji = !_showEmoji);
-                    },
-                    decoration: const InputDecoration(
-                        hintText: 'Type Something...',
-                        hintStyle: TextStyle(color: Colors.blueAccent),
-                        border: InputBorder.none),
-                  )),
-
+                    child: TextField(
+                      controller: _textController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      onTap: () {
+                        if (_showEmoji)
+                          setState(() => _showEmoji = !_showEmoji);
+                      },
+                      decoration: const InputDecoration(
+                          hintText: 'Type Something...',
+                          hintStyle: TextStyle(color: Colors.blueAccent),
+                          border: InputBorder.none),
+                    ),
+                  ),
                   //pick image from gallery button
                   IconButton(
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
-
                         // Picking multiple images
                         final List<XFile> images =
                             await picker.pickMultiImage(imageQuality: 70);
-
                         // uploading & sending image one by one
                         for (var i in images) {
                           log('Image Path: ${i.path}');
@@ -282,26 +289,24 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   //take image from camera button
                   IconButton(
-                      onPressed: () async {
-                        final ImagePicker picker = ImagePicker();
+                    onPressed: () async {
+                      final ImagePicker picker = ImagePicker();
 
-                        // Pick an image
-                        final XFile? image = await picker.pickImage(
-                            source: ImageSource.camera, imageQuality: 70);
-                        if (image != null) {
-                          log('Image Path: ${image.path}');
-                          setState(() => _isUploading = true);
-
-                          await APIs.sendChatImage(
-                              widget.user, File(image.path));
-                          setState(() => _isUploading = false);
-                        }
-                      },
-                      icon: const Icon(Icons.camera_alt_rounded,
-                          color: Colors.blueAccent, size: 26)),
-
+                      // Pick an image
+                      final XFile? image = await picker.pickImage(
+                          source: ImageSource.camera, imageQuality: 70);
+                      if (image != null) {
+                        log('Image Path: ${image.path}');
+                        setState(() => _isUploading = true);
+                        await APIs.sendChatImage(widget.user, File(image.path));
+                        setState(() => _isUploading = false);
+                      }
+                    },
+                    icon: const Icon(Icons.camera_alt_rounded,
+                        color: Colors.blueAccent, size: 26),
+                  ),
                   //adding some space
-                  SizedBox(width: mq.width * .02),
+                  SizedBox(width: SizeConfig.screenWidth * .02),
                 ],
               ),
             ),
@@ -317,6 +322,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       widget.user, _textController.text, Type.text);
                 } else {
                   //simply send message
+
                   APIs.sendMessage(
                       widget.user, _textController.text, Type.text);
                 }

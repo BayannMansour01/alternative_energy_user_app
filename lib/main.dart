@@ -5,15 +5,22 @@ import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/dio_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/service_locator.dart';
 import 'package:alternative_energy_user_app/core/utils/size_config.dart';
-
+// <<<<<<< Bayan
 import 'package:alternative_energy_user_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// =======
 
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:alternative_energy_user_app/firebase_options.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:flutter/material.dart';
 
+// import 'package:google_fonts/google_fonts.dart';
 
-late Size mq;
+// >>>>>>> main
+
+// late Size mq;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,16 +32,6 @@ void main() async {
   CacheHelper.init();
   runApp(const UserApp());
 }
-
-// _initializeFirebase() async {
-//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-//   var result = await FlutterNotificationChannel().registerNotificationChannel(
-//       description: 'For Showing Message Notification',
-//       id: 'chats',
-//       importance: NotificationImportance.IMPORTANCE_HIGH,
-//       name: 'Chats');
-//   log('\nNotification Channel Result: $result');
-// }
 
 class UserApp extends StatelessWidget {
   const UserApp({super.key});
@@ -61,6 +58,12 @@ class UserApp extends StatelessWidget {
         ),
       ),
       routerConfig: AppRouter.router,
+      builder: (context, child) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: child!,
+        );
+      },
     );
   }
 }

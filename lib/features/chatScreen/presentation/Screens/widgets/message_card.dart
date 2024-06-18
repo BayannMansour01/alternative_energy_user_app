@@ -1,7 +1,8 @@
 import 'dart:developer';
 
+import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/message.dart';
-import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/api/apis.dart';
+import 'package:alternative_energy_user_app/core/utils/api/apis.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/helper/dialogs.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/helper/my_date_util.dart';
 import 'package:alternative_energy_user_app/main.dart';
@@ -9,6 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver_updated/gallery_saver.dart';
+import 'package:go_router/go_router.dart';
 
 // for showing single message details
 class MessageCard extends StatefulWidget {
@@ -45,10 +47,11 @@ class _MessageCardState extends State<MessageCard> {
         Flexible(
           child: Container(
             padding: EdgeInsets.all(widget.message.type == Type.image
-                ? mq.width * .03
-                : mq.width * .04),
+                ? SizeConfig.screenWidth * .03
+                : SizeConfig.screenWidth * .04),
             margin: EdgeInsets.symmetric(
-                horizontal: mq.width * .04, vertical: mq.height * .01),
+                horizontal: SizeConfig.screenWidth * .04,
+                vertical: SizeConfig.screenHeight * .01),
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 221, 245, 255),
                 border: Border.all(color: Colors.lightBlue),
@@ -68,23 +71,23 @@ class _MessageCardState extends State<MessageCard> {
                 //show image
                 ClipRRect(
                     borderRadius: BorderRadius.circular(15),
-                    child: CachedNetworkImage(
-                      imageUrl: widget.message.msg,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.image, size: 70),
-                    ),
+                    // child: CachedNetworkImage(
+                    //   imageUrl: widget.message.msg,
+                    //   fit: BoxFit.cover,
+                    //   placeholder: (context, url) => const Padding(
+                    //     padding: EdgeInsets.all(8.0),
+                    //     child: CircularProgressIndicator(strokeWidth: 2),
+                    //   ),
+                    //   errorWidget: (context, url, error) =>
+                    //       const Icon(Icons.image, size: 70),
+                    // ),
                   ),
           ),
         ),
 
         //message time
         Padding(
-          padding: EdgeInsets.only(right: mq.width * .04),
+          padding: EdgeInsets.only(right: SizeConfig.screenWidth * .04),
           child: Text(
             MyDateUtil.getFormattedTime(
                 context: context, time: widget.message.sent),
@@ -104,7 +107,7 @@ class _MessageCardState extends State<MessageCard> {
         Row(
           children: [
             //for adding some space
-            SizedBox(width: mq.width * .04),
+            SizedBox(width: SizeConfig.screenWidth * .04),
 
             //double tick blue icon for message read
             if (widget.message.read.isNotEmpty)
@@ -126,10 +129,11 @@ class _MessageCardState extends State<MessageCard> {
         Flexible(
           child: Container(
             padding: EdgeInsets.all(widget.message.type == Type.image
-                ? mq.width * .03
-                : mq.width * .04),
+                ? SizeConfig.screenWidth * .03
+                : SizeConfig.screenWidth * .04),
             margin: EdgeInsets.symmetric(
-                horizontal: mq.width * .04, vertical: mq.height * .01),
+                horizontal: SizeConfig.screenWidth * .04,
+                vertical: SizeConfig.screenHeight * .01),
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 218, 255, 176),
                 border: Border.all(color: Colors.lightGreen),
@@ -149,15 +153,15 @@ class _MessageCardState extends State<MessageCard> {
                 //show image
                 ClipRRect(
                     borderRadius: BorderRadius.circular(15),
-                    child: CachedNetworkImage(
-                      imageUrl: widget.message.msg,
-                      placeholder: (context, url) => const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.image, size: 70),
-                    ),
+                    // child: CachedNetworkImage(
+                    //   imageUrl: widget.message.msg,
+                    //   placeholder: (context, url) => const Padding(
+                    //     padding: EdgeInsets.all(8.0),
+                    //     child: CircularProgressIndicator(strokeWidth: 2),
+                    //   ),
+                    //   errorWidget: (context, url, error) =>
+                    //       const Icon(Icons.image, size: 70),
+                    // ),
                   ),
           ),
         ),
@@ -180,7 +184,8 @@ class _MessageCardState extends State<MessageCard> {
               Container(
                 height: 4,
                 margin: EdgeInsets.symmetric(
-                    vertical: mq.height * .015, horizontal: mq.width * .4),
+                    vertical: SizeConfig.screenHeight * .015,
+                    horizontal: SizeConfig.screenWidth * .4),
                 decoration: BoxDecoration(
                     color: Colors.grey, borderRadius: BorderRadius.circular(8)),
               ),
@@ -197,7 +202,8 @@ class _MessageCardState extends State<MessageCard> {
                                 ClipboardData(text: widget.message.msg))
                             .then((value) {
                           //for hiding bottom sheet
-                          Navigator.pop(context);
+
+                          context.pop();
 
                           Dialogs.showSnackbar(context, 'Text Copied!');
                         });
@@ -215,7 +221,8 @@ class _MessageCardState extends State<MessageCard> {
                                   albumName: 'We Chat')
                               .then((success) {
                             //for hiding bottom sheet
-                            Navigator.pop(context);
+
+                            context.pop();
                             if (success != null && success) {
                               Dialogs.showSnackbar(
                                   context, 'Image Successfully Saved!');
@@ -230,8 +237,8 @@ class _MessageCardState extends State<MessageCard> {
               if (isMe)
                 Divider(
                   color: Colors.black54,
-                  endIndent: mq.width * .04,
-                  indent: mq.width * .04,
+                  endIndent: SizeConfig.screenWidth * .04,
+                  indent: SizeConfig.screenWidth * .04,
                 ),
 
               //edit option
@@ -241,7 +248,8 @@ class _MessageCardState extends State<MessageCard> {
                     name: 'Edit Message',
                     onTap: () {
                       //for hiding bottom sheet
-                      Navigator.pop(context);
+
+                      context.pop();
 
                       _showMessageUpdateDialog();
                     }),
@@ -255,15 +263,16 @@ class _MessageCardState extends State<MessageCard> {
                     onTap: () async {
                       await APIs.deleteMessage(widget.message).then((value) {
                         //for hiding bottom sheet
-                        Navigator.pop(context);
+
+                        context.pop();
                       });
                     }),
 
               //separator or divider
               Divider(
                 color: Colors.black54,
-                endIndent: mq.width * .04,
-                indent: mq.width * .04,
+                endIndent: SizeConfig.screenWidth * .04,
+                indent: SizeConfig.screenWidth * .04,
               ),
 
               //sent time
@@ -326,7 +335,8 @@ class _MessageCardState extends State<MessageCard> {
                 MaterialButton(
                     onPressed: () {
                       //hide alert dialog
-                      Navigator.pop(context);
+
+                      context.pop();
                     },
                     child: const Text(
                       'Cancel',
@@ -337,7 +347,8 @@ class _MessageCardState extends State<MessageCard> {
                 MaterialButton(
                     onPressed: () {
                       //hide alert dialog
-                      Navigator.pop(context);
+
+                      context.pop();
                       APIs.updateMessage(widget.message, updatedMsg);
                     },
                     child: const Text(
@@ -364,9 +375,9 @@ class _OptionItem extends StatelessWidget {
         onTap: () => onTap(),
         child: Padding(
           padding: EdgeInsets.only(
-              left: mq.width * .05,
-              top: mq.height * .015,
-              bottom: mq.height * .015),
+              left: SizeConfig.screenWidth * .05,
+              top: SizeConfig.screenHeight * .015,
+              bottom: SizeConfig.screenHeight * .015),
           child: Row(children: [
             icon,
             Flexible(
