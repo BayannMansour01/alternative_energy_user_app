@@ -1,3 +1,4 @@
+import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:alternative_energy_user_app/core/func/custom_progress_indicator.dart';
 import 'package:alternative_energy_user_app/core/func/custom_snack_bar.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/data/models/job_model.dart';
@@ -9,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 class JobDetailsScreen extends StatelessWidget {
   final int jobId;
   final String token;
@@ -17,11 +19,11 @@ class JobDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     
     return BlocProvider(
-      create: (context) => JobDetailsCubit(JobDetailsRepoImpl())..fetchJobDetails(jobId, token),
-      child: BlocConsumer <JobDetailsCubit ,JobDetailsState>(
-      listener: (context, state) async {
+      create: (context) =>
+          JobDetailsCubit(JobDetailsRepoImpl())..fetchJobDetails(jobId, token),
+      child: BlocConsumer<JobDetailsCubit, JobDetailsState>(
+          listener: (context, state) async {
         if (state is JobDetailsLoading && !CustomProgressIndicator.isOpen) {
           CustomProgressIndicator.showProgressIndicator(context);
         } else {
@@ -33,10 +35,7 @@ class JobDetailsScreen extends StatelessWidget {
                 message: state.errorMessage);
           }
         }
-       
-      },
-       builder: (context, state) {
-       
+      }, builder: (context, state) {
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
@@ -54,7 +53,6 @@ class JobDetailsScreen extends StatelessWidget {
                 } else if (state is JobDetailsFailure) {
                   return Center(child: Text(state.errorMessage));
                 } else if (state is JobDetailsSuccess) {
-           
                   final job = state.job;
                   return SingleChildScrollView(
                     padding: EdgeInsets.all(16.0),
@@ -63,7 +61,8 @@ class JobDetailsScreen extends StatelessWidget {
                       children: [
                         Text(
                           job.title,
-                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8.0),
                         Text(
@@ -71,40 +70,43 @@ class JobDetailsScreen extends StatelessWidget {
                           style: TextStyle(fontSize: 16),
                         ),
                         SizedBox(height: 16.0),
-                        Text(
-                          'تاريخ الإنشاء: ${job.createdAt}',
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        ),
-                        Text(
-                          'تاريخ التحديث: ${job.updatedAt}',
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        ),
-                        SizedBox(height: 16.0),
+                        // Text(
+                        //   'تاريخ الإنشاء: ${job.createdAt}',
+                        //   style: TextStyle(fontSize: 14, color: Colors.grey),
+                        // ),
+                        // Text(
+                        //   'تاريخ التحديث: ${job.updatedAt}',
+                        //   style: TextStyle(fontSize: 14, color: Colors.grey),
+                        // ),
+                        SizedBox(height: 30.0),
                         Text(
                           'الصور:',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8.0),
                         job.images.isNotEmpty
                             ? CarouselSlider(
                                 options: CarouselOptions(
-                                  height: 200.0,
+                                  scrollDirection: Axis.vertical,
+                                  height: 500.0,
                                   enlargeCenterPage: true,
-                                  enableInfiniteScroll: false,
-                                  
+                                  // enableInfiniteScroll: false,
                                 ),
                                 items: job.images.map((image) {
                                   return Builder(
                                     builder: (BuildContext context) {
                                       return Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.0),
                                         decoration: BoxDecoration(
                                           color: Colors.amber,
                                         ),
                                         child: Image.network(
-                                          'http://192.168.1.103:8000/' + 
-                      image.image, // تأكد من استخدام URL مطلق
+                                          'http://${AppConstants.ip}:8000/' +
+                                              image.image,
                                           fit: BoxFit.cover,
                                         ),
                                       );
@@ -122,8 +124,8 @@ class JobDetailsScreen extends StatelessWidget {
               },
             ),
           ),
-        );}
-      ),
+        );
+      }),
     );
   }
 }

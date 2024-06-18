@@ -56,6 +56,45 @@ class GetProductsSuccess extends homepageState {
   GetProductsSuccess(this.products);
 }
 
+class GetPanalesLoading extends homepageState {}
+
+class GetPanalesFailure extends homepageState {
+  final String errMessage;
+
+  const GetPanalesFailure(this.errMessage);
+}
+
+class GetPanalesSuccess extends homepageState {
+  final List<Product> Panales;
+  GetPanalesSuccess(this.Panales);
+}
+
+class GetBatteriesLoading extends homepageState {}
+
+class GetBatteriesFailure extends homepageState {
+  final String errMessage;
+
+  const GetBatteriesFailure(this.errMessage);
+}
+
+class GetBatteriesSuccess extends homepageState {
+  final List<Product> Batteries;
+  GetBatteriesSuccess(this.Batteries);
+}
+
+class GetInvertersLoading extends homepageState {}
+
+class GetInvertersFailure extends homepageState {
+  final String errMessage;
+
+  const GetInvertersFailure(this.errMessage);
+}
+
+class GetInvertersSuccess extends homepageState {
+  final List<Product> Inverters;
+  GetInvertersSuccess(this.Inverters);
+}
+
 class GetUserInfoLoading extends homepageState {}
 
 class GetUserInfoFailure extends homepageState {

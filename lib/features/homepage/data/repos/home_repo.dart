@@ -9,6 +9,9 @@ import 'package:dartz/dartz.dart';
 abstract class homeRepo {
   Future<Either<Failure, List<System>>> fetchProposedSystems();
   Future<Either<Failure, List<Product>>> fetchProducts();
+  Future<Either<Failure, List<Product>>> fetchPanales();
+  Future<Either<Failure, List<Product>>> fetchbatteries();
+  Future<Either<Failure, List<Product>>> fetchInverters();
   Future<Either<Failure, UserModel>> fetchuserinfo();
   Future<Either<Failure, LogoutResponse>> Loguot({required String token});
 }

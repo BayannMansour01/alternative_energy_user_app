@@ -25,7 +25,9 @@ class JobListScreen extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
           ),
-          body: PreviousJobsBody(token: token,),
+          body: PreviousJobsBody(
+            token: token,
+          ),
         ));
   }
 }
