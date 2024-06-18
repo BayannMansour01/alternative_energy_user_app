@@ -5,7 +5,7 @@ import 'dart:typed_data';
 
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 // >>>>>>> main
-import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/home_screen.dart';
+import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/conversations_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/home_page.dart';
 import 'package:alternative_energy_user_app/features/login_screen/login_screen.dart';
@@ -13,7 +13,7 @@ import 'package:alternative_energy_user_app/features/previuosjobspage/presentati
 // <<<<<<< Bayan
 import 'package:alternative_energy_user_app/features/profile_screen/presentation/screens/profile_screen.dart';
 // =======
-import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/widgets/prev_jobs_details/prev_jobs_details_body.dart';
+import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/widgets/prev_jobs_details_body.dart';
 import 'package:alternative_energy_user_app/features/register_screen/models/message_model.dart';
 // >>>>>>> main
 import 'package:alternative_energy_user_app/features/register_screen/register_screen.dart';
@@ -33,21 +33,26 @@ abstract class AppRouter {
   static const kChatUserView = '/kChatUserView';
 
 // =======
- static const kJobListScreen = '/JobListScreen';
- static const kJobDetailsScreen = '/JobDetailsScreen';
- 
-// >>>>>>> main
+  static const kJobListScreen = '/JobListScreen';
+  static const kJobDetailsScreen = '/JobDetailsScreen';
   static final router = GoRouter(
     routes: [
-      // GoRoute(
-      //   path: '/',
-      //   builder: (context, state) => SplashView(),
-      // ),
       GoRoute(
-        path:khomeView,
+        path: '/',
+        builder: (context, state) => SplashView(),
+      ),
+      GoRoute(
+        path: khomeView,
         builder: (context, state) {
-          //final token = state.extra as String; // استلم التوكن هنا
-          return HomePage( token: CacheHelper.getData(key: 'Token'),); // تمرير التوكن إلى HomePage
+          return HomePage(
+            token: CacheHelper.getData(key: 'Token'),
+          );
+        },
+      ),
+      GoRoute(
+        path: kLoginView,
+        builder: (context, state) {
+          return LoginView();
         },
       ),
       GoRoute(
@@ -55,38 +60,34 @@ abstract class AppRouter {
         builder: (context, state) => RegisterView(),
       ),
       GoRoute(
-        path:'/', // kLoginView,
-        builder: (context, state) => LoginView(),
-      ),
-// <<<<<<< Bayan
-      GoRoute(
         path: kProfileView,
         builder: (context, state) => ProfileView(),
       ),
       GoRoute(
         path: kChatView,
-        builder: (context, state) => HomeScreen(),
+        builder: (context, state) => ConversationsScreen(),
       ),
       GoRoute(
         path: kChatUserView,
-        builder: (context, state) => ChatScreen(user: state.extra as ChatUser),
+        builder: (context, state) => ChatScreen(
+          user: state.extra as ChatUser,
+        ),
       ),
-// =======
-        GoRoute(
-        path:kJobListScreen,
-         builder: (context, state) {
-           // استلم التوكن هنا
-          return JobListScreen( token: CacheHelper.getData(key: 'Token'),
-          );} // تمرير التوكن إلى JobListScreen
-      ),
-      //  GoRoute(
-      //   path:kJobDetailsScreen, 
-      //   builder: (context, state) {
-        
-      //     return JobDetailsScreen( token: CacheHelper.getData(key: 'Token'), jobId: 1,
-      //     );} )
-
-// >>>>>>> main
+      GoRoute(
+          path: kJobListScreen,
+          builder: (context, state) {
+            return JobListScreen(
+              token: CacheHelper.getData(key: 'Token'),
+            );
+          }),
+      GoRoute(
+          path: kJobDetailsScreen,
+          builder: (context, state) {
+            return JobDetailsScreen(
+              token: CacheHelper.getData(key: 'Token'),
+              jobId: state.extra as int,
+            );
+          })
     ],
   );
 }

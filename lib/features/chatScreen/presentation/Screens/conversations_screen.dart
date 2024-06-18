@@ -12,14 +12,14 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 //home screen -- where all available contacts are shown
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class ConversationsScreen extends StatefulWidget {
+  const ConversationsScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ConversationsScreen> createState() => _ConversationsScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ConversationsScreenState extends State<ConversationsScreen> {
   // for storing all users
   List<ChatUser> _list = [];
 

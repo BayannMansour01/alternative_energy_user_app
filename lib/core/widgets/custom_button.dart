@@ -47,7 +47,7 @@ class CustomButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: const Color.fromRGBO(255, 255, 255, 1),
-                  fontSize: SizeConfig.defaultSize * 1.2,
+                  fontSize: SizeConfig.defaultSize * 2,
                 ),
               ),
             ),

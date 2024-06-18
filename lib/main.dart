@@ -5,22 +5,10 @@ import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/dio_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/service_locator.dart';
 import 'package:alternative_energy_user_app/core/utils/size_config.dart';
-// <<<<<<< Bayan
 import 'package:alternative_energy_user_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// =======
-
-// import 'package:alternative_energy_user_app/firebase_options.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/material.dart';
-
-// import 'package:google_fonts/google_fonts.dart';
-
-// >>>>>>> main
-
-// late Size mq;
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -40,6 +40,84 @@ class HomeRepoImpl extends homeRepo {
     }
   }
 
+  @override
+  Future<Either<Failure, List<Product>>> fetchPanales() async {
+    try {
+      Response data = await DioHelper.getData(
+          url: AppConstants.showAllPanales,
+          token: CacheHelper.getData(key: 'Token'));
+      log("data:  $data");
+      List<Product> Products = [];
+      for (var item in data.data['products']) {
+        Products.add(Product.fromJson(item));
+      }
+      return right(Products);
+    } on Exception catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Product>>> fetchbatteries() async {
+    try {
+      Response data = await DioHelper.getData(
+          url: AppConstants.showAllbatteries,
+          token: CacheHelper.getData(key: 'Token'));
+      log("data:  $data");
+      List<Product> Products = [];
+      for (var item in data.data['products']) {
+        Products.add(Product.fromJson(item));
+      }
+      return right(Products);
+    } on Exception catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Product>>> fetchInverters() async {
+    try {
+      Response data = await DioHelper.getData(
+          url: AppConstants.showAllInverters,
+          token: CacheHelper.getData(key: 'Token'));
+      log("data:  $data");
+      List<Product> Products = [];
+      for (var item in data.data['products']) {
+        Products.add(Product.fromJson(item));
+      }
+      return right(Products);
+    } on Exception catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
   Future<Either<Failure, List<Product>>> fetchProducts() async {
     try {
       Response data = await DioHelper.getData(

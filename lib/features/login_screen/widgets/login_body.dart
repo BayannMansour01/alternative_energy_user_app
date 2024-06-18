@@ -7,7 +7,7 @@ import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/core/widgets/custom_button.dart';
 import 'package:alternative_energy_user_app/core/widgets/custom_text_field.dart';
 import 'package:alternative_energy_user_app/core/widgets/space_widgets.dart';
-import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/home_screen.dart';
+import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/conversations_screen.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/home_page.dart';
 import 'package:alternative_energy_user_app/features/login_screen/widgets/AppBarBorder.dart';
 import 'package:alternative_energy_user_app/features/login_screen/widgets/password_suffix_icon.dart';
@@ -126,9 +126,7 @@ class LoginViewBody extends StatelessWidget {
                           const VerticalSpace(1),
                           CustomButton(
                             text: 'تسجيل الدخول ',
-                            color: Colors.blue,
                             onTap: () async {
-                              
                               if (cubit.formKey.currentState!.validate()) {
                                 await cubit.login();
                               }

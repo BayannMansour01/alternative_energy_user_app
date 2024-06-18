@@ -5,7 +5,7 @@ import 'package:alternative_energy_user_app/core/utils/app_router.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/data/models/job_model.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/manager/previous_jobs_cubit.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/manager/previous_jobs_state.dart';
-import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/widgets/prev_jobs_details/prev_jobs_details_body.dart';
+import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/widgets/prev_jobs_details_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -13,7 +13,8 @@ import 'package:go_router/go_router.dart';
 class PreviousJobsBody extends StatelessWidget {
   final String token;
   const PreviousJobsBody({
-    super.key, required this.token,
+    super.key,
+    required this.token,
   });
 
   @override
@@ -38,7 +39,8 @@ class PreviousJobsBody extends StatelessWidget {
         return ListView.builder(
           itemCount: cubit.jobs.length,
           itemBuilder: (context, index) {
-            return jobItem(token: token,
+            return jobItem(
+              token: token,
               job: cubit.jobs[index],
             );
           },
@@ -53,14 +55,14 @@ class jobItem extends StatelessWidget {
   final String token;
   const jobItem({
     super.key,
-    required this.job, required this.token,
+    required this.job,
+    required this.token,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      
-      color: AppConstants.orangeColor.withOpacity(0.8),
+      color: Colors.grey[300],
       margin: EdgeInsets.all(10.0),
       child: Padding(
         padding: EdgeInsets.all(10.0),
@@ -68,33 +70,30 @@ class jobItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextButton(
-              child: Text(
-                '${job.title} ',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
+                child: Text(
+                  '${job.title} ',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: AppConstants.blueColor),
                 ),
-              ),
-              onPressed: (){
-        //  GoRouter.of(context).push(
-        //           AppRouter.kJobDetailsScreen,
-               
-        //         );
-        Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => JobDetailsScreen(token: token,jobId: job.id,)),
-                );
-        }
-
-              
-            ),
+                onPressed: () {
+                  context.push(
+                    AppRouter.kJobDetailsScreen,
+                    extra: job.id,
+                  );
+                  // Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(builder: (context) => JobDetailsScreen(token: token,jobId: job.id,)),
+                  //         );
+                }),
             SizedBox(height: 5.0),
             Text('${job.disc} '),
             SizedBox(height: 5.0),
-            Text(
-              '${job.createdAt} ',
-              style: TextStyle(color: Colors.grey),
-            ),
+            // Text(
+            //   '${job.createdAt} ',
+            //   style: TextStyle(color: Colors.grey),
+            // ),
             if (job.images.isNotEmpty) ...[
               SizedBox(height: 10.0),
               SizedBox(
@@ -106,8 +105,9 @@ class jobItem extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Image.network(
-                        'http://192.168.1.103:8000/' + 
-                        job.images[index].image,
+                        // 'http://192.168.1.107:8000/' + job.images[index].image,
+                        'http://${AppConstants.ip}:8000/' +
+                            job.images[index].image,
                         fit: BoxFit.cover,
                       ),
                     );

@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key, required this.token});
- final String token;
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,9 @@ class HomePage extends StatelessWidget {
         ..fetchAllProposedSystem()
         ..fetchAllProducts()
         ..fetchUserInfo(),
-      child: HomePageBody(),
+      child: HomePageBody(
+        token: token,
+      ),
     );
   }
 }
