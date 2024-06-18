@@ -14,7 +14,7 @@ class LoginCubit extends Cubit<LoginStates> {
   bool obscureText = true;
   final formKey = GlobalKey<FormState>();
   IconData passwordSuffixIcon = Icons.remove_red_eye;
-
+String? token;
   LoginCubit() : super(LoginInitial());
   void changePasswordSuffixIcon() {
     if (passwordSuffixIcon == Icons.remove_red_eye) {
@@ -84,8 +84,13 @@ class LoginCubit extends Cubit<LoginStates> {
             emit(LoginFailure(failureMsg: failure.errorMessege));
           },
           (userModel) {
-            emit(LoginSuccess(messageModel: userModel));
+            emit(LoginSuccess(messageModel: userModel));(userModel) {
+              token = userModel.token;
+              emit(LoginSuccess(messageModel: userModel));
+            
+            };
           },
+
         );
       },
     ).catchError(

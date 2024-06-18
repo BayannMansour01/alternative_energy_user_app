@@ -5,15 +5,13 @@ import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/dio_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/service_locator.dart';
 import 'package:alternative_energy_user_app/core/utils/size_config.dart';
-import 'package:alternative_energy_user_app/features/previuosjobspage/data/repos/previous_jobs_repo_impl.dart';
-import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/manager/previous_jobs_cubit.dart';
+
 import 'package:alternative_energy_user_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_notification_channel/flutter_notification_channel.dart';
-import 'package:flutter_notification_channel/notification_importance.dart';
+
 
 late Size mq;
 

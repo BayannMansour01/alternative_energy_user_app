@@ -9,9 +9,9 @@ class PreviousJobsCubit extends Cubit<PreviousJobsState> {
   // String groupname = '';
   List<Job> jobs = [];
 
-  Future<void> fetchAllPrevJobs() async {
+  Future<void> fetchAllPrevJobs({required String token}) async {
     emit(PreviousJobsLoading());
-    var result = await Repo.fetchPreviuosJobs();
+    var result = await Repo.fetchPreviuosJobs(token);
     print("result $result");
     result.fold((failure) {
       emit(PreviousJobsFailure(failure.errorMessege));
@@ -20,6 +20,19 @@ class PreviousJobsCubit extends Cubit<PreviousJobsState> {
       emit(PreviousJobsSuccess());
     });
   }
+  
+
+// Future<void> fetchPrevJobsDetails() async {
+//     emit(PreviousJobsLoading());
+//     var result = await Repo.fetchJobDetails();
+//     print("result $result");
+//     result.fold((failure) {
+//       emit(PreviousJobsFailure(failure.errorMessege));
+//     }, (data) {
+//       this.jobs = data;
+//       emit(PreviousJobsSuccess());
+//     });
+//   }
 
 //   Future<void> createGroup() async {
 //     (await groupsrepo.createGroup(
