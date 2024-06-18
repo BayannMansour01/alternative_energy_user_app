@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 abstract class AppConstants {
-  static const String baseUrl = 'http://192.168.1.107:8000/api/';
+  static const String ip = "192.168.1.107";
+  static const String baseUrl = 'http://${ip}:8000/api/';
 
   static const String register = 'auth/register';
   static const String login = 'auth/login';
@@ -25,9 +26,10 @@ abstract class AppConstants {
   static const Color gradient3 = Color.fromRGBO(109, 71, 58, 1);
   static const Color borderColor = Color.fromRGBO(52, 51, 67, 1);
   static const Color whiteColor = Colors.white;
-  static Color blueColor = hexToColor('#044586');
-  static HexColor orangeColor = HexColor('#f39709');
-  static HexColor yellowColor = HexColor('#fee205');
+  // static Color blueColor = hexToColor('#044586');
+  static const blueColor = Color(0xff044586); //rgba(4, 69, 134, 1)
+  static const orangeColor = Color(0xfff39709);
+  static const yellowColor = Color(0xfffee205);
   // static Color blueColorColor = colorFromHex(blueColor as String);
   static Color colorFromHex(String hexColor) {
     hexColor = hexColor.toUpperCase().replaceAll('#', '');

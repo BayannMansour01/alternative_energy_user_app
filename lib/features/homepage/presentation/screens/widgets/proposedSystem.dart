@@ -1,7 +1,8 @@
 import 'package:alternative_energy_user_app/core/constants.dart';
+import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
 import 'package:flutter/material.dart';
 
-Widget ReadyMadeSystemItem(BuildContext context) {
+Widget ReadyMadeSystemItem(BuildContext context, System proposedSystem) {
   //Product product = productList[index];
   return SizedBox(
     width: 200,
@@ -23,8 +24,12 @@ Widget ReadyMadeSystemItem(BuildContext context) {
               height: 10,
             ),
             Text(
-              "منظومة 4000 واط ",
+              "${proposedSystem.name}",
               style: const TextStyle(fontSize: 15),
+            ),
+            Text(
+              "${proposedSystem.desc}",
+              style: const TextStyle(fontSize: 10),
             ),
           ],
         ),

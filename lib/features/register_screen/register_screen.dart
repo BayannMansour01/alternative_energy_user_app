@@ -6,17 +6,13 @@ import 'package:alternative_energy_user_app/core/func/custom_snack_bar.dart';
 import 'package:alternative_energy_user_app/core/utils/app_router.dart';
 import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/core/widgets/custom_button.dart';
-import 'package:alternative_energy_user_app/core/widgets/custom_image.dart';
 import 'package:alternative_energy_user_app/core/widgets/custom_text_field.dart';
 import 'package:alternative_energy_user_app/core/widgets/space_widgets.dart';
-import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/api/apis.dart';
-import 'package:alternative_energy_user_app/features/login_screen/login_screen.dart';
 import 'package:alternative_energy_user_app/features/login_screen/widgets/AppBarBorder.dart';
 import 'package:alternative_energy_user_app/features/register_screen/cubit/register_cubit.dart';
 import 'package:alternative_energy_user_app/features/register_screen/cubit/register_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_vpn/flutter_vpn.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterView extends StatelessWidget {
@@ -29,11 +25,8 @@ class RegisterView extends StatelessWidget {
       create: (context) => RegisterCubit(),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: const Scaffold(
-            body: RegisterViewBody(),
-          ),
+        child: const Scaffold(
+          body: RegisterViewBody(),
         ),
       ),
     );
@@ -100,7 +93,7 @@ class RegisterViewBody extends StatelessWidget {
                   ],
                 ),
                 child: Center(
-                  child: const Text(
+                  child: Text(
                     "إنشاء حساب ",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,

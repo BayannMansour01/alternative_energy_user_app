@@ -1,13 +1,15 @@
 import 'dart:developer';
 
+import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user_card.dart';
-import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/api/apis.dart';
+import 'package:alternative_energy_user_app/core/utils/api/apis.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/manager/helper/dialogs.dart';
 import 'package:alternative_energy_user_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 //home screen -- where all available contacts are shown
 class HomeScreen extends StatefulWidget {
@@ -74,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (_isSearching) {
             setState(() => _isSearching = !_isSearching);
           } else {
-            Navigator.of(context).pop();
+            context.pop();
           }
         },
 
@@ -105,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     },
                   )
-                : const Text('We Chat'),
+                : const Text('المحادثة'),
             actions: [
               //search user button
               IconButton(
@@ -141,7 +143,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: StreamBuilder(
             stream: APIs.getMyUsersId(),
-
             //get id of only known users
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
@@ -153,10 +154,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 //if some or all data is loaded then show it
                 case ConnectionState.active:
                 case ConnectionState.done:
+                  log("snapshot ${snapshot.data?.docs.map((e) => e.id).toList()}");
                   return StreamBuilder(
                     stream: APIs.getAllUsers(
                         snapshot.data?.docs.map((e) => e.id).toList() ?? []),
-
                     //get only those user, who's ids are provided
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
@@ -174,12 +175,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ?.map((e) => ChatUser.fromJson(e.data()))
                                   .toList() ??
                               [];
+
                           if (_list.isNotEmpty) {
                             return ListView.builder(
                                 itemCount: _isSearching
                                     ? _searchList.length
                                     : _list.length,
-                                padding: EdgeInsets.only(top: mq.height * .01),
+                                padding: EdgeInsets.only(
+                                    top: SizeConfig.screenHeight * .01),
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   return ChatUserCard(
@@ -246,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 MaterialButton(
                     onPressed: () {
                       //hide alert dialog
-                      Navigator.pop(context);
+                      context.pop();
                     },
                     child: const Text('Cancel',
                         style: TextStyle(color: Colors.blue, fontSize: 16))),
@@ -255,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 MaterialButton(
                     onPressed: () async {
                       //hide alert dialog
-                      Navigator.pop(context);
+                      context.pop();
                       // if (email.isNotEmpty) {
                       //   await APIs.addChatUser(email).then((value) {
                       //     if (!value) {
