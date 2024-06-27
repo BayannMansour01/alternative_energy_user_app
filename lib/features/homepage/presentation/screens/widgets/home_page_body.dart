@@ -23,30 +23,31 @@ import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'product_item.dart';
 
 class HomePageBody extends StatelessWidget {
-  final String token;
-  const HomePageBody({super.key, required this.token});
+  const HomePageBody({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<homepageCubit>(context);
     return BlocConsumer<homepageCubit, homepageState>(
       listener: (context, state) {
         cubit.listining = true;
-        if ((state is GetProposedSystemLoading ||
-                state is GetProductsLoading ||
-                state is GetBatteriesLoading ||
-                state is GetInvertersLoading ||
-                state is GetPanalesLoading) &&
-            !CustomProgressIndicator.isOpen) {
-          CustomProgressIndicator.showProgressIndicator(context);
-        } else {
-          if (CustomProgressIndicator.isOpen) {
-            context.pop();
-          }
-          if (state is GetProposedSystemFailure) {
-            CustomSnackBar.showErrorSnackBar(context,
-                message: state.errMessage);
-          }
-        }
+        // if (state is! GetProposedSystemSuccess
+        //     // state is! GetProductsSuccess &&
+        //     // state is! GetUserInfoSuccess)
+
+        //     &&
+        //     !CustomProgressIndicator.isOpen) {
+        //   CustomProgressIndicator.showProgressIndicator(context);
+        // } else {
+        //   if (CustomProgressIndicator.isOpen) {
+        //     context.pop();
+        //   }
+        //   if (state is GetProposedSystemFailure) {
+        //     CustomSnackBar.showErrorSnackBar(context,
+        //         message: state.errMessage);
+        //   }
+        // }
       },
       builder: (context, state) {
         return Scaffold(
@@ -61,7 +62,7 @@ class HomePageBody extends StatelessWidget {
                 ? ConversationsScreen()
                 : cubit.bottomNavigationBarIndex == 1
                     ? homeBodyBody(cubit: cubit)
-                    : JobListScreen(token: token));
+                    : JobListScreen());
       },
     );
   }
@@ -83,121 +84,140 @@ class homeBodyBody extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          drawer: cubit.userInfo != null
-              ? CustomDrawer.getCustomDrawer(
-                  userModel: cubit.userInfo!,
-                  context,
-                  scaffoldKey: cubit.scaffoldKey,
-                )
-              : null,
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text(
-              'الصفحة الرئيسية',
-              style: TextStyle(color: Colors.white),
+            drawer: cubit.userInfo != null
+                ? CustomDrawer.getCustomDrawer(
+                    userModel: cubit.userInfo!,
+                    context,
+                    scaffoldKey: cubit.scaffoldKey,
+                  )
+                : null,
+            appBar: AppBar(
+              centerTitle: true,
+              title: Text(
+                'الصفحة الرئيسية',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 250,
-                  child: ScrollSnapList(
-                    curve: Curves.ease,
-                    initialIndex: 2.0,
-                    allowAnotherDirection: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return ReadyMadeSystemItem(
-                          context, cubit.proposedSystem[index]);
-                    },
-                    itemCount: cubit.proposedSystem.length,
-                    itemSize: 200,
-                    onItemFocus: (p0) {},
-                    dynamicItemSize: true,
-                  ),
-                ),
-                SizedBox(
-                  height: 7,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
-                  child: Text(
-                    "المنتجات الشائعة",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 18,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    CategoryItem(
-                      onTap: () {
-                        cubit.fetchAllProducts();
-                      },
-                      icon: Icons.all_out_sharp,
-                      text: "الكل",
-                    ),
-                    // SizedBox(width: 5),
-                    CategoryItem(
-                      onTap: () {
-                        cubit.fetchAllPanales();
-                      },
-                      icon: Icons.admin_panel_settings_sharp,
-                      text: "الألواح",
-                    ),
-                    // SizedBox(width: 5),
-                    CategoryItem(
-                      onTap: () {
-                        cubit.fetchAllBAtteries();
-                      },
-                      icon: Icons.battery_5_bar,
-                      text: "البطاريات",
-                    ),
-                    // SizedBox(width: 5),
-                    CategoryItem(
-                      onTap: () {
-                        cubit.fetchAllInverters();
-                      },
-                      icon: Icons.device_hub,
-                      text: "الإنفيرترات",
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 7,
-                ),
-                state is GetProductsSuccess
-                    ? productGridView(
-                        count: cubit.products.length,
-                        product: cubit.products,
-                      )
-                    : state is GetPanalesSuccess
-                        ? productGridView(
-                            count: cubit.panales.length,
-                            product: cubit.panales,
-                          )
-                        : state is GetBatteriesSuccess
+            body: state is! GetProposedSystemLoading
+                ? Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 250,
+                          child: ScrollSnapList(
+                            curve: Curves.ease,
+                            initialIndex: 2.0,
+                            allowAnotherDirection: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return ReadyMadeSystemItem(
+                                  context, cubit.proposedSystem[index]);
+                            },
+                            itemCount: cubit.proposedSystem.length,
+                            itemSize: 200,
+                            onItemFocus: (p0) {},
+                            dynamicItemSize: true,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 7, horizontal: 15),
+                          child: Text(
+                            "المنتجات الشائعة",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 18,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CategoryItem(
+                              onTap: () {
+                                cubit.fetchAllProducts();
+                              },
+                              icon: Icons.all_out_sharp,
+                              text: "الكل",
+                            ),
+                            // SizedBox(width: 5),
+                            CategoryItem(
+                              onTap: () {
+                                cubit.fetchAllPanales();
+                              },
+                              icon: Icons.admin_panel_settings_sharp,
+                              text: "الألواح",
+                            ),
+                            // SizedBox(width: 5),
+                            CategoryItem(
+                              onTap: () {
+                                cubit.fetchAllBAtteries();
+                              },
+                              icon: Icons.battery_5_bar,
+                              text: "البطاريات",
+                            ),
+                            // SizedBox(width: 5),
+                            CategoryItem(
+                              onTap: () {
+                                cubit.fetchAllInverters();
+                              },
+                              icon: Icons.device_hub,
+                              text: "الإنفيرترات",
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        state is GetProductsSuccess
                             ? productGridView(
-                                count: cubit.batteries.length,
-                                product: cubit.batteries,
+                                count: cubit.products.length,
+                                product: cubit.products,
                               )
-                            : state is GetInvertersSuccess
+                            : state is GetPanalesSuccess
                                 ? productGridView(
-                                    count: cubit.inverters.length,
-                                    product: cubit.inverters,
+                                    count: cubit.panales.length,
+                                    product: cubit.panales,
                                   )
-                                : Container()
-              ],
-            ),
-          ),
-        );
+                                : state is GetBatteriesSuccess
+                                    ? productGridView(
+                                        count: cubit.batteries.length,
+                                        product: cubit.batteries,
+                                      )
+                                    : state is GetInvertersSuccess
+                                        ? productGridView(
+                                            count: cubit.inverters.length,
+                                            product: cubit.inverters,
+                                          )
+                                        : state is GetProductsLoading ||
+                                                state is GetBatteriesLoading ||
+                                                state is GetInvertersLoading ||
+                                                state is GetPanalesLoading
+                                            ? Center(
+                                                heightFactor: 5,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: AppConstants.blueColor,
+                                                ),
+                                              )
+                                            : productGridView(
+                                                count: cubit.products.length,
+                                                product: cubit.products,
+                                              )
+                      ],
+                    ),
+                  )
+                : Center(
+                    child: CircularProgressIndicator(
+                      color: AppConstants.backgroundColor,
+                    ),
+                  ));
       },
     );
   }

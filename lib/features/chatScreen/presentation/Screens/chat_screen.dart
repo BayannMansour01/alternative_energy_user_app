@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:alternative_energy_user_app/core/utils/app_router.dart';
 import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/message_card.dart';
@@ -167,8 +168,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   //back button
                   IconButton(
-                      onPressed: () =>
-                          context.pushReplacement(AppRouter.kChatView),
+                      onPressed: () => context.pop(),
+                      // context.pushReplacement(AppRouter.kChatView),
                       icon:
                           const Icon(Icons.arrow_back, color: Colors.black54)),
 
@@ -202,7 +203,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       Text(list.isNotEmpty ? list[0].name : widget.user.name,
                           style: const TextStyle(
                               fontSize: 16,
-                              color: Colors.black87,
+                              color: Colors.white,
                               fontWeight: FontWeight.w500)),
 
                       //for adding some space
@@ -212,15 +213,15 @@ class _ChatScreenState extends State<ChatScreen> {
                       Text(
                           list.isNotEmpty
                               ? list[0].isOnline
-                                  ? 'Online'
+                                  ? 'متصل الآن'
                                   : MyDateUtil.getLastActiveTime(
                                       context: context,
                                       lastActive: list[0].lastActive)
                               : MyDateUtil.getLastActiveTime(
                                   context: context,
                                   lastActive: widget.user.lastActive),
-                          style: const TextStyle(
-                              fontSize: 13, color: Colors.black54)),
+                          style: TextStyle(
+                              fontSize: 13, color: AppConstants.yellowColor)),
                     ],
                   )
                 ],

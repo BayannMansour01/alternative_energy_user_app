@@ -1,3 +1,4 @@
+import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/service_locator.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/data/models/job_model.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/data/repos/previous_jobs_repo_impl.dart';
@@ -8,15 +9,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'widgets/prev_jobs_body.dart';
 
 class JobListScreen extends StatelessWidget {
-  final String token;
-
-  const JobListScreen({super.key, required this.token});
+  const JobListScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => PreviousJobsCubit(
               getIt.get<PreviousJobsRepoImpl>(),
-            )..fetchAllPrevJobs(token: token),
+            )..fetchAllPrevJobs(token: CacheHelper.getData(key: "Token")),
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -26,7 +25,7 @@ class JobListScreen extends StatelessWidget {
             ),
           ),
           body: PreviousJobsBody(
-            token: token,
+            token: CacheHelper.getData(key: 'Token'),
           ),
         ));
   }

@@ -44,9 +44,7 @@ abstract class AppRouter {
       GoRoute(
         path: khomeView,
         builder: (context, state) {
-          return HomePage(
-            token: CacheHelper.getData(key: 'Token'),
-          );
+          return HomePage();
         },
       ),
       GoRoute(
@@ -76,9 +74,7 @@ abstract class AppRouter {
       GoRoute(
           path: kJobListScreen,
           builder: (context, state) {
-            return JobListScreen(
-              token: CacheHelper.getData(key: 'Token'),
-            );
+            return JobListScreen();
           }),
       GoRoute(
           path: kJobDetailsScreen,

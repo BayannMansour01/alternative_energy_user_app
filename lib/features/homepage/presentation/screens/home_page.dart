@@ -1,3 +1,4 @@
+import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/service_locator.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/repos/home_repo_impl.dart';
@@ -7,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key, required this.token});
-  final String token;
+  const HomePage({
+    super.key,
+  });
+  // final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +20,7 @@ class HomePage extends StatelessWidget {
         ..fetchAllProposedSystem()
         ..fetchAllProducts()
         ..fetchUserInfo(),
-      child: HomePageBody(
-        token: token,
-      ),
+      child: HomePageBody(),
     );
   }
 }

@@ -37,9 +37,7 @@ class homepageCubit extends Cubit<homepageState> {
     PreviousJobsBody(
       token: CacheHelper.getData(key: 'Token'),
     ),
-    HomePage(
-      token: CacheHelper.getData(key: 'Token'),
-    ),
+    HomePage(),
     ConversationsScreen()
   ];
 

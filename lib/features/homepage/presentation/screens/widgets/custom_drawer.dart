@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:alternative_energy_user_app/core/constants.dart';
+import 'package:alternative_energy_user_app/core/utils/api/apis.dart';
 import 'package:alternative_energy_user_app/core/utils/app_router.dart';
 import 'package:alternative_energy_user_app/core/widgets/custom_image.dart';
+import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/chat_screen.dart';
+import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/user_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/custom_drawer_button.dart';
 import 'package:awesome_icons/awesome_icons.dart';
@@ -25,26 +30,31 @@ abstract class CustomDrawer {
       child: Column(
         children: [
           Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(25),
-              ),
-              color: AppConstants.blueColor,
-            ),
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(25),
+                ),
+                color: AppConstants.blueColor),
             child: Column(
               children: [
-                SizedBox(height: 40),
+                SizedBox(height: 100),
                 Center(
-                  child: CustomImage(
-                    height: 90,
-                    width: 100,
-                    image: 'assets/images/LOGO.jpg',
-                    // backgroundColor: Colors.transparent,
-                    color: Colors.transparent,
+                  // child: Icon(Icons.person_4_sharp),
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundColor: Colors.white,
+                    child: CustomImage(
+                      fit: BoxFit.cover,
+                      height: 100,
+                      width: 100,
+                      image: 'assets/images/LOGO.png',
+                      // backgroundColor: Colors.transparent,
+                      // color: Colors.white,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 30,
                 ),
                 Center(
                   child: Text(
@@ -70,23 +80,28 @@ abstract class CustomDrawer {
           ),
           SizedBox(height: 15),
           CustomDrawerButton(
-            text: 'المفضلة',
-            icon: Icons.favorite,
-            onPressed: () {},
-          ),
-          SizedBox(height: 15),
-          CustomDrawerButton(
             text: '! اسأل سؤالاً',
             icon: Icons.chat,
-            onPressed: () {
-              context.push(AppRouter.kChatView);
+            onPressed: () async {
+              ChatUser? user = await APIs.getCompany();
+              log("user ${user?.id}");
+              if (user != null) {
+                context.push(
+                  AppRouter.kChatUserView,
+                  extra: user,
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('User not found')),
+                );
+              }
             },
           ),
           SizedBox(height: 15),
           CustomDrawerButton(
-            text: 'مواعيدي',
+            text: 'حجز موعد صيانة',
             fontSize: 18,
-            icon: FontAwesomeIcons.ad,
+            icon: Icons.check_circle,
             onPressed: () {
               // Navigator.pushNamed(context, MyAdvertisementsView.route,
               //     arguments: {
