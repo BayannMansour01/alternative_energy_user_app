@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:alternative_energy_user_app/core/utils/app_router.dart';
 import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user_card.dart';
@@ -107,7 +108,10 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                       }
                     },
                   )
-                : const Text('المحادثة'),
+                : const Text(
+                    'المحادثات مع الفريق ',
+                    style: TextStyle(color: Colors.white),
+                  ),
             actions: [
               //search user button
               IconButton(
@@ -121,26 +125,14 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                       : Icons.search)),
 
               //more features button
-              IconButton(
-                  onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (_) => ProfileScreen(user: APIs.me)));
-                  },
-                  icon: const Icon(Icons.more_vert))
+              // IconButton(
+              //     onPressed: () {
+              //       // context.pop(AppRouter.kProfileView);
+              //     },
+              //     icon: const Icon(Icons.more_vert))
             ],
           ),
 
-          //floating button to add new user
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: FloatingActionButton(
-                onPressed: () {
-                  _addChatUserDialog();
-                },
-                child: const Icon(Icons.add_comment_rounded)),
-          ),
           body: StreamBuilder(
             stream: APIs.getMyUsersId(),
             //get id of only known users
@@ -156,8 +148,10 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                 case ConnectionState.done:
                   log("snapshot ${snapshot.data?.docs.map((e) => e.id).toList()}");
                   return StreamBuilder(
-                    stream: APIs.getAllUsers(
-                        snapshot.data?.docs.map((e) => e.id).toList() ?? []),
+                    stream: APIs.getChatUsers(snapshot.data?.docs.map((e) {
+                          return e.id;
+                        }).toList() ??
+                        []),
                     //get only those user, who's ids are provided
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
@@ -192,7 +186,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                 });
                           } else {
                             return const Center(
-                              child: Text('No Connections Found!',
+                              child: Text('لا يوجد محادثات بعد ',
                                   style: TextStyle(fontSize: 20)),
                             );
                           }

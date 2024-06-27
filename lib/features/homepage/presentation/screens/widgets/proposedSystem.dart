@@ -15,10 +15,10 @@ Widget ReadyMadeSystemItem(BuildContext context, System proposedSystem) {
         child: Column(
           children: [
             Image.asset(
-              'assets/images/LOGO.jpg',
+              'assets/images/system2.png',
               fit: BoxFit.cover,
-              // width: 150,
-              // height: 150,
+              width: double.infinity,
+              height: 180,
             ),
             const SizedBox(
               height: 10,

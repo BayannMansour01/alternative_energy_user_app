@@ -35,8 +35,8 @@ class _SplashViewState extends State<SplashView>
   }
 
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   void _navigateToHomeView() {
@@ -54,8 +54,8 @@ class _SplashViewState extends State<SplashView>
         padding: EdgeInsets.all(8.0),
         child: Center(
           child: Image.asset(
-            'assets/images/LOGO.jpg',
-            scale: 3,
+            'assets/images/LOGO.png',
+            scale: 1.5,
           ),
         ),
       ),

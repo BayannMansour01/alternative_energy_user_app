@@ -6,13 +6,13 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 abstract class RegisterService {
-  static Future<Either<Failure, MessageModel>> register({
-    required String name,
-    required String email,
-    required String phone,
-    required String password,
-    required String confirmPass,
-  }) async {
+  static Future<Either<Failure, MessageModel>> register(
+      {required String name,
+      required String email,
+      required String phone,
+      required String password,
+      required String confirmPass,
+      required String uid}) async {
     try {
       var response = await DioHelper.postData(
         url: 'auth/register',
@@ -22,6 +22,7 @@ abstract class RegisterService {
           "email": email,
           "password": password,
           "c_password": confirmPass,
+          "uId": uid
         },
       );
       log(response.toString());

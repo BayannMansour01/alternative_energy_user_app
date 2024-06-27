@@ -1,4 +1,6 @@
+import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 abstract class CustomProgressIndicator {
   static bool isOpen = false;
@@ -12,9 +14,9 @@ abstract class CustomProgressIndicator {
         onWillPop: () {
           return Future.value(false);
         },
-        child: const Center(
+        child: Center(
           child: CircularProgressIndicator(
-            color: Colors.white,
+            color: AppConstants.blueColor,
             strokeWidth: 3,
           ),
         ),

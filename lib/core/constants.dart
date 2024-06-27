@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 abstract class AppConstants {
-  static const String ip = "192.168.1.107";
+  static const String ip = "192.168.43.50";
   static const String baseUrl = 'http://${ip}:8000/api/';
 
   static const String register = 'auth/register';
@@ -20,9 +19,7 @@ abstract class AppConstants {
   static const String showAllPanales = '/Products/search/1';
   static const String showAllInverters = '/Products/search/2';
   static const String showAllbatteries = '/Products/search/3';
-
   static const String detailesProduct = 'Products/show';
-
   static const Color backgroundColor = Color.fromRGBO(24, 24, 32, 1);
   static const Color gradient1 = Color.fromRGBO(187, 63, 221, 1);
   static const Color gradient2 = Color.fromRGBO(251, 109, 169, 1);

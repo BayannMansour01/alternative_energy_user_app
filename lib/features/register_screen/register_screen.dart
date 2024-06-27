@@ -117,11 +117,11 @@ class RegisterViewBody extends StatelessWidget {
                           onChanged: (value) {
                             cubit.name = value;
                           }, //=>
-                          labelText: 'اسم المستحدم',
+                          labelText: 'اسم المستخدم',
                           keyboardType: TextInputType.name,
                           validator: (value) {
                             if (value?.isEmpty ?? true) {
-                              return 'required';
+                              return 'املأ الحقل من فضلك!';
                             }
                             return null;
                           },
@@ -137,7 +137,7 @@ class RegisterViewBody extends StatelessWidget {
                           keyboardType: TextInputType.name,
                           validator: (value) {
                             if (value?.isEmpty ?? true) {
-                              return 'required';
+                              return 'املأ الحقل من فضلك!';
                             }
                             return null;
                           },
@@ -206,9 +206,9 @@ class RegisterViewBody extends StatelessWidget {
                           onChanged: (value) => cubit.confirmPassword = value,
                           validator: (value) {
                             if (value?.isEmpty ?? true) {
-                              return 'required';
+                              return 'املأ الحقل من فضلك ';
                             } else if (value != cubit.password) {
-                              return "Passwords don't match";
+                              return "كلمة السر غير متطابقة";
                             }
                             return null;
                           },
@@ -228,26 +228,24 @@ class RegisterViewBody extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "لديك حساب مسبقاً؟",
-                              style: TextStyle(
-                                fontSize: SizeConfig.defaultSize,
-                              ),
+                              "لديك حساب سابق ؟ ",
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.grey),
                             ),
                             TextButton(
                               onPressed: () {
-                                context.pop();
+                                context.push(AppRouter.kRegisterView);
                               },
                               child: Text(
-                                'تسجيل دخول',
+                                'سجل دخول الآن ',
                                 style: TextStyle(
-                                  color: AppConstants.blueColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: AppConstants.blueColor),
                               ),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),

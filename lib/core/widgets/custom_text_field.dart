@@ -49,7 +49,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width ?? SizeConfig.defaultSize * 25,
+      width: width ?? SizeConfig.defaultSize * 26,
       child: TextFormField(
         cursorColor: AppConstants.blueColor,
         autofocus: autofocus,
@@ -64,10 +64,10 @@ class CustomTextField extends StatelessWidget {
         validator: validator ??
             (value) {
               if (value?.isEmpty ?? true) {
-                return 'required';
+                return 'املأ الحقل من فضلك';
               } else if (keyboardType == TextInputType.emailAddress) {
                 if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value.toString())) {
-                  return "Please enter a valid email address";
+                  return "الرجاء إدخال بريد الكتروني صالح ";
                 }
               }
               return null;
@@ -77,13 +77,13 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
-            fontSize: 17,
+            fontSize: 12,
             color: Color.fromARGB(255, 5, 74, 131),
           ),
           labelText: labelText,
           labelStyle: const TextStyle(
-            color: Color.fromARGB(255, 5, 74, 131),
-            fontSize: 22,
+            color: Colors.grey,
+            fontSize: 17,
           ),
 
           prefixIconColor: Color.fromARGB(255, 5, 74, 131),
