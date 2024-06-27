@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class AppConstants {
-  static const String ip = "192.168.43.50";
+  static const String ip = "192.168.105.141";
   static const String baseUrl = 'http://${ip}:8000/api/';
 
   static const String register = 'auth/register';
@@ -14,7 +14,7 @@ abstract class AppConstants {
   static const String showAllPrevJobs = 'PreviousJobs/showAll';
   static const String searchByTitlePrevJobs = 'PreviousJobs/searchByTitle';
   static const String showDetailesPrevJobs = 'PreviousJobs/show/';
-
+static const String add_order = 'Orders/store';
   static const String showAllProducts = 'Products/showAll';
   static const String showAllPanales = '/Products/search/1';
   static const String showAllInverters = '/Products/search/2';

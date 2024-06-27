@@ -1,4 +1,5 @@
 import 'package:alternative_energy_user_app/features/homepage/data/models/logout_message_model.dart';
+import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/product_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/user_model.dart';
@@ -120,3 +121,42 @@ class LogoutSuccess extends homepageState {
   final LogoutResponse message;
   LogoutSuccess(this.message);
 }
+
+class SubmitOrderLoading extends homepageState {
+   final List<ProductOrder> orders;
+
+  const SubmitOrderLoading({this.orders = const []});
+
+  @override
+  List<Object> get props => [orders];
+  
+}
+class OrderUpdatedState extends homepageState{
+   final List<ProductOrder> orders;
+
+  OrderUpdatedState(this.orders);
+
+}
+ 
+class SubmitOrderSuccess extends homepageState {
+  final String message;
+
+  const SubmitOrderSuccess({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+class OrderAmountChanged extends homepageState{
+
+}
+
+
+class SubmitOrderFailure extends homepageState {
+  final String errMessage;
+
+  const SubmitOrderFailure({required this.errMessage});
+
+  @override
+  List<Object> get props => [errMessage];
+}
+class homepageOrdersCleared extends homepageState{}
