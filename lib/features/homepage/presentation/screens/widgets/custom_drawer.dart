@@ -37,7 +37,7 @@ abstract class CustomDrawer {
                 color: AppConstants.blueColor),
             child: Column(
               children: [
-                SizedBox(height: 100),
+                SizedBox(height: 50),
                 Center(
                   // child: Icon(Icons.person_4_sharp),
                   child: CircleAvatar(
