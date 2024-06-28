@@ -10,6 +10,7 @@ import 'package:alternative_energy_user_app/features/homepage/data/models/produc
 import 'package:alternative_energy_user_app/features/homepage/presentation/manager/cubit/home_page_cubit.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/manager/cubit/home_page_state.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/custom_drawer.dart';
+import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/order_page.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/proposedSystem.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/prev_jobs_page.dart';
 import 'package:awesome_icons/awesome_icons.dart';
@@ -62,7 +63,25 @@ class HomePageBody extends StatelessWidget {
                 ? ConversationsScreen()
                 : cubit.bottomNavigationBarIndex == 1
                     ? homeBodyBody(cubit: cubit)
-                    : JobListScreen());
+                    : JobListScreen(),
+
+                       floatingActionButton: BlocBuilder<homepageCubit, homepageState>(
+            builder: (context, orderState) {
+    return FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => OrderPage(cubit: cubit,),
+                    ),
+                  );
+                },
+                child: Icon(Icons.shopping_cart_outlined,color: AppConstants.blueColor,),
+              );
+              },
+          ),
+        );
+                   
+
       },
     );
   }

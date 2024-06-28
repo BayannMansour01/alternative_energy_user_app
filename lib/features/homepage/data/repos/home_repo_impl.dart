@@ -5,11 +5,13 @@ import 'package:alternative_energy_user_app/core/errors/failure.dart';
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/dio_helper.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/logout_message_model.dart';
+import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/product_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/user_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/repos/home_repo.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/data/models/job_model.dart';
+import 'package:alternative_energy_user_app/features/register_screen/models/message_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
@@ -186,4 +188,27 @@ class HomeRepoImpl extends homeRepo {
       return left(ServerFailure(ex.toString()));
     }
   }
+    @override
+  Future<Either<Failure, MessageModel>> submitOrder(Order1 order) async {
+    try {
+      final response = await DioHelper.postData(
+        url: AppConstants.add_order,
+        body: order.toJson(),
+        token: CacheHelper.getData(key: 'Token'),
+      );
+
+      
+      return Right(MessageModel.fromJson(response.data));
+    } catch (ex) {
+      log('There is an error in submitOrder method in HomeRepoImpl');
+      print(ex.toString());
+      if (ex is DioException) {
+        return Left(ServerFailure(
+          ex.response?.data['msg'] ??
+              'Something Went Wrong, Please Try Again',
+        ));
+      }
+      return Left(ServerFailure(ex.toString()));
+    }}
+  
 }
