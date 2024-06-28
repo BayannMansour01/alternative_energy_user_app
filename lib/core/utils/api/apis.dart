@@ -461,8 +461,10 @@ class APIs {
     try {
       final doc = await APIs.firesotre
           .collection("users")
-          .doc("UkSPv11V85cmYOeU6tFJ1iAaGQa2")
+          .doc("ipHyReWk5aMLotnlmnPVJQlrVoZ2")
           .get();
+      var t = ChatUser.factory(doc.data()!);
+      log(t.toString());
       return ChatUser.factory(doc.data()!);
     } catch (ex) {
       log('GetCompnyUsers Exception: $ex');
@@ -490,7 +492,7 @@ class APIs {
     });
   }
 
-  //for sending push notification
+//for sending push notification
   static Future<void> sendPushNotification(
       {required ChatUser chatUser, required String msg}) async {
     try {
@@ -664,38 +666,38 @@ class APIs {
       log("sendFirstMessage ${chatUser.id}  ${user.uid}");
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(user.uid) //فريق
+          .doc(chatUser.id) //فريق
           .collection('my_users')
-          .doc(chatUser.id) //زبون
+          .doc(user.uid) //زبون
           .set({
-        'image': chatUser.image,
-        'about': chatUser.about,
-        'name': chatUser.name,
-        'createdAt': chatUser.createdAt,
-        'id': chatUser.id,
-        'lastActive': chatUser.lastActive,
-        'isOnline': chatUser.isOnline,
-        'pushToken': chatUser.pushToken,
-        'email': chatUser.email,
-        'localUserID': chatUser.localUserID
+        // 'image': chatUser.image,
+        // 'about': chatUser.about,
+        // 'name': chatUser.name,
+        // 'createdAt': chatUser.createdAt,
+        // 'id': chatUser.id,
+        // 'lastActive': chatUser.lastActive,
+        // 'isOnline': chatUser.isOnline,
+        // 'pushToken': chatUser.pushToken,
+        // 'email': chatUser.email,
+        // 'localUserID': chatUser.localUserID
       });
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(chatUser.id) //زبون
-          .collection('my_users')
-          .doc(user.uid) //فرسق
-          .set({
-        'image': user.photoURL,
-        'about': " ",
-        'name': user.displayName,
-        'createdAt': " ",
-        'id': user.uid,
-        'lastActive': " ",
-        'isOnline': " ",
-        'pushToken': " ",
-        'email': user.email,
-        'localUserID': " "
-      });
+      // await FirebaseFirestore.instance
+      //     .collection('users')
+      //     .doc(chatUser.id) //زبون
+      //     .collection('my_users')
+      //     .doc(user.uid) //فرسق
+      //     .set({
+      //   'image': user.photoURL,
+      //   'about': " ",
+      //   'name': user.displayName,
+      //   'createdAt': " ",
+      //   'id': user.uid,
+      //   'lastActive': " ",
+      //   'isOnline': " ",
+      //   'pushToken': " ",
+      //   'email': user.email,
+      //   'localUserID': " "
+      // });
 
       await sendMessage(chatUser, msg, type);
     } catch (e) {
@@ -795,8 +797,8 @@ class APIs {
         .collection('chats/${getConversationID(chatUser.id)}/messages/');
     await ref.doc(time).set(message.toJson()).then(
       (value) {
-        sendPushNotification(
-            chatUser: chatUser, msg: type == Type.text ? msg : 'Sent an image');
+        // sendPushNotification(
+        //     chatUser: chatUser, msg: type == Type.text ? msg : 'Sent an image');
       },
     );
   }
