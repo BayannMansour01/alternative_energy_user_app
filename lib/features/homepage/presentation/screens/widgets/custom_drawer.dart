@@ -111,6 +111,14 @@ abstract class CustomDrawer {
             },
           ),
           SizedBox(height: 15),
+          CustomDrawerButton(
+            text: 'طلباتي',
+            fontSize: 18,
+            icon: Icons.app_registration_outlined,
+            onPressed: () {
+              context.push(AppRouter.kAllMyOrders);
+            },
+          ),
           const Expanded(child: SizedBox(height: 10)),
           CustomDrawerButton(
             text: 'Logout',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class AppConstants {
-  static const String ip = "192.168.1.107";
+  static const String ip = "192.168.43.50";
   static const String baseUrl = 'http://${ip}:8000/api/';
 
   static const String register = 'auth/register';
@@ -21,6 +21,7 @@ abstract class AppConstants {
   static const String showAllbatteries = '/Products/search/3';
   static const String detailesProduct = 'Products/show';
   static const String add_order = 'Orders/store';
+  static const String showAllMyorder = 'Orders/showAllMyOrder';
 
   static const Color backgroundColor = Color.fromRGBO(24, 24, 32, 1);
   static const Color gradient1 = Color.fromRGBO(187, 63, 221, 1);
@@ -28,7 +29,7 @@ abstract class AppConstants {
   static const Color gradient3 = Color.fromRGBO(109, 71, 58, 1);
   static const Color borderColor = Color.fromRGBO(52, 51, 67, 1);
   static const Color whiteColor = Colors.white;
-  // static Color blueColor = hexToColor('#044586');
+
   static const blueColor = Color(0xff044586); //rgba(4, 69, 134, 1)
   static const orangeColor = Color(0xfff39709);
   static const yellowColor = Color(0xfffee205);

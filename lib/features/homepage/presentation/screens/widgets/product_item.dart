@@ -17,12 +17,12 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<homepageCubit>(context);
     return BlocConsumer<homepageCubit, homepageState>(
       listener: (context, state) {
         // Add any additional listeners if needed
       },
       builder: (context, state) {
-        final cubit = BlocProvider.of<homepageCubit>(context);
         int amount = cubit.getQuantity(product.id);
 
         return InkWell(
@@ -30,7 +30,10 @@ class ProductItem extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProductDetailsPage(product: product, cubit: cubit,),
+                builder: (context) => ProductDetailsPage(
+                  product: product,
+                  cubit: cubit,
+                ),
               ),
             );
           },
@@ -70,26 +73,25 @@ class ProductItem extends StatelessWidget {
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
-                       
                       ),
-                      SizedBox(height: 10,),
-                   
+                      SizedBox(
+                        height: 10,
+                      ),
                       Text(
-                       '\$ ${product.price}',
+                        '\$ ${product.price}',
                         style: TextStyle(
-                          color: Colors.grey
-                    
-                          , fontSize: 16,
+                          color: Colors.grey,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
-                       
                         ),
-                       
                       ),
-                       SizedBox(height: 10,),
+                      SizedBox(
+                        height: 11,
+                      ),
                       Container(
                         height: 28,
                         child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             IconButton(
                               onPressed: () {
@@ -100,31 +102,32 @@ class ProductItem extends StatelessWidget {
                             Text('$amount'),
                             IconButton(
                               onPressed: () {
-                                 cubit.increaseQuantity(product.id);
+                                cubit.increaseQuantity(product.id);
                               },
                               icon: Icon(Icons.add),
                             ),
                           ],
                         ),
                       ),
-
-                      SizedBox(height: 20,)
-                   ,   InkWell(
+                      SizedBox(
+                        height: 7,
+                      ),
+                      InkWell(
                         onTap: () {
                           cubit.addProductToOrder(ProductOrder(
-                            price:product.price,
+                            price: product.price,
                             id: product.id,
                             amount: amount,
-                            name: product.name ,
-                            imageUrl: product.image ,
+                            name: product.name,
+                            imageUrl: product.image,
                           ));
                         },
-                      
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
                             color: AppConstants.orangeColor,
-                            borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+                            borderRadius: BorderRadius.vertical(
+                                bottom: Radius.circular(12)),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),

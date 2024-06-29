@@ -19,7 +19,8 @@ class HomePage extends StatelessWidget {
       create: (context) => homepageCubit(getIt.get<HomeRepoImpl>())
         ..fetchAllProposedSystem()
         ..fetchAllProducts()
-        ..fetchUserInfo(),
+        ..fetchUserInfo()
+        ..fetchAllmyOrders(),
       child: HomePageBody(),
     );
   }

@@ -52,36 +52,38 @@ class HomePageBody extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-            bottomNavigationBar: BottomNavigationBar(
-              items: cubit.bottomNavigationBarItems,
-              onTap: (index) {
-                cubit.changeBottomNavigationBarIndex(index);
-              },
-              currentIndex: cubit.bottomNavigationBarIndex,
-            ),
-            body: cubit.bottomNavigationBarIndex == 0
-                ? ConversationsScreen()
-                : cubit.bottomNavigationBarIndex == 1
-                    ? homeBodyBody(cubit: cubit)
-                    : JobListScreen(),
-
-                       floatingActionButton: BlocBuilder<homepageCubit, homepageState>(
+          bottomNavigationBar: BottomNavigationBar(
+            items: cubit.bottomNavigationBarItems,
+            onTap: (index) {
+              cubit.changeBottomNavigationBarIndex(index);
+            },
+            currentIndex: cubit.bottomNavigationBarIndex,
+          ),
+          body: cubit.bottomNavigationBarIndex == 0
+              ? ConversationsScreen()
+              : cubit.bottomNavigationBarIndex == 1
+                  ? homeBodyBody(cubit: cubit)
+                  : JobListScreen(),
+          floatingActionButton: BlocBuilder<homepageCubit, homepageState>(
             builder: (context, orderState) {
-    return FloatingActionButton(
+              return FloatingActionButton(
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => OrderPage(cubit: cubit,),
+                      builder: (context) => OrderPage(
+                        cubit: cubit,
+                      ),
                     ),
                   );
                 },
-                child: Icon(Icons.shopping_cart_outlined,color: AppConstants.blueColor,),
+                child: Icon(
+                  Icons.shopping_cart_outlined,
+                  color: AppConstants.blueColor,
+                ),
               );
-              },
+            },
           ),
         );
-                   
-
       },
     );
   }
@@ -243,8 +245,11 @@ class homeBodyBody extends StatelessWidget {
 }
 
 class productGridView extends StatelessWidget {
-  const productGridView(
-      {super.key, required this.count, required this.product});
+  const productGridView({
+    super.key,
+    required this.count,
+    required this.product,
+  });
 
   final int count;
   final List<Product> product;
