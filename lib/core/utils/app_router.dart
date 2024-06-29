@@ -1,4 +1,3 @@
-
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/chat_screen.dart';
 
 import 'dart:typed_data';
@@ -32,7 +31,7 @@ abstract class AppRouter {
   static const khomeView = '/homeView';
 
   static const kProfileView = '/ProfileView';
-static const kMaintenanceRequestPage = '/MaintenanceRequestPage';
+  static const kMaintenanceRequestPage = '/MaintenanceRequestPage';
   static const kChatView = '/kChatView';
 
   static const kChatUserView = '/kChatUserView';
@@ -88,15 +87,13 @@ static const kMaintenanceRequestPage = '/MaintenanceRequestPage';
               jobId: state.extra as int,
             );
           }),
-
       GoRoute(
         path: kAllMyOrders,
         builder: (context, state) => AllMyOrderPage(),
-
-           GoRoute(
+      ),
+      GoRoute(
         path: kMaintenanceRequestPage,
         builder: (context, state) => MaintenanceRequestPage(),
-
       ),
     ],
   );

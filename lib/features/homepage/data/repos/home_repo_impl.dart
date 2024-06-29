@@ -194,9 +194,9 @@ class HomeRepoImpl extends homeRepo {
       return left(ServerFailure(ex.toString()));
     }
   }
-    @override
-  Future<Either<Failure, MessageModel2>> submitOrder(Order1 order) async {
 
+  @override
+  Future<Either<Failure, MessageModel2>> submitOrder(Order1 order) async {
     try {
       final response = await DioHelper.postData(
         url: AppConstants.add_order,
@@ -207,19 +207,19 @@ class HomeRepoImpl extends homeRepo {
       return Right(MessageModel2.fromJson(response.data));
     } catch (ex) {
       log('There is an error in submitOrder method in HomeRepoImpl');
-    
+
       if (ex is DioException) {
         return Left(ServerFailure(
-          ex.response?.data['msg'] ??
-              'Something Went Wrong, Please Try Again',
+          ex.response?.data['msg'] ?? 'Something Went Wrong, Please Try Again',
         ));
       }
       return Left(ServerFailure(ex.toString()));
-    }}
-  
+    }
+  }
 
-   @override
-  Future<Either<Failure, MessageModel2>> submitMaintenanceRequest(FormData orderData) async {
+  @override
+  Future<Either<Failure, MessageModel2>> submitMaintenanceRequest(
+      FormData orderData) async {
     try {
       final response = await DioHelper.postData222(
         url: AppConstants.add_order,
@@ -227,7 +227,6 @@ class HomeRepoImpl extends homeRepo {
         token: CacheHelper.getData(key: 'Token'),
       );
 
-      
       return Right(MessageModel2.fromJson(response.data));
     } catch (ex) {
       log('There is an error in submitOrder method in HomeRepoImpl');

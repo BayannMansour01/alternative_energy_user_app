@@ -29,9 +29,8 @@ class homepageCubit extends Cubit<homepageState> {
   homepageCubit(this.Repo) : super(homepageInitial());
   bool listining = false;
 
-   String location="";
-   String maintenance_order="";
-
+  String location = "";
+  String maintenance_order = "";
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int bottomNavigationBarIndex = 1;
@@ -213,7 +212,6 @@ class homepageCubit extends Cubit<homepageState> {
   }
 ////////////////////////////////////////////////
 
-
   List<MyOrder> MyOrders = [];
   void fetchAllmyOrders() async {
     var result = await Repo.fetchMyOrder();
@@ -225,14 +223,13 @@ class homepageCubit extends Cubit<homepageState> {
       emit(getMyAllOrederssSuccessState(MyOrders));
     });
   }
-}
 
-
- XFile? imageFile;
+  XFile? imageFile;
 
   void pickImage() async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         imageFile = pickedFile;
         emit(MaintenanceImagePicked(pickedFile));
@@ -243,17 +240,16 @@ class homepageCubit extends Cubit<homepageState> {
   }
 
   void submitMaintenanceRequest() async {
-
-    if (maintenance_order.isEmpty 
-    || imageFile == null) {
+    if (maintenance_order.isEmpty || imageFile == null) {
       emit(MaintenanceFailure(errMessage: 'يرجى إدخال وصف ورفع صورة'));
       return;
     }
     emit(MaintenanceLoading());
-    try  {
+    try {
       FormData formData = FormData.fromMap({
         'desc': maintenance_order,
-        'image': await MultipartFile.fromFile(imageFile!.path, filename: imageFile!.name),
+        'image': await MultipartFile.fromFile(imageFile!.path,
+            filename: imageFile!.name),
         'type_id': 1,
       });
 
@@ -267,4 +263,3 @@ class homepageCubit extends Cubit<homepageState> {
     }
   }
 }
-

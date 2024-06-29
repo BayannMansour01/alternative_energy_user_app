@@ -174,7 +174,7 @@ class getMyAllOrederssSuccessState extends homepageState {
 
 class ChangeActiveStepSuccess extends homepageState {}
 
-class homepageOrdersCleared extends homepageState{}
+// class homepageOrdersCleared extends homepageState{}
 
 ////////////////////
 class MaintenanceInitial extends homepageState {}
@@ -191,7 +191,7 @@ class MaintenanceSuccess extends homepageState {
 }
 
 class MaintenanceFailure extends homepageState {
-   final String errMessage;
+  final String errMessage;
 
   const MaintenanceFailure({required this.errMessage});
 

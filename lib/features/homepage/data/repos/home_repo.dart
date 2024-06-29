@@ -24,10 +24,9 @@ abstract class homeRepo {
   Future<Either<Failure, UserModel>> fetchuserinfo();
   Future<Either<Failure, LogoutResponse>> Loguot({required String token});
 
-  Future<Either<Failure, MessageModel>> submitOrder(Order1 orderData);
   Future<Either<Failure, List<MyOrder>>> fetchMyOrder();
 
-   Future<Either<Failure, MessageModel2>> submitOrder(Order1 orderData);
-    Future<Either<Failure, MessageModel2>> submitMaintenanceRequest(FormData orderData);
-
+  Future<Either<Failure, MessageModel2>> submitOrder(Order1 orderData);
+  Future<Either<Failure, MessageModel2>> submitMaintenanceRequest(
+      FormData orderData);
 }
