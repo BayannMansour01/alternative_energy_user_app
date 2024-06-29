@@ -1,6 +1,7 @@
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/chat_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/conversations_screen.dart';
+import 'package:alternative_energy_user_app/features/homepage/data/models/maintenanceRequest_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/product_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
@@ -15,10 +16,12 @@ import 'package:awesome_icons/awesome_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class homepageCubit extends Cubit<homepageState> {
   homepageCubit(this.Repo) : super(homepageInitial());
   bool listining = false;
+   String location="";
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int bottomNavigationBarIndex = 1;
   List<BottomNavigationBarItem> bottomNavigationBarItems = [
@@ -180,7 +183,7 @@ List<ProductOrder> currentOrders = [];
     final result = await Repo.submitOrder(order);
     result.fold(
       (failure) => emit(SubmitOrderFailure(errMessage: failure.errorMessege)),
-      (success) => emit(SubmitOrderSuccess(message: success.message)),
+      (success) => emit(SubmitOrderSuccess(message: success.msg)),
     );
     clearCurrentOrders();
   }
@@ -188,8 +191,34 @@ List<ProductOrder> currentOrders = [];
     currentOrders.clear();
     emit(homepageOrdersCleared());
   }
+////////////////////////////////////////////////
 
 
+  
 
-
+  
+  final ImagePicker picker = ImagePicker();
+  Future<void> pickImage() async {
+    try {
+     
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        emit(MaintenanceImagePicked(pickedFile));
+      }
+    } catch (e) {
+      emit(MaintenanceFailure(errMessage: e.toString()));
+    }
+  }
+  void submitMaintenanceRequest(MaintenanceRequest order) async {
+    emit(MaintenanceLoading());
+    final result = await Repo.submitMaintenanceRequest(order);
+    result.fold(
+      (failure) => emit(MaintenanceFailure(errMessage: failure.errorMessege)),
+      (success) => emit(MaintenanceSuccess(message: success.message)),
+    );
+ 
+  }
+   
 }
+
+

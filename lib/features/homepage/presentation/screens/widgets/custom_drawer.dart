@@ -103,11 +103,8 @@ abstract class CustomDrawer {
             fontSize: 18,
             icon: Icons.check_circle,
             onPressed: () {
-              // Navigator.pushNamed(context, MyAdvertisementsView.route,
-              //     arguments: {
-              //       'propertiesCubit': propertiesCubit,
-              //       'userModel': userModel,
-              //     });
+           context.push(AppRouter.kMaintenanceRequestPage);
+
             },
           ),
           SizedBox(height: 15),

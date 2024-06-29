@@ -8,6 +8,7 @@ import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/conversations_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/home_page.dart';
+import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/MaintenanceRequestPage%20.dart';
 import 'package:alternative_energy_user_app/features/login_screen/login_screen.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/prev_jobs_page.dart';
 // <<<<<<< Bayan
@@ -27,7 +28,7 @@ abstract class AppRouter {
   static const khomeView = '/homeView';
 // <<<<<<< Bayan
   static const kProfileView = '/ProfileView';
-
+static const kMaintenanceRequestPage = '/MaintenanceRequestPage';
   static const kChatView = '/kChatView';
 
   static const kChatUserView = '/kChatUserView';
@@ -83,7 +84,11 @@ abstract class AppRouter {
               token: CacheHelper.getData(key: 'Token'),
               jobId: state.extra as int,
             );
-          })
+          }),
+           GoRoute(
+        path: kMaintenanceRequestPage,
+        builder: (context, state) => MaintenanceRequestPage(),
+      ),
     ],
   );
 }
