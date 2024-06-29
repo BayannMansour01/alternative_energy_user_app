@@ -9,7 +9,7 @@ class MessageModel {
     return MessageModel(
       token: jsonData['token'],
       status: jsonData['status'],
-      message: jsonData['msg'],
+      message: jsonData['msg']  ?? '',
     );
   }
   Map<String, dynamic> toJson() {
