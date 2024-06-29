@@ -26,14 +26,12 @@ abstract class AppRouter {
   static const kRegisterView = '/RegisterView';
   static const kLoginView = '/LoginView';
   static const khomeView = '/homeView';
-// <<<<<<< Bayan
+
   static const kProfileView = '/ProfileView';
 static const kMaintenanceRequestPage = '/MaintenanceRequestPage';
   static const kChatView = '/kChatView';
 
   static const kChatUserView = '/kChatUserView';
-
-// =======
   static const kJobListScreen = '/JobListScreen';
   static const kJobDetailsScreen = '/JobDetailsScreen';
   static final router = GoRouter(

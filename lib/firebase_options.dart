@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart'
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
 /// ```
+
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -53,10 +54,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCgvMBKwaCO2GT_LWWLsxXbvc2yX26Sosk',
-    appId: '1:507096424541:android:8851577e5c02a637152db4',
-    messagingSenderId: '507096424541',
-    projectId: 'graduation-project-a8c71',
-    storageBucket: 'graduation-project-a8c71.appspot.com',
+    apiKey: 'AIzaSyDmvMsCleQHWnZTEPkcflRU14Pu8Xr0Sv4',
+    appId: '1:378707537504:android:d6c4a44f1e5548444d9d05',
+    messagingSenderId: '378707537504',
+    projectId: 'graduation-project-20eda',
+    storageBucket: 'graduation-project-20eda.appspot.com',
   );
 }
