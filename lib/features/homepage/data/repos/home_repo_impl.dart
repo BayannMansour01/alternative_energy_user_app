@@ -5,7 +5,12 @@ import 'package:alternative_energy_user_app/core/errors/failure.dart';
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/dio_helper.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/logout_message_model.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/data/models/my_order_model.dart';
+
+import 'package:alternative_energy_user_app/features/homepage/data/models/maintenanceRequest_model.dart';
+import 'package:alternative_energy_user_app/features/homepage/data/models/message_order.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/product_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
@@ -189,9 +194,9 @@ class HomeRepoImpl extends homeRepo {
       return left(ServerFailure(ex.toString()));
     }
   }
+    @override
+  Future<Either<Failure, MessageModel2>> submitOrder(Order1 order) async {
 
-  @override
-  Future<Either<Failure, MessageModel>> submitOrder(Order1 order) async {
     try {
       final response = await DioHelper.postData(
         url: AppConstants.add_order,
@@ -199,7 +204,31 @@ class HomeRepoImpl extends homeRepo {
         token: CacheHelper.getData(key: 'Token'),
       );
 
-      return Right(MessageModel.fromJson(response.data));
+      return Right(MessageModel2.fromJson(response.data));
+    } catch (ex) {
+      log('There is an error in submitOrder method in HomeRepoImpl');
+    
+      if (ex is DioException) {
+        return Left(ServerFailure(
+          ex.response?.data['msg'] ??
+              'Something Went Wrong, Please Try Again',
+        ));
+      }
+      return Left(ServerFailure(ex.toString()));
+    }}
+  
+
+   @override
+  Future<Either<Failure, MessageModel2>> submitMaintenanceRequest(FormData orderData) async {
+    try {
+      final response = await DioHelper.postData222(
+        url: AppConstants.add_order,
+        body: orderData,
+        token: CacheHelper.getData(key: 'Token'),
+      );
+
+      
+      return Right(MessageModel2.fromJson(response.data));
     } catch (ex) {
       log('There is an error in submitOrder method in HomeRepoImpl');
       print(ex.toString());

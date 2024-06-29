@@ -6,6 +6,7 @@ import 'package:alternative_energy_user_app/features/homepage/data/models/propos
 import 'package:alternative_energy_user_app/features/homepage/data/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 abstract class homepageState extends Equatable {
   const homepageState();
@@ -122,6 +123,7 @@ class LogoutSuccess extends homepageState {
   final LogoutResponse message;
   LogoutSuccess(this.message);
 }
+//////////////////////////////////
 
 class SubmitOrderLoading extends homepageState {
   final List<ProductOrder> orders;
@@ -171,3 +173,37 @@ class getMyAllOrederssSuccessState extends homepageState {
 }
 
 class ChangeActiveStepSuccess extends homepageState {}
+
+class homepageOrdersCleared extends homepageState{}
+
+////////////////////
+class MaintenanceInitial extends homepageState {}
+
+class MaintenanceLoading extends homepageState {}
+
+class MaintenanceSuccess extends homepageState {
+  final String message;
+
+  const MaintenanceSuccess({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class MaintenanceFailure extends homepageState {
+   final String errMessage;
+
+  const MaintenanceFailure({required this.errMessage});
+
+  @override
+  List<Object> get props => [errMessage];
+}
+
+class MaintenanceImagePicked extends homepageState {
+  final XFile image;
+
+  const MaintenanceImagePicked(this.image);
+
+  @override
+  List<Object> get props => [image];
+}
