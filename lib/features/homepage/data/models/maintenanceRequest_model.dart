@@ -1,21 +1,17 @@
-class MaintenanceRequest {
-  int? typeId;
-  List<String>? images;
-  String? desc;
+import 'dart:io';
 
-  MaintenanceRequest({this.typeId, this.images, this.desc});
+class MaintenanceRequestModel {
+  int typeId;
+  File image;
+  String desc;
 
-  MaintenanceRequest.fromJson(Map<String, dynamic> json) {
-    typeId = json['type_id'];
-    images = json['images'].cast<String>();
-    desc = json['desc'];
-  }
+  MaintenanceRequestModel({required this.typeId, required this.image, required this.desc});
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type_id'] = this.typeId;
-    data['images'] = this.images;
-    data['desc'] = this.desc;
-    return data;
+    return {
+      'type_id': typeId,
+      'image': image.path,
+      'desc': desc,
+    };
   }
 }

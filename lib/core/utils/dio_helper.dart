@@ -68,6 +68,32 @@ class DioHelper {
     }
   }
 
+  static Future<Response> postData222({
+    required String url,
+    required FormData body,
+    Map<String, dynamic>? query,
+    String? token,
+  }) async {
+    var response = await dio!.post(
+      url,
+      queryParameters: query,
+      options: Options(
+        // headers: {"authorization": "Bearer $token"},
+        validateStatus: (_) => true,
+        headers: {'auth-token': token},
+      ),
+      data: body,
+    );
+    if (response.statusCode == 200) {
+      log(response.data.toString());
+      return response;
+    } else {
+      throw Exception(
+        'there is an error with status code ${response.statusCode} and with body : ${response.data}',
+      );
+    }
+  }
+
   // static Future<Response> uploadFile({
   //   required PlatformFile file,
   //   required String url,
