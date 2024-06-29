@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/chat_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/conversations_screen.dart';
@@ -13,6 +15,7 @@ import 'package:alternative_energy_user_app/features/homepage/presentation/scree
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/widgets/prev_jobs_body.dart';
 import 'package:alternative_energy_user_app/features/profile_screen/presentation/screens/widgets/profile_body.dart';
 import 'package:awesome_icons/awesome_icons.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +25,8 @@ class homepageCubit extends Cubit<homepageState> {
   homepageCubit(this.Repo) : super(homepageInitial());
   bool listining = false;
    String location="";
+   String maintenance_order="";
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int bottomNavigationBarIndex = 1;
   List<BottomNavigationBarItem> bottomNavigationBarItems = [
@@ -194,31 +199,42 @@ List<ProductOrder> currentOrders = [];
 ////////////////////////////////////////////////
 
 
-  
+ XFile? imageFile;
 
-  
-  final ImagePicker picker = ImagePicker();
-  Future<void> pickImage() async {
+  void pickImage() async {
     try {
-     
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
+        imageFile = pickedFile;
         emit(MaintenanceImagePicked(pickedFile));
       }
     } catch (e) {
       emit(MaintenanceFailure(errMessage: e.toString()));
     }
   }
-  void submitMaintenanceRequest(MaintenanceRequest order) async {
+
+  void submitMaintenanceRequest() async {
+
+    if (maintenance_order.isEmpty 
+    || imageFile == null) {
+      emit(MaintenanceFailure(errMessage: 'يرجى إدخال وصف ورفع صورة'));
+      return;
+    }
     emit(MaintenanceLoading());
-    final result = await Repo.submitMaintenanceRequest(order);
-    result.fold(
-      (failure) => emit(MaintenanceFailure(errMessage: failure.errorMessege)),
-      (success) => emit(MaintenanceSuccess(message: success.message)),
-    );
- 
+    try  {
+      FormData formData = FormData.fromMap({
+        'desc': maintenance_order,
+        'image': await MultipartFile.fromFile(imageFile!.path, filename: imageFile!.name),
+        'type_id': 1,
+      });
+
+      final result = await Repo.submitMaintenanceRequest(formData);
+      result.fold(
+        (failure) => emit(MaintenanceFailure(errMessage: failure.errorMessege)),
+        (success) => emit(MaintenanceSuccess(message: success.msg)),
+      );
+    } catch (e) {
+      emit(MaintenanceFailure(errMessage: e.toString()));
+    }
   }
-   
 }
-
-

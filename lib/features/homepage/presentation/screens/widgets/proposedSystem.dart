@@ -35,7 +35,7 @@ Widget ReadyMadeSystemItem(BuildContext context, System proposedSystem) {
               ),
               Text(
                 "${proposedSystem.name}",
-                style: const TextStyle(fontSize: 15),
+                style: const TextStyle(fontSize: 15,color: Colors.white),
               ),
               // Text(
               //   "${proposedSystem.desc}",

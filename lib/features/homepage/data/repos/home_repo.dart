@@ -9,6 +9,7 @@ import 'package:alternative_energy_user_app/features/homepage/data/models/user_m
 import 'package:alternative_energy_user_app/features/previuosjobspage/data/models/job_model.dart';
 import 'package:alternative_energy_user_app/features/register_screen/models/message_model.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 
 abstract class homeRepo {
   Future<Either<Failure, List<System>>> fetchProposedSystems();
@@ -19,5 +20,5 @@ abstract class homeRepo {
   Future<Either<Failure, UserModel>> fetchuserinfo();
   Future<Either<Failure, LogoutResponse>> Loguot({required String token});
    Future<Either<Failure, MessageModel2>> submitOrder(Order1 orderData);
-    Future<Either<Failure, MessageModel>> submitMaintenanceRequest(MaintenanceRequest orderData);
+    Future<Either<Failure, MessageModel2>> submitMaintenanceRequest(FormData orderData);
 }
