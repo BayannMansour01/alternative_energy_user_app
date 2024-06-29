@@ -10,6 +10,8 @@ import 'login_states.dart';
 class LoginCubit extends Cubit<LoginStates> {
   String email = '';
   String password = '';
+
+  String confirm = '';
   IconData icon = Icons.remove_red_eye;
   bool obscureText = true;
   final formKey = GlobalKey<FormState>();

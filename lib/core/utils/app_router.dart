@@ -1,22 +1,26 @@
-// <<<<<<< Bayan
+
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/chat_screen.dart';
-// =======
+
 import 'dart:typed_data';
 
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
-// >>>>>>> main
+
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/conversations_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/home_page.dart';
+
+import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/all_my_order.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/MaintenanceRequestPage%20.dart';
+
 import 'package:alternative_energy_user_app/features/login_screen/login_screen.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/prev_jobs_page.dart';
-// <<<<<<< Bayan
+
 import 'package:alternative_energy_user_app/features/profile_screen/presentation/screens/profile_screen.dart';
-// =======
+
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/widgets/prev_jobs_details_body.dart';
 import 'package:alternative_energy_user_app/features/register_screen/models/message_model.dart';
-// >>>>>>> main
+
 import 'package:alternative_energy_user_app/features/register_screen/register_screen.dart';
 import 'package:alternative_energy_user_app/features/splash/splash_view.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +38,7 @@ static const kMaintenanceRequestPage = '/MaintenanceRequestPage';
   static const kChatUserView = '/kChatUserView';
   static const kJobListScreen = '/JobListScreen';
   static const kJobDetailsScreen = '/JobDetailsScreen';
+  static const kAllMyOrders = '/kAllMyOrders';
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -83,9 +88,15 @@ static const kMaintenanceRequestPage = '/MaintenanceRequestPage';
               jobId: state.extra as int,
             );
           }),
+
+      GoRoute(
+        path: kAllMyOrders,
+        builder: (context, state) => AllMyOrderPage(),
+
            GoRoute(
         path: kMaintenanceRequestPage,
         builder: (context, state) => MaintenanceRequestPage(),
+
       ),
     ],
   );

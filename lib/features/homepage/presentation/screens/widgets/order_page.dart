@@ -18,14 +18,13 @@ class OrderPage extends StatelessWidget {
       create: (context) => homepageCubit(getIt.get<HomeRepoImpl>()),
       child: BlocConsumer<homepageCubit, homepageState>(
         listener: (context, state) {
-
-           if (state is homepageOrdersCleared) {
-            ScaffoldMessenger.
-            of(context).
-            showSnackBar(
-              SnackBar(
-                content: Text('تم إرسال الطلب وتصفير الطلبات الحالية.',
-                style: TextStyle(color: AppConstants.orangeColor),),
+          if (state is homepageOrdersCleared) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'تم إرسال الطلب وتصفير الطلبات الحالية.',
+                  style: TextStyle(color: AppConstants.orangeColor),
+                ),
               ),
             );
           }
@@ -33,7 +32,7 @@ class OrderPage extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(
+              title: const Text(
                 'طلباتك',
                 style: TextStyle(color: Colors.white),
               ),
@@ -71,6 +70,25 @@ class OrderPage extends StatelessWidget {
                       },
                     ),
                   ),
+// <<<<<<< Bayan
+//                   title: Text(item.name),
+//                   subtitle: Text('Amount: ${item.amount}'),
+//                   trailing: Row(
+//                     mainAxisSize: MainAxisSize.min,
+//                     children: [
+//                       Text('Total: \$${item.price * item.amount}'),
+//                       IconButton(
+//                         icon: const Icon(Icons.delete,
+//                             color: AppConstants.orangeColor),
+//                         onPressed: () {
+//                           cubit.removeProductFromOrder(item.id);
+//                         },
+//                       ),
+//                     ],
+//                   ),
+//                 );
+//               },
+// =======
                 ),
                 Container(
               child:         CustomTextField(
@@ -90,18 +108,18 @@ class OrderPage extends StatelessWidget {
               
                 )
               ],
+// >>>>>>> main
             ),
           
             bottomNavigationBar: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor:AppConstants.orangeColor, // لون النص
-                 
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: AppConstants.orangeColor, // لون النص
                 ),
-                
                 onPressed: () {
-                  print(cubit.currentOrders.length);
+                  // print(cubit.currentOrders.length);
                   final orderItems = cubit.currentOrders.map((item) {
                     return ProductOrder(
                       id: item.id,
@@ -113,12 +131,14 @@ class OrderPage extends StatelessWidget {
                   }).toList();
                   final order = Order1(
                     typeId: 2,
+
                     location: cubit.location, 
+
                     products: orderItems,
                   );
                   cubit.submitOrder(order);
                 },
-                child: Text('إرسال الطلب'),
+                child: const Text('إرسال الطلب'),
               ),
             ),
           );

@@ -5,8 +5,12 @@ import 'package:alternative_energy_user_app/core/errors/failure.dart';
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/dio_helper.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/logout_message_model.dart';
+
+import 'package:alternative_energy_user_app/features/homepage/data/models/my_order_model.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/data/models/maintenanceRequest_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/message_order.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/product_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
@@ -192,6 +196,7 @@ class HomeRepoImpl extends homeRepo {
   }
     @override
   Future<Either<Failure, MessageModel2>> submitOrder(Order1 order) async {
+
     try {
       final response = await DioHelper.postData(
         url: AppConstants.add_order,
@@ -199,7 +204,6 @@ class HomeRepoImpl extends homeRepo {
         token: CacheHelper.getData(key: 'Token'),
       );
 
-      
       return Right(MessageModel2.fromJson(response.data));
     } catch (ex) {
       log('There is an error in submitOrder method in HomeRepoImpl');
@@ -230,11 +234,38 @@ class HomeRepoImpl extends homeRepo {
       print(ex.toString());
       if (ex is DioException) {
         return Left(ServerFailure(
-          ex.response?.data['msg'] ??
-              'Something Went Wrong, Please Try Again',
+          ex.response?.data['msg'] ?? 'Something Went Wrong, Please Try Again',
         ));
       }
       return Left(ServerFailure(ex.toString()));
-    }}
-  
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<MyOrder>>> fetchMyOrder() async {
+    try {
+      Response data = await DioHelper.getData(
+          url: AppConstants.showAllMyorder,
+          token: CacheHelper.getData(key: 'Token'));
+
+      List<MyOrder> MyOrderDatas = [];
+
+      for (var item in data.data['orders']) {
+        MyOrderDatas.add(MyOrder.fromJson(item['order']));
+      }
+      // log("MyOrderDatas:  ${MyOrderDatas.length}");
+      return right(MyOrderDatas);
+    } on Exception catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
 }

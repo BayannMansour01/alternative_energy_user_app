@@ -1,4 +1,5 @@
 import 'package:alternative_energy_user_app/features/homepage/data/models/logout_message_model.dart';
+import 'package:alternative_energy_user_app/features/homepage/data/models/my_order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/product_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
@@ -125,21 +126,20 @@ class LogoutSuccess extends homepageState {
 //////////////////////////////////
 
 class SubmitOrderLoading extends homepageState {
-   final List<ProductOrder> orders;
+  final List<ProductOrder> orders;
 
   const SubmitOrderLoading({this.orders = const []});
 
   @override
   List<Object> get props => [orders];
-  
 }
-class OrderUpdatedState extends homepageState{
-   final List<ProductOrder> orders;
+
+class OrderUpdatedState extends homepageState {
+  final List<ProductOrder> orders;
 
   OrderUpdatedState(this.orders);
-
 }
- 
+
 class SubmitOrderSuccess extends homepageState {
   final String message;
 
@@ -148,10 +148,8 @@ class SubmitOrderSuccess extends homepageState {
   @override
   List<Object> get props => [message];
 }
-class OrderAmountChanged extends homepageState{
 
-}
-
+class OrderAmountChanged extends homepageState {}
 
 class SubmitOrderFailure extends homepageState {
   final String errMessage;
@@ -161,6 +159,21 @@ class SubmitOrderFailure extends homepageState {
   @override
   List<Object> get props => [errMessage];
 }
+
+class homepageOrdersCleared extends homepageState {}
+
+class getMyAllOredersFilureState extends homepageState {
+  final String errMessage;
+  getMyAllOredersFilureState(this.errMessage);
+}
+
+class getMyAllOrederssSuccessState extends homepageState {
+  final List<MyOrder> orders;
+  getMyAllOrederssSuccessState(this.orders);
+}
+
+class ChangeActiveStepSuccess extends homepageState {}
+
 class homepageOrdersCleared extends homepageState{}
 
 ////////////////////
