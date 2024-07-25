@@ -18,7 +18,10 @@ import 'package:alternative_energy_user_app/features/previuosjobspage/presentati
 
 import 'package:alternative_energy_user_app/features/register_screen/register_screen.dart';
 import 'package:alternative_energy_user_app/features/splash/splash_view.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/presentation/manager/cubit/suggest_system_cubit.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/presentation/screens/suggestSystem.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class AppRouter {
@@ -34,6 +37,9 @@ abstract class AppRouter {
   static const kJobListScreen = '/JobListScreen';
   static const kJobDetailsScreen = '/JobDetailsScreen';
   static const kAllMyOrders = '/kAllMyOrders';
+
+  static const ksuggestSystem = '/kSuggestSystem';
+
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -99,6 +105,13 @@ abstract class AppRouter {
       GoRoute(
         path: kMaintenanceRequestPage,
         builder: (context, state) => MaintenanceRequestPage(),
+      ),
+      GoRoute(
+        path: ksuggestSystem,
+        builder: (context, state) => BlocProvider(
+          create: (context) => SuggestSystemCubit(),
+          child: SuggestSystem(),
+        ),
       ),
     ],
   );
