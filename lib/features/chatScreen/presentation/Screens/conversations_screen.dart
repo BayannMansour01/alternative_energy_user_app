@@ -146,7 +146,11 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                 //if some or all data is loaded then show it
                 case ConnectionState.active:
                 case ConnectionState.done:
-                  log("snapshot ${snapshot.data?.docs.map((e) => e.id).toList()}");
+                  log("snapshot ${snapshot.data?.docs.map((e) {
+                    log("eeeee ${e.data()}");
+
+                    return e.id;
+                  }).toList()}");
                   return StreamBuilder(
                     stream: APIs.getChatUsers(snapshot.data?.docs.map((e) {
                           return e.id;
@@ -179,6 +183,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                     top: SizeConfig.screenHeight * .01),
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
+                                  // log('message _list[index] ${_list[index].pushToken}');
                                   return ChatUserCard(
                                       user: _isSearching
                                           ? _searchList[index]

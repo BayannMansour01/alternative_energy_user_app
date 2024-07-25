@@ -1,6 +1,9 @@
 // ignore_for_file: argument_type_not_assignable_to_error_handler
 
+import 'dart:developer';
+
 import 'package:alternative_energy_user_app/core/utils/api/apis.dart';
+import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/features/register_screen/login_service.dart';
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +22,22 @@ class LoginCubit extends Cubit<LoginStates> {
   String? token;
   LoginCubit() : super(LoginInitial());
   void changePasswordSuffixIcon() {
-    if (passwordSuffixIcon == Icons.remove_red_eye) {
-      passwordSuffixIcon = FontAwesomeIcons.solidEyeSlash;
+    // if (passwordSuffixIcon == Icons.remove_red_eye) {
+    //   passwordSuffixIcon = FontAwesomeIcons.solidEyeSlash;
+    // } else {
+    //   passwordSuffixIcon = Icons.remove_red_eye;
+    // }
+    // obscureText = !obscureText;
+    // emit(ChangePasswordState());
+    if (!obscureText) {
+      icon = FontAwesomeIcons.solidEyeSlash;
+      // emit(ChangePasswordState());
     } else {
-      passwordSuffixIcon = Icons.remove_red_eye;
+      icon = FontAwesomeIcons.solidEye;
+      log("message");
+      obscureText = !obscureText;
+      emit(ChangePasswordState());
     }
-    obscureText = !obscureText;
-    emit(ChangePasswordState());
   }
 
   Future<void> login() async {
@@ -48,6 +60,7 @@ class LoginCubit extends Cubit<LoginStates> {
             emit(LoginSuccess(messageModel: userModel));
             (userModel) {
               token = userModel.token;
+              CacheHelper.saveData(key: "Token", value: token);
               emit(LoginSuccess(messageModel: userModel));
             };
           },
@@ -59,16 +72,5 @@ class LoginCubit extends Cubit<LoginStates> {
             LoginFailure(failureMsg: 'Something Went Wrong, Please Try Again'));
       },
     );
-  }
-
-  void changePasswordState() {
-    obscureText = !obscureText;
-    if (!obscureText) {
-      icon = FontAwesomeIcons.solidEyeSlash;
-      emit(LoginInitial());
-    } else {
-      icon = FontAwesomeIcons.solidEye;
-      emit(ChangePasswordState());
-    }
   }
 }

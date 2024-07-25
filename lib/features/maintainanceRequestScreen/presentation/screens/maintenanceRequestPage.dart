@@ -6,6 +6,8 @@ import 'package:alternative_energy_user_app/features/homepage/data/models/mainte
 import 'package:alternative_energy_user_app/features/homepage/data/repos/home_repo_impl.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/manager/cubit/home_page_cubit.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/manager/cubit/home_page_state.dart';
+import 'package:alternative_energy_user_app/features/maintainanceRequestScreen/data/repos/maintanance_repo_impl.dart';
+import 'package:alternative_energy_user_app/features/maintainanceRequestScreen/presentation/manager/cubit/maintanance_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,36 +16,37 @@ import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MaintenanceRequestPage extends StatelessWidget {
-  
-
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
-        title: Text('طلب صيانة',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'طلب صيانة',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: BlocProvider(
-        
-        create: (context) => homepageCubit(getIt.get<HomeRepoImpl>()),
-        child: BlocConsumer<homepageCubit, homepageState>(
+        create: (context) => MaintananceCubit(getIt.get<MaintananceRepoImpl>()),
+        child: BlocConsumer<MaintananceCubit, MaintananceState>(
           listener: (context, state) {
-            
             if (state is MaintenanceSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('تم إرسال طلب الصيانة بنجاح')),
               );
-        
-             BlocProvider.of<homepageCubit>(context).emit(MaintenanceInitial());
+
+              BlocProvider.of<MaintananceCubit>(context)
+                  .emit(MaintenanceInitial());
             } else if (state is MaintenanceFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('فشل في إرسال طلب الصيانة: ${state.errMessage}')),
+                SnackBar(
+                    content:
+                        Text('فشل في إرسال طلب الصيانة: ${state.errMessage}')),
               );
             }
           },
           builder: (context, state) {
-            final cubit = BlocProvider.of<homepageCubit>(context);
-            
+            final cubit = BlocProvider.of<MaintananceCubit>(context);
+
             XFile? _imageFile;
             if (state is MaintenanceImagePicked) {
               _imageFile = state.image;
@@ -54,34 +57,31 @@ class MaintenanceRequestPage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                               CustomTextField(
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return 'مطلوب';
-                              }
-                              return null;
-                            },
-                       
-                            textInputAction: TextInputAction.next,
-                            labelText:'وصف المشكلة',
-                            width: double.infinity,
-                            maxLines: 5,
-                           onChanged: (p0) => cubit.maintenance_order = p0,
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                         
+                    CustomTextField(
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'مطلوب';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      labelText: 'وصف المشكلة',
+                      width: double.infinity,
+                      maxLines: 5,
+                      onChanged: (p0) => cubit.maintenance_order = p0,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
                     SizedBox(height: 20),
                     Container(
-height: 250,
-decoration: BoxDecoration(
-   borderRadius: BorderRadius.circular(30)),
-
-
+                      height: 250,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30)),
                       child: _imageFile != null
-                          ? Image.file(File(_imageFile.path),width: double.infinity,
-                          height: double.infinity,
-                          
-                          )
+                          ? Image.file(
+                              File(_imageFile.path),
+                              width: double.infinity,
+                              height: double.infinity,
+                            )
                           : Text('لم يتم اختيار صورة'),
                     ),
                     SizedBox(height: 20),
@@ -107,13 +107,13 @@ decoration: BoxDecoration(
                           //       desc:cubit.maintenance_order,
                           //       image:
                           //         _imageFile.path,
-                                
+
                           //       typeId: 1);
-                            cubit.submitMaintenanceRequest();
+                          cubit.submitMaintenanceRequest();
                           // } else {
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //   SnackBar(content: Text('يرجى إدخال وصف ورفع صورة')),
-                            // );
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   SnackBar(content: Text('يرجى إدخال وصف ورفع صورة')),
+                          // );
                           // }
                         },
                         style: ElevatedButton.styleFrom(

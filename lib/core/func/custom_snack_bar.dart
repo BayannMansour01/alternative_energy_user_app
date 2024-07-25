@@ -22,7 +22,8 @@ abstract class CustomSnackBar {
         behavior: SnackBarBehavior.floating,
         dismissDirection: DismissDirection.horizontal,
         margin: EdgeInsets.only(
-          bottom: SizeConfig.screenHeight - SizeConfig.defaultSize * 15,
+          bottom:
+              SizeConfig.defaultSize * 10, // Adjusted margin to fit on screen
           left: 5,
           right: 5,
         ),
@@ -38,7 +39,8 @@ abstract class CustomSnackBar {
       SnackBar(
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.only(
-          bottom: SizeConfig.screenHeight * .5,
+          bottom:
+              SizeConfig.defaultSize * 10, // Adjusted margin to fit on screen
           left: 10,
           right: 10,
         ),

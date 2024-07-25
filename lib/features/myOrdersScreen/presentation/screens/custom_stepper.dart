@@ -1,22 +1,18 @@
 import 'package:alternative_energy_user_app/features/homepage/presentation/manager/cubit/home_page_cubit.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/manager/cubit/home_page_state.dart';
+import 'package:alternative_energy_user_app/features/myOrdersScreen/presentation/manager/cubit/my_orders_cubit.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomStepper extends StatelessWidget {
-  homepageCubit cubit;
+  MyOrdersCubit cubit;
   int statusID;
   CustomStepper(this.cubit, this.statusID, {super.key});
-  // int activeStep = 0;
-  // // int activeStep2 = 0;
-  // // int reachedStep = 0;
-  // // int upperBound = 5;
-  // // double progress = 0.2;
-  // Set<int> reachedSteps = <int>{0, 2, 4, 5};
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<homepageCubit, homepageState>(
+    return BlocConsumer<MyOrdersCubit, MyOrdersState>(
       listener: (context, state) {
         // TODO: implement listener
       },
