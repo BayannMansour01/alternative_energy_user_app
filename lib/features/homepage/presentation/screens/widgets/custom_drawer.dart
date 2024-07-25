@@ -149,6 +149,10 @@ abstract class CustomDrawer {
           ),
           const SizedBox(height: 20),
           SizedBox(height: 25),
+          CustomDrawerButton(
+              text: 'suggest system',
+              icon: Icons.abc,
+              onPressed: () => context.push(AppRouter.ksuggestSystem)),
           SizedBox(height: 25),
         ],
       ),
