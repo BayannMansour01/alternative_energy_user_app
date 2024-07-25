@@ -10,10 +10,12 @@ Widget ReadyMadeSystemItem(BuildContext context, System proposedSystem) {
     width: 200,
     height: 200,
     child: InkWell(
-       onTap: () {
+      onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => SystemDetailsPage(system: proposedSystem,),
+            builder: (context) => SystemDetailsPage(
+              system: proposedSystem,
+            ),
           ),
         );
       },
@@ -24,18 +26,31 @@ Widget ReadyMadeSystemItem(BuildContext context, System proposedSystem) {
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           child: Column(
             children: [
-              Image.asset(
-                'assets/images/system2.png',
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: 180,
+              // Image.asset(
+              //   'assets/images/system.png',
+              //   fit: BoxFit.cover,
+              //   width: double.infinity,
+              //   height: 180,
+              // ),
+              const SizedBox(
+                height: 20,
+              ),
+              CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 50,
+                child: Image.asset(
+                  'assets/images/LOGO.png',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: 180,
+                ),
               ),
               const SizedBox(
                 height: 10,
               ),
               Text(
                 "${proposedSystem.name}",
-                style: const TextStyle(fontSize: 15,color: Colors.white),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
               // Text(
               //   "${proposedSystem.desc}",

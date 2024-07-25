@@ -1,13 +1,16 @@
 import 'dart:developer';
 
 import 'package:alternative_energy_user_app/core/constants.dart';
+import 'package:alternative_energy_user_app/core/func/custom_snack_bar.dart';
 import 'package:alternative_energy_user_app/core/utils/api/apis.dart';
 import 'package:alternative_energy_user_app/core/utils/app_router.dart';
+import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/widgets/custom_image.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/chat_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/user_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/custom_drawer_button.dart';
+import 'package:alternative_energy_user_app/features/register_screen/logout_service.dart';
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -103,8 +106,7 @@ abstract class CustomDrawer {
             fontSize: 18,
             icon: Icons.check_circle,
             onPressed: () {
-           context.push(AppRouter.kMaintenanceRequestPage);
-
+              context.push(AppRouter.kMaintenanceRequestPage);
             },
           ),
           SizedBox(height: 15),
@@ -122,7 +124,27 @@ abstract class CustomDrawer {
             icon: Icons.logout,
             iconColor: Colors.red,
             onPressed: () async {
-              // await propertiesCubit.logOut(context);
+              await APIs.updateActiveStatus(false);
+              await APIs.auth.signOut().then(
+                (value) async {
+                  (await LogOutService.logout(
+                    token: await CacheHelper.getData(key: 'Token'),
+                  ))
+                      .fold(
+                    (failure) {
+                      CustomSnackBar.showErrorSnackBar(
+                        context,
+                        message: 'Something Went Wrong, Please Try Again',
+                      );
+                    },
+                    (success) async {
+                      await CacheHelper.deletData(key: 'Token');
+                      context.pushReplacement(AppRouter.kLoginView);
+                      //  Navigator.popAndPushNamed(context, LoginView.route);
+                    },
+                  );
+                },
+              );
             },
           ),
           const SizedBox(height: 20),

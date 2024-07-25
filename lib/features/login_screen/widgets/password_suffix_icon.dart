@@ -16,7 +16,7 @@ class PasswordSuffixIcon extends StatelessWidget {
         return InkWell(
           borderRadius: BorderRadius.circular(.25),
           onTap: () {
-            loginCubit.changePasswordState();
+            loginCubit.changePasswordSuffixIcon();
           },
           child: Icon(
             loginCubit.icon,

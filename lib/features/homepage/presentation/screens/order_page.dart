@@ -59,7 +59,8 @@ class OrderPage extends StatelessWidget {
                             children: [
                               Text('Total: \$${item.price * item.amount}'),
                               IconButton(
-                                icon: Icon(Icons.delete, color:AppConstants.orangeColor),
+                                icon: Icon(Icons.delete,
+                                    color: AppConstants.orangeColor),
                                 onPressed: () {
                                   cubit.removeProductFromOrder(item.id);
                                 },
@@ -91,26 +92,22 @@ class OrderPage extends StatelessWidget {
 // =======
                 ),
                 Container(
-              child:         CustomTextField(
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return 'مطلوب';
-                              }
-                              return null;
-                            },
-                       
-                            textInputAction: TextInputAction.next,
-                            labelText:'موقعك الحالي',
-                            width: double.infinity,
-                           onChanged: (p0) => cubit.location = p0,
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-              
+                  child: CustomTextField(
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'مطلوب';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    labelText: 'موقعك الحالي',
+                    width: double.infinity,
+                    onChanged: (p0) => cubit.location = p0,
+                    keyboardType: TextInputType.emailAddress,
+                  ),
                 )
               ],
-// >>>>>>> main
             ),
-          
             bottomNavigationBar: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
@@ -119,7 +116,6 @@ class OrderPage extends StatelessWidget {
                   backgroundColor: AppConstants.orangeColor, // لون النص
                 ),
                 onPressed: () {
-                  // print(cubit.currentOrders.length);
                   final orderItems = cubit.currentOrders.map((item) {
                     return ProductOrder(
                       id: item.id,
@@ -131,9 +127,7 @@ class OrderPage extends StatelessWidget {
                   }).toList();
                   final order = Order1(
                     typeId: 2,
-
-                    location: cubit.location, 
-
+                    location: cubit.location,
                     products: orderItems,
                   );
                   cubit.submitOrder(order);

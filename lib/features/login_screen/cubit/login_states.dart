@@ -1,7 +1,7 @@
 import 'package:alternative_energy_user_app/features/register_screen/models/message_model.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class LoginStates extends Equatable {
+abstract class LoginStates {
   @override
   List<Object> get props => [];
 }

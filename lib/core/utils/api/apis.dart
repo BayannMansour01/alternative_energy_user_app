@@ -4,6 +4,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:alternative_energy_user_app/core/utils/api/notification_access_token.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 // import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 // import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/message.dart';
@@ -495,6 +497,7 @@ class APIs {
 //for sending push notification
   static Future<void> sendPushNotification(
       {required ChatUser chatUser, required String msg}) async {
+    log("chatUser.pushToken ${chatUser.pushToken}");
     try {
       final body = {
         "to": chatUser.pushToken,
@@ -512,7 +515,7 @@ class APIs {
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader:
-              'key=AAAAGV21seE:APA91bElkOxB9kiH3u1UtM73ADCDZcVWmVGBQc_FPHUP0gnL6ynTAGyuLY-kLH4AqdV8Ksn5vXD5Li2Hle2hCix5tAZKuOG6TAlKU2nV8TUiJghLJInDQ8PbGnsOoIUA0dacFluQnZ-d'
+              'key=AAAAWCy6bmA:APA91bHxodG-iTXZbG08B_UwW5XuRN_7IAfhwd3MrR279cMZ2naNmE2_qBgPtky0wh6K9iG7C4DbLvYXIM9kB6DnqLmaGUuRzOOJ6Y7tQ6q92V3kNyE3T8VW_Ed1g3_t60FMH6dRI1yV'
         },
         body: jsonEncode(body),
       );
@@ -521,9 +524,8 @@ class APIs {
     } catch (ex) {
       log('\n sendPushNotificationException: $ex');
     }
-  }
+  } //for checking if user exist or not
 
-  //for checking if user exist or not
   static Future<bool> userExists() async {
     return (await firesotre
             .collection('users')
@@ -659,11 +661,56 @@ class APIs {
     }
   }
 
+  // //for adding a user to my known users when first message is sent
+  // static Future<void> sendFirstMessage(
+  //     ChatUser chatUser, String msg, Type type) async {
+  //   try {
+  //     log("sendFirstMessage ${chatUser.id}  ${user.uid}");
+  //     await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(user.uid) //فريق
+  //         .collection('my_users')
+  //         .doc(chatUser.id) //زبون
+  //         .set({
+  //       'image': chatUser.image,
+  //       'about': chatUser.about,
+  //       'name': chatUser.name,
+  //       'createdAt': chatUser.createdAt,
+  //       'id': chatUser.id,
+  //       'lastActive': chatUser.lastActive,
+  //       'isOnline': chatUser.isOnline,
+  //       'pushToken': chatUser.pushToken,
+  //       'email': chatUser.email,
+  //       'localUserID': chatUser.localUserID
+  //     });
+  //     await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(chatUser.id) //زبون
+  //         .collection('my_users')
+  //         .doc(user.uid) //فرسق
+  //         .set({
+  //       'image': user.photoURL,
+  //       'about': me.about,
+  //       'name': user.displayName,
+  //       'createdAt': me.createdAt,
+  //       'id': user.uid,
+  //       'lastActive': me.lastActive,
+  //       'isOnline': me.isOnline,
+  //       'pushToken': me.pushToken,
+  //       'email': user.email,
+  //       'localUserID': me.localUserID
+  //     });
+  //     await sendMessage(chatUser, msg, type);
+  //   } catch (e) {
+  //     log("sendFirstMessage Exception: $e");
+  //   }
+  // }
+
   //for adding a user to my known users when first message is sent
   static Future<void> sendFirstMessage(
       ChatUser chatUser, String msg, Type type) async {
     try {
-      log("sendFirstMessage ${chatUser.id}  ${user.uid}");
+      log("sendFirstMessage ${chatUser.email}  ${me.email}");
       await FirebaseFirestore.instance
           .collection('users')
           .doc(chatUser.id) //فريق
@@ -743,6 +790,7 @@ class APIs {
   static Stream<QuerySnapshot<Map<String, dynamic>>>? getUserInfo(
       ChatUser chatUser) {
     try {
+      // log("getUserInfo ${firesotre.collection('users').where('id', isEqualTo: chatUser.id)}");
       return firesotre
           .collection('users')
           .where('id', isEqualTo: chatUser.id)
@@ -783,7 +831,8 @@ class APIs {
   //for sending message
   static Future<void> sendMessage(
       ChatUser chatUser, String msg, Type type) async {
-    //message sending time (also used as id)
+    // message sending time (also used as id)
+    log("sendMessage chatUser.pushtoken ${chatUser.email}");
     final time = DateTime.now().millisecondsSinceEpoch.toString();
 
     final Message message = Message(
@@ -797,8 +846,11 @@ class APIs {
         .collection('chats/${getConversationID(chatUser.id)}/messages/');
     await ref.doc(time).set(message.toJson()).then(
       (value) {
-        // sendPushNotification(
-        //     chatUser: chatUser, msg: type == Type.text ? msg : 'Sent an image');
+        log(' sendMessage chatUser.ttt ${chatUser.pushToken}');
+        sendPushNotification(
+          chatUser: chatUser,
+          msg: type == Type.text ? msg : 'Sent an image',
+        );
       },
     );
   }

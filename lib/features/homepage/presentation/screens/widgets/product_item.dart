@@ -1,6 +1,8 @@
 import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/ProductDetailsPage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/product_model.dart';
@@ -23,7 +25,7 @@ class ProductItem extends StatelessWidget {
         // Add any additional listeners if needed
       },
       builder: (context, state) {
-        int amount = cubit.getQuantity(product.id);
+        // int amount = cubit.getQuantity(product.id);
 
         return InkWell(
           onTap: () {
@@ -51,13 +53,12 @@ class ProductItem extends StatelessWidget {
               ],
             ),
             width: 200,
-            height: 200,
+            height: 170,
             margin: EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                Expanded(
                   child: Column(
                     children: [
                       Image.network(
@@ -70,15 +71,15 @@ class ProductItem extends StatelessWidget {
                         product.name,
                         style: TextStyle(
                           color: AppConstants.orangeColor,
-                          fontSize: 20,
+                          fontSize: 10,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       Text(
-                        '\$ ${product.price}',
+                        '${product.price} ل.س',
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
@@ -99,7 +100,7 @@ class ProductItem extends StatelessWidget {
                               },
                               icon: Icon(Icons.remove),
                             ),
-                            Text('$amount'),
+                            Text('${cubit.getQuantity(product.id)}'),
                             IconButton(
                               onPressed: () {
                                 cubit.increaseQuantity(product.id);
@@ -110,31 +111,34 @@ class ProductItem extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 7,
+                        height: 10,
                       ),
-                      InkWell(
-                        onTap: () {
-                          cubit.addProductToOrder(ProductOrder(
-                            price: product.price,
-                            id: product.id,
-                            amount: amount,
-                            name: product.name,
-                            imageUrl: product.image,
-                          ));
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: AppConstants.orangeColor,
-                            borderRadius: BorderRadius.vertical(
-                                bottom: Radius.circular(12)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Center(
-                              child: Text(
-                                'إضافة إلى السلة',
-                                style: TextStyle(color: Colors.white),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            cubit.addProductToOrder(ProductOrder(
+                              price: product.price,
+                              id: product.id,
+                              amount: cubit.getQuantity(product.id),
+                              name: product.name,
+                              imageUrl: product.image,
+                            ));
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: AppConstants.orangeColor,
+                              borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(12)),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Center(
+                                child: Text(
+                                  'إضافة إلى السلة',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
                           ),

@@ -7,18 +7,14 @@ import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/conversations_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/widgets/chat_user.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/home_page.dart';
-
-import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/all_my_order.dart';
-
-import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/MaintenanceRequestPage%20.dart';
-
 import 'package:alternative_energy_user_app/features/login_screen/login_screen.dart';
+import 'package:alternative_energy_user_app/features/maintainanceRequestScreen/presentation/screens/maintenanceRequestPage.dart';
+import 'package:alternative_energy_user_app/features/myOrdersScreen/presentation/screens/all_my_order.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/prev_jobs_page.dart';
 
 import 'package:alternative_energy_user_app/features/profile_screen/presentation/screens/profile_screen.dart';
 
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/widgets/prev_jobs_details_body.dart';
-import 'package:alternative_energy_user_app/features/register_screen/models/message_model.dart';
 
 import 'package:alternative_energy_user_app/features/register_screen/register_screen.dart';
 import 'package:alternative_energy_user_app/features/splash/splash_view.dart';
@@ -41,9 +37,15 @@ abstract class AppRouter {
   static final router = GoRouter(
     routes: [
       GoRoute(
-        path: '/',
-        builder: (context, state) => SplashView(),
-      ),
+          path: '/',
+          builder: (context, state) {
+            // if (CacheHelper.getData(key: "Token") != null)
+            //   return HomePage();
+            // else
+            return SplashView();
+          }
+          // SplashView(),
+          ),
       GoRoute(
         path: khomeView,
         builder: (context, state) {
@@ -53,6 +55,9 @@ abstract class AppRouter {
       GoRoute(
         path: kLoginView,
         builder: (context, state) {
+          // if (CacheHelper.getData(key: "Token") != null)
+          //   return HomePage();
+          // else
           return LoginView();
         },
       ),
