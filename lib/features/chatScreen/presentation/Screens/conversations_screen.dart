@@ -173,7 +173,6 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                   ?.map((e) => ChatUser.fromJson(e.data()))
                                   .toList() ??
                               [];
-
                           if (_list.isNotEmpty) {
                             return ListView.builder(
                                 itemCount: _isSearching

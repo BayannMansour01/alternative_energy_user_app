@@ -1,12 +1,17 @@
 import 'dart:math';
 import 'dart:developer';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/device_model.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/selected_device_model.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/repo/suggestSystem_repo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'suggest_system_state.dart';
 
 class SuggestSystemCubit extends Cubit<SuggestSystemState> {
-  SuggestSystemCubit() : super(SuggestSystemInitial());
+  SuggestSystemCubit(this.Repo) : super(SuggestSystemInitial());
+
+  final SuggestSysyemRepo Repo;
 
   Map<String, Map<String, int?>> devices = {
     "fridge": {"startingWatt": 600, "watt": 300},
@@ -19,20 +24,80 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
 
   Map<String, Map<String, dynamic>> userDevices = {
     "fridge": {"num": 2, "from": '12:00PM', "to": "12:00PM"},
-    "light": {"num": 6, "from": '12:00PM', "to": "12:00PM"},
+    "light": {"num": 6, "from": '12:00PM', "to": "12:00M"},
     "fan": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
     "tv": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
     "charger": {"num": 3, "from": '12:00PM', "to": "12:00PM"},
     "hover": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
   };
-  // Map<String, Map<String, dynamic>> userDevices = {
-  //   "fridge": {"num": 2, "from": '12:00PM', "to": "12:00PM"},
-  //   "light": {"num": 6, "from": '08:00PM', "to": "12:00AM"},
-  //   "fan": {"num": 1, "from": '12:00AM', "to": "09:00AM"},
-  //   "tv": {"num": 1, "from": '09:30PM', "to": "11:00PM"},
-  //   "charger": {"num": 3, "from": '12:00PM', "to": "04:00PM"},
-  //   "hover": {"num": 1, "from": '07:00AM', "to": "02:00PM"},
-  // };
+
+  List<Device> devicesFromServer = [];
+
+  List<SelectedDevice> selectedDevicesList = [];
+
+  Map<String, Map<String, int?>> devicesMap = {};
+
+  Map<String, Map<String, dynamic>> selectedDeviceMap = {};
+
+  void devicesFromListToMap(List<Device> devicesFromServer) {
+    for (var device in devicesFromServer) {
+      int between = (device.minCurrent + device.maxCurrent) ~/ 2;
+      devicesMap[device.name] = {
+        "id": device.id,
+        "startingWatt": device.startCurrent,
+        "watt": between
+      };
+    }
+    devicesMap.forEach((key, value) {
+      print('$key: $value');
+    });
+    emit(DevicesFromListToMap());
+    // Print the resulting map
+  }
+
+  void selectedDevicesFromListToMap(List<SelectedDevice> selectedDevice) {
+    for (var device in selectedDevice) {
+      selectedDeviceMap[device.name] = {
+        "id": device.id,
+        "num": device.num,
+        "from": device.from,
+        "to": device.to,
+      };
+    }
+    selectedDeviceMap.forEach((key, value) {
+      print('$key: $value');
+    });
+    emit(SelectedevicesFromListToMap());
+  }
+
+  void fetchAllDevices() async {
+    var result = await Repo.fetchDevices();
+    result.fold((failure) {
+      emit(getDvicesFilureState(failure.errorMessege));
+    }, (data) {
+      devicesFromServer = data;
+      devicesFromListToMap(devicesFromServer);
+      emit(getDvicessSuccessState(devicesFromServer));
+    });
+  }
+
+  void changeDeviceWatt(int watt, int deviceId) {
+    for (var key in devicesMap.keys) {
+      if (devicesMap[key]?["id"] == deviceId) {
+        devicesMap[key]?["watt"] = watt;
+        break;
+      }
+    }
+
+    devicesMap.forEach((key, value) {
+      print('$key: $value');
+    });
+    emit(DeviceWattChanged());
+  }
+
+  void selectDevices(SelectedDevice devices) {
+    selectedDevicesList.add(devices);
+  }
 
   int timeToMinutes(String time) {
     int hour = int.parse(time.split(':')[0]);
@@ -239,9 +304,6 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
     };
   }
 }
-
-
-
 // void main() {
 //   Map<String, dynamic> peakPowers = calculatePeakPower(devices, userDevices);
 
