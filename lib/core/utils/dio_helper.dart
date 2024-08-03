@@ -33,7 +33,7 @@ class DioHelper {
     );
 
     if (response.statusCode == 200) {
-      log(response.data.toString());
+      // log(response.data.toString());
       return response;
     } else {
       throw Exception(

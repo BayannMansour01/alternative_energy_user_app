@@ -108,10 +108,7 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: ksuggestSystem,
-        builder: (context, state) => BlocProvider(
-          create: (context) => SuggestSystemCubit(),
-          child: SuggestSystem(),
-        ),
+        builder: (context, state) => SuggestSystem(),
       ),
     ],
   );
