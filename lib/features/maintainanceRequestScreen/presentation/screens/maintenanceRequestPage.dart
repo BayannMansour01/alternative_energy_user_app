@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:alternative_energy_user_app/core/utils/service_locator.dart';
+import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/core/widgets/custom_text_field.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/maintenanceRequest_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/repos/home_repo_impl.dart';
@@ -53,10 +54,14 @@ class MaintenanceRequestPage extends StatelessWidget {
             }
 
             return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              child: SizedBox(
+                height: SizeConfig.screenHeight,
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: SizeConfig.defaultSize * .5,
+                    ),
                     CustomTextField(
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
@@ -65,15 +70,32 @@ class MaintenanceRequestPage extends StatelessWidget {
                         return null;
                       },
                       textInputAction: TextInputAction.next,
-                      labelText: 'وصف المشكلة',
+                      labelText: 'أدخل وصف المشكلة',
                       width: double.infinity,
-                      maxLines: 5,
+                      maxLines: 3,
                       onChanged: (p0) => cubit.maintenance_order = p0,
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(
+                      height: SizeConfig.defaultSize,
+                    ),
+                    CustomTextField(
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'مطلوب';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      labelText: 'أدخل موقعك التفصيلي',
+                      width: double.infinity,
+                      maxLines: 1,
+                      onChanged: (p0) => cubit.location = p0,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    SizedBox(height: SizeConfig.defaultSize),
                     Container(
-                      height: 250,
+                      height: SizeConfig.screenHeight * .4,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30)),
                       child: _imageFile != null
@@ -82,45 +104,48 @@ class MaintenanceRequestPage extends StatelessWidget {
                               width: double.infinity,
                               height: double.infinity,
                             )
-                          : Text('لم يتم اختيار صورة'),
+                          : Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('لم يتم اختيار صورة'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    cubit.pickImage();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor:
+                                        AppConstants.orangeColor, // لون النص
+                                  ),
+                                  child: const Text('اختر صورة'),
+                                ),
+                              ],
+                            ),
                     ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        cubit.pickImage();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: AppConstants.orangeColor, // لون النص
-                      ),
-                      child: Text('اختر صورة'),
+                    SizedBox(
+                      height: SizeConfig.defaultSize,
                     ),
-                    SizedBox(height: 20),
                     if (state is MaintenanceLoading)
-                      CircularProgressIndicator()
+                      const CircularProgressIndicator(
+                        color: AppConstants.blueColor,
+                      )
                     else
-                      ElevatedButton(
-                        onPressed: () {
-                          // if (cubit.maintenance_order.isNotEmpty &&
-                          //     _imageFile != null) {
-                          //   final order = ma(
-                          //       desc:cubit.maintenance_order,
-                          //       image:
-                          //         _imageFile.path,
-
-                          //       typeId: 1);
-                          cubit.submitMaintenanceRequest();
-                          // } else {
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   SnackBar(content: Text('يرجى إدخال وصف ورفع صورة')),
-                          // );
-                          // }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: AppConstants.orangeColor, // لون النص
+                      Container(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            cubit.submitMaintenanceRequest();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: AppConstants.blueColor, // لون النص
+                          ),
+                          child: const Text('نأكيد الطلب'),
                         ),
-                        child: Text('إرسال الطلب'),
                       ),
                   ],
                 ),

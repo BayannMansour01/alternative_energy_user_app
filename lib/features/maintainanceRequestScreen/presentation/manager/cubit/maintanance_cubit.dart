@@ -11,6 +11,7 @@ class MaintananceCubit extends Cubit<MaintananceState> {
 
   XFile? imageFile;
   String maintenance_order = "";
+  String location = "";
   final MaintananceRepo Repo;
 
   void pickImage() async {
@@ -38,6 +39,7 @@ class MaintananceCubit extends Cubit<MaintananceState> {
         'image': await MultipartFile.fromFile(imageFile!.path,
             filename: imageFile!.name),
         'type_id': 1,
+        'location': location,
       });
 
       final result = await Repo.submitMaintenanceRequest(formData);

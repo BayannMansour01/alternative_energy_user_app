@@ -48,7 +48,7 @@ class homepageCubit extends Cubit<homepageState> {
   ];
   List<Widget> screens = [
     PreviousJobsBody(
-      token: CacheHelper.getData(key: 'Token'),
+      token: CacheHelper.getData(key: 'UserToken'),
     ),
     HomePage(),
     ConversationsScreen(),
@@ -143,7 +143,8 @@ class homepageCubit extends Cubit<homepageState> {
 
   Future<void> logout() async {
     emit(LogoutLoading());
-    var result = await Repo.Loguot(token: CacheHelper.getData(key: 'Token'));
+    var result =
+        await Repo.Loguot(token: CacheHelper.getData(key: 'UserToken'));
     result.fold((failure) {
       emit(LogoutFailure(((failure.errorMessege))));
     }, (data) {

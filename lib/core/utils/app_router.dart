@@ -61,10 +61,15 @@ abstract class AppRouter {
       GoRoute(
         path: kLoginView,
         builder: (context, state) {
-          // if (CacheHelper.getData(key: "Token") != null)
-          //   return HomePage();
-          // else
-          return LoginView();
+          if (CacheHelper.getData(key: 'UserToken') != null &&
+              (DateTime.now().millisecondsSinceEpoch <
+                  CacheHelper.getData(key: 'token_expiry'))) {
+            return HomePage();
+          } else {
+            CacheHelper.deletData(key: 'UserToken');
+            CacheHelper.deletData(key: 'token_expiry');
+            return LoginView();
+          }
         },
       ),
       GoRoute(
@@ -94,7 +99,7 @@ abstract class AppRouter {
           path: kJobDetailsScreen,
           builder: (context, state) {
             return JobDetailsScreen(
-              token: CacheHelper.getData(key: 'Token'),
+              token: CacheHelper.getData(key: 'UserToken'),
               jobId: state.extra as int,
             );
           }),

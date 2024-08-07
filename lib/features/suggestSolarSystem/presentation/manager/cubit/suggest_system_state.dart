@@ -28,3 +28,15 @@ class SelectedevicesFromListToMap extends SuggestSystemState {}
 class DeviceWattChanged extends SuggestSystemState {}
 
 class addSelelctDevice extends SuggestSystemState {}
+
+class CalculateSystemSuccessState extends SuggestSystemState {
+  final SolarSystem response;
+  CalculateSystemSuccessState(this.response);
+}
+
+class CalculateSystemLoadingState extends SuggestSystemState {}
+
+class CalculateSystemErrorState extends SuggestSystemState {
+  final String errMessage;
+  CalculateSystemErrorState(this.errMessage);
+}

@@ -53,7 +53,7 @@ class CustomStepper extends StatelessWidget {
                   backgroundColor: statusID >= 1 ? Colors.orange : Colors.white,
                 ),
               ),
-              title: 'قيد التحقق',
+              title: 'قيد الكشف',
               topTitle: true,
             ),
             EasyStep(

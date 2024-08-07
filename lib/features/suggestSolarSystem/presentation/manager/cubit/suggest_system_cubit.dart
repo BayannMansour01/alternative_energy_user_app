@@ -2,6 +2,8 @@ import 'dart:math';
 import 'dart:developer';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/device_model.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/selected_device_model.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/solarSystemBody.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/solarSystemMoldel.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/repo/suggestSystem_repo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -97,6 +99,7 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
 
   void selectDevices(SelectedDevice devices) {
     selectedDevicesList.add(devices);
+    emit(addSelelctDevice());
   }
 
   int timeToMinutes(String time) {
@@ -265,56 +268,59 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
   Map<String, dynamic> suggestSystem(
       Map<String, Map<String, dynamic>> userDevices) {
     Map<String, dynamic> powers = calculatePowers(devices, userDevices);
-    print(powers.toString());
-
     int peakPowerSun = powers['peakPowerSun'];
     int peakPowerNight = powers['peakPowerNight'];
     int totalPowerNight = powers['totalPowerNight'];
     List<String> devicesInPeakSun = powers['devicesInPeakSun'];
     List<String> devicesInPeakNight = powers['devicesInPeakNight'];
-
     int systemVoltage =
         calculateSystemVoltage(max(peakPowerNight, peakPowerSun));
-
     int peakPowerSunStartWatt = 0;
     int peakPowerNightStartWatt = 0;
-
     for (String device in devicesInPeakSun) {
       if (devices[device]!['startingWatt'] != null) {
         peakPowerSunStartWatt += devices[device]!['startingWatt']!;
       }
     }
-
     for (String device in devicesInPeakNight) {
       if (devices[device]!['startingWatt'] != null) {
         peakPowerSunStartWatt += devices[device]!['startingWatt']!;
       }
     }
-
+    print(peakPowerSun);
     return {
       "SystemVoltage": systemVoltage,
       "Aha": calculateAha(totalPowerNight, systemVoltage),
       "TotalPowerNight": totalPowerNight,
       "PeakPowerNight": peakPowerNight,
-      "PeakPowerSun": peakPowerSun,
+      // "PeakPowerSun": peakPowerSun,
       "PV": calculatePv(peakPowerSun, totalPowerNight),
       "InverterWatt": (max(peakPowerNight, peakPowerSun) * 1.15).round(),
       "InverterStartWatt":
           (max(peakPowerNightStartWatt, peakPowerSunStartWatt) * 1.15).round(),
     };
   }
+
+  Future<void> calculateSystem(SolarSystembody body) async {
+    emit(CalculateSystemLoadingState());
+
+    final result = await Repo.calculateSolarSystem(body);
+
+    result.fold(
+        (failure) => emit(CalculateSystemErrorState(failure.errorMessege)),
+        (response) {
+      return emit(CalculateSystemSuccessState(response));
+    });
+  }
 }
 // void main() {
 //   Map<String, dynamic> peakPowers = calculatePeakPower(devices, userDevices);
-
 //   print(
 //       "Sun: ${peakPowers['peakPowerSun']} W _ from: ${minutesToTime(peakPowers['peakStartSun'])} _ to: ${minutesToTime(peakPowers['peakEndSun'])}");
 //   print("Devices in Sun Peak: ${peakPowers['devicesInPeakSun']}");
-
 //   print(
 //       "Night: ${peakPowers['peakPowerNight']} W _ from: ${minutesToTime(peakPowers['peakStartNight'])} _ to: ${minutesToTime(peakPowers['peakEndNight'])}");
 //   print("Devices in Night Peak: ${peakPowers['devicesInPeakNight']}");
-
 //   print("Total Night Power: ${peakPowers['totalPowerNight']} Wh");
 //   print("Devices in Total Night Power: ${peakPowers['totalDevicesNight']}");
 // }

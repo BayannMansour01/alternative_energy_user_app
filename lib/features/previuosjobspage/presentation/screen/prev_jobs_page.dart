@@ -15,7 +15,7 @@ class JobListScreen extends StatelessWidget {
     return BlocProvider(
         create: (context) => PreviousJobsCubit(
               getIt.get<PreviousJobsRepoImpl>(),
-            )..fetchAllPrevJobs(token: CacheHelper.getData(key: "Token")),
+            )..fetchAllPrevJobs(token: CacheHelper.getData(key: 'UserToken')),
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -25,7 +25,7 @@ class JobListScreen extends StatelessWidget {
             ),
           ),
           body: PreviousJobsBody(
-            token: CacheHelper.getData(key: 'Token'),
+            token: CacheHelper.getData(key: 'UserToken'),
           ),
         ));
   }
