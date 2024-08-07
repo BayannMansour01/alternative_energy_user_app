@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class SystemDetailsPage extends StatelessWidget {
   final System system;
@@ -17,7 +18,8 @@ class SystemDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double totalCost = system.products.fold(0, (sum, product) => sum + product.price);
+    double totalCost =
+        system.products.fold(0, (sum, product) => sum + product.price);
 
     return BlocProvider(
       create: (context) => homepageCubit(getIt.get<HomeRepoImpl>()),
@@ -25,11 +27,12 @@ class SystemDetailsPage extends StatelessWidget {
         listener: (context, state) {
           if (state is SubmitOrderSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Order submitted successfully!')),
+              SnackBar(content: Text('تم طلب المنظومة بنجاح!')),
             );
+            context.pop();
           } else if (state is SubmitOrderFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed to submit order: ${state.errMessage}')),
+              SnackBar(content: Text('فشل إتمام الطلب: ${state.errMessage}')),
             );
           }
         },
@@ -106,7 +109,8 @@ class SystemDetailsPage extends StatelessWidget {
                               height: 200,
                               margin: EdgeInsets.all(8),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(12)),
                                 child: Column(
                                   children: [
                                     Image.network(
@@ -119,17 +123,36 @@ class SystemDetailsPage extends StatelessWidget {
                                       product.name,
                                       style: TextStyle(
                                         color: AppConstants.orangeColor,
-                                        fontSize: 20,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     SizedBox(height: 10),
-                                    Text(
-                                      '\$ ${product.price}',
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        // crossAxisAlignment:
+                                        //     CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            ' ${product.price} ل.س',
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            'الكمية ${product.pivot.productId}',
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -142,14 +165,14 @@ class SystemDetailsPage extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'السعر ',
+                      'السعر الإجمالي  ',
                       style: TextStyle(
                         color: Colors.black54,
                         fontSize: 18,
                       ),
                     ),
                     SizedBox(height: 10),
-                    Text('\$ $totalCost'),
+                    Text('ل.س $totalCost'),
                     SizedBox(height: 20),
                     // Text(
                     //   'موقعك الحالي',
@@ -168,46 +191,45 @@ class SystemDetailsPage extends StatelessWidget {
                     //   ),
                     // ),
                     CustomTextField(
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return 'مطلوب';
-                              }
-                              return null;
-                            },
-                       
-                            textInputAction: TextInputAction.next,
-                            labelText:'موقعك الحالي',
-                            width: double.infinity,
-                           onChanged: (p0) => cubit.location = p0,
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                   // Spacer(),
-                    SizedBox(height:70),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'مطلوب';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      labelText: 'موقعك الحالي',
+                      width: double.infinity,
+                      onChanged: (p0) => cubit.location = p0,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    // Spacer(),
+                    SizedBox(height: 70),
                     ElevatedButton(
                       onPressed: () {
                         final order = Order1(
                           typeId: 2,
-                          location: cubit.location ,
+                          location: cubit.location,
                           products: system.products.map((product) {
                             return ProductOrder(
                               id: product.id,
-                              amount: 10, // Assuming the amount is 1 for each product
+                              amount: product.pivot
+                                  .amount, // Assuming the amount is 1 for each product
                               name: product.name,
                               price: product.price,
                               imageUrl: product.image,
                             );
                           }).toList(),
                         );
-                        
+
                         cubit.submitOrder(order);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: AppConstants.orangeColor,
                       ),
-                  
                       child: Center(
-                        child: Text('إضافة المنظومة إلى الطلب'),
+                        child: Text('اطلب المنظومة '),
                       ),
                     ),
                   ],

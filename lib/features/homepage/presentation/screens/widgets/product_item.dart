@@ -1,4 +1,5 @@
 import 'package:alternative_energy_user_app/core/constants.dart';
+import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/ProductDetailsPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,8 +53,8 @@ class ProductItem extends StatelessWidget {
                 ),
               ],
             ),
-            width: 200,
-            height: 170,
+            // width: 200,
+            // height: 170,
             margin: EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -63,7 +64,7 @@ class ProductItem extends StatelessWidget {
                     children: [
                       Image.network(
                         "http://${AppConstants.ip}:8000/${product.image}", // Ensure the image URL is accessible
-                        height: 141,
+                        height: SizeConfig.defaultSize * 12,
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),
@@ -71,7 +72,7 @@ class ProductItem extends StatelessWidget {
                         product.name,
                         style: TextStyle(
                           color: AppConstants.orangeColor,
-                          fontSize: 10,
+                          fontSize: SizeConfig.defaultSize * 1.1,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -82,7 +83,7 @@ class ProductItem extends StatelessWidget {
                         '${product.price} ل.س',
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 16,
+                          fontSize: SizeConfig.defaultSize * 1.5,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -90,7 +91,7 @@ class ProductItem extends StatelessWidget {
                         height: 11,
                       ),
                       Container(
-                        height: 28,
+                        height: SizeConfig.defaultSize * 4,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -100,7 +101,10 @@ class ProductItem extends StatelessWidget {
                               },
                               icon: Icon(Icons.remove),
                             ),
-                            Text('${cubit.getQuantity(product.id)}'),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('${cubit.getQuantity(product.id)}'),
+                            ),
                             IconButton(
                               onPressed: () {
                                 cubit.increaseQuantity(product.id);
@@ -111,7 +115,7 @@ class ProductItem extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: SizeConfig.defaultSize,
                       ),
                       Expanded(
                         child: InkWell(

@@ -46,7 +46,7 @@ class ProfileView extends StatelessWidget {
             await APIs.auth.signOut().then(
               (value) async {
                 (await LogOutService.logout(
-                  token: await CacheHelper.getData(key: 'Token'),
+                  token: await CacheHelper.getData(key: 'UserToken'),
                 ))
                     .fold(
                   (failure) {
@@ -56,7 +56,7 @@ class ProfileView extends StatelessWidget {
                     );
                   },
                   (success) async {
-                    await CacheHelper.deletData(key: 'Token');
+                    await CacheHelper.deletData(key: 'UserToken');
                     context.pushReplacement(AppRouter.kLoginView);
                     //  Navigator.popAndPushNamed(context, LoginView.route);
                   },

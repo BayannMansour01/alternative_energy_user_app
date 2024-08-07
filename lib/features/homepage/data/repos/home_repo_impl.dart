@@ -27,7 +27,7 @@ class HomeRepoImpl extends homeRepo {
     try {
       Response data = await DioHelper.getData(
           url: AppConstants.getAllProposedSystem,
-          token: CacheHelper.getData(key: 'Token'));
+          token: CacheHelper.getData(key: 'UserToken'));
       log("data:  $data");
       List<System> proposedSystem = [];
       for (var item in data.data['systems']) {
@@ -53,7 +53,7 @@ class HomeRepoImpl extends homeRepo {
     try {
       Response data = await DioHelper.getData(
           url: AppConstants.showAllPanales,
-          token: CacheHelper.getData(key: 'Token'));
+          token: CacheHelper.getData(key: 'UserToken'));
       log("data:  $data");
       List<Product> Products = [];
       for (var item in data.data['products']) {
@@ -79,7 +79,7 @@ class HomeRepoImpl extends homeRepo {
     try {
       Response data = await DioHelper.getData(
           url: AppConstants.showAllbatteries,
-          token: CacheHelper.getData(key: 'Token'));
+          token: CacheHelper.getData(key: 'UserToken'));
       log("data:  $data");
       List<Product> Products = [];
       for (var item in data.data['products']) {
@@ -105,7 +105,7 @@ class HomeRepoImpl extends homeRepo {
     try {
       Response data = await DioHelper.getData(
           url: AppConstants.showAllInverters,
-          token: CacheHelper.getData(key: 'Token'));
+          token: CacheHelper.getData(key: 'UserToken'));
       log("data:  $data");
       List<Product> Products = [];
       for (var item in data.data['products']) {
@@ -130,7 +130,7 @@ class HomeRepoImpl extends homeRepo {
     try {
       Response data = await DioHelper.getData(
           url: AppConstants.showAllProducts,
-          token: CacheHelper.getData(key: 'Token'));
+          token: CacheHelper.getData(key: 'UserToken'));
       log("data:  $data");
       List<Product> Products = [];
       for (var item in data.data['products']) {
@@ -155,7 +155,9 @@ class HomeRepoImpl extends homeRepo {
   Future<Either<Failure, UserModel>> fetchuserinfo() async {
     try {
       Response data = await DioHelper.getData(
-          url: AppConstants.me, token: CacheHelper.getData(key: 'Token'));
+        url: AppConstants.me,
+        token: CacheHelper.getData(key: 'UserToken'),
+      );
       log("data:  $data");
 
       UserModel user = UserModel.fromJson(data.data);
@@ -201,7 +203,7 @@ class HomeRepoImpl extends homeRepo {
       final response = await DioHelper.postData(
         url: AppConstants.add_order,
         body: order.toJson(),
-        token: CacheHelper.getData(key: 'Token'),
+        token: CacheHelper.getData(key: 'UserToken'),
       );
 
       return Right(OrderMessageModel.fromJson(response.data));
