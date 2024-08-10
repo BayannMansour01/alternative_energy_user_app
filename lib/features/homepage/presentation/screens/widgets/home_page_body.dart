@@ -13,6 +13,7 @@ import 'package:alternative_energy_user_app/features/homepage/presentation/scree
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/order_page.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/proposedSystem.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/prev_jobs_page.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/presentation/screens/SuggestsystemScreen.dart';
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,20 +53,21 @@ class HomePageBody extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-            bottomNavigationBar: BottomNavigationBar(
-              items: cubit.bottomNavigationBarItems,
-              onTap: (index) {
-                cubit.changeBottomNavigationBarIndex(index);
-              },
-              currentIndex: cubit.bottomNavigationBarIndex,
-            ),
-            body: cubit.bottomNavigationBarIndex == 0
-                ? ConversationsScreen()
-                : cubit.bottomNavigationBarIndex == 1
-                    ? homeBodyBody(cubit: cubit)
-                    : JobListScreen(),
-
-                       floatingActionButton: BlocBuilder<homepageCubit, homepageState>(
+          bottomNavigationBar: BottomNavigationBar(
+            items: cubit.bottomNavigationBarItems,
+            onTap: (index) {
+              cubit.changeBottomNavigationBarIndex(index);
+            },
+            currentIndex: cubit.bottomNavigationBarIndex,
+          ),
+          body: cubit.bottomNavigationBarIndex == 0
+              ? ConversationsScreen()
+              : cubit.bottomNavigationBarIndex == 1
+                  ? homeBodyBody(cubit: cubit)
+                   : cubit.bottomNavigationBarIndex == 2
+                  ? JobListScreen()
+                  :SuggestsystemScreen(),
+          floatingActionButton: BlocBuilder<homepageCubit, homepageState>(
             builder: (context, orderState) {
     return FloatingActionButton(
                 onPressed: () {
