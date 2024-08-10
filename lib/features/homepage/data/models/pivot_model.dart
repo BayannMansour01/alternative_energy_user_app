@@ -61,23 +61,26 @@ class ProductForProposedSystem {
 class Pivot {
   int proposedSystemId;
   int productId;
+  int amount;
 
   Pivot({
     required this.proposedSystemId,
     required this.productId,
+    required this.amount,
   });
 
   factory Pivot.fromJson(Map<String, dynamic> json) {
     return Pivot(
-      proposedSystemId: json['proposed_system_id'],
-      productId: json['product_id'],
-    );
+        proposedSystemId: json['proposed_system_id'],
+        productId: json['product_id'],
+        amount: json['amount']);
   }
 
   Map<String, dynamic> toJson() {
     return {
       'proposed_system_id': proposedSystemId,
       'product_id': productId,
+      'amount': amount
     };
   }
 }

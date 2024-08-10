@@ -1,7 +1,11 @@
 import 'package:alternative_energy_user_app/core/errors/failure.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/logout_message_model.dart';
+
+import 'package:alternative_energy_user_app/features/myOrdersScreen/data/models/my_order_model.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/data/models/maintenanceRequest_model.dart';
-import 'package:alternative_energy_user_app/features/homepage/data/models/message_order.dart';
+import 'package:alternative_energy_user_app/features/maintainanceRequestScreen/data/models/message_order.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/product_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
@@ -19,6 +23,6 @@ abstract class homeRepo {
   Future<Either<Failure, List<Product>>> fetchInverters();
   Future<Either<Failure, UserModel>> fetchuserinfo();
   Future<Either<Failure, LogoutResponse>> Loguot({required String token});
-   Future<Either<Failure, MessageModel2>> submitOrder(Order1 orderData);
-    Future<Either<Failure, MessageModel2>> submitMaintenanceRequest(FormData orderData);
+
+  Future<Either<Failure, OrderMessageModel>> submitOrder(Order1 orderData);
 }

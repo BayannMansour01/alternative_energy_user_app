@@ -5,8 +5,12 @@ import 'package:alternative_energy_user_app/core/errors/failure.dart';
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/dio_helper.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/logout_message_model.dart';
+
+import 'package:alternative_energy_user_app/features/myOrdersScreen/data/models/my_order_model.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/data/models/maintenanceRequest_model.dart';
-import 'package:alternative_energy_user_app/features/homepage/data/models/message_order.dart';
+import 'package:alternative_energy_user_app/features/maintainanceRequestScreen/data/models/message_order.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/product_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
@@ -23,7 +27,7 @@ class HomeRepoImpl extends homeRepo {
     try {
       Response data = await DioHelper.getData(
           url: AppConstants.getAllProposedSystem,
-          token: CacheHelper.getData(key: 'Token'));
+          token: CacheHelper.getData(key: 'UserToken'));
       log("data:  $data");
       List<System> proposedSystem = [];
       for (var item in data.data['systems']) {
@@ -49,7 +53,7 @@ class HomeRepoImpl extends homeRepo {
     try {
       Response data = await DioHelper.getData(
           url: AppConstants.showAllPanales,
-          token: CacheHelper.getData(key: 'Token'));
+          token: CacheHelper.getData(key: 'UserToken'));
       log("data:  $data");
       List<Product> Products = [];
       for (var item in data.data['products']) {
@@ -75,7 +79,7 @@ class HomeRepoImpl extends homeRepo {
     try {
       Response data = await DioHelper.getData(
           url: AppConstants.showAllbatteries,
-          token: CacheHelper.getData(key: 'Token'));
+          token: CacheHelper.getData(key: 'UserToken'));
       log("data:  $data");
       List<Product> Products = [];
       for (var item in data.data['products']) {
@@ -101,7 +105,7 @@ class HomeRepoImpl extends homeRepo {
     try {
       Response data = await DioHelper.getData(
           url: AppConstants.showAllInverters,
-          token: CacheHelper.getData(key: 'Token'));
+          token: CacheHelper.getData(key: 'UserToken'));
       log("data:  $data");
       List<Product> Products = [];
       for (var item in data.data['products']) {
@@ -126,7 +130,7 @@ class HomeRepoImpl extends homeRepo {
     try {
       Response data = await DioHelper.getData(
           url: AppConstants.showAllProducts,
-          token: CacheHelper.getData(key: 'Token'));
+          token: CacheHelper.getData(key: 'UserToken'));
       log("data:  $data");
       List<Product> Products = [];
       for (var item in data.data['products']) {
@@ -151,7 +155,9 @@ class HomeRepoImpl extends homeRepo {
   Future<Either<Failure, UserModel>> fetchuserinfo() async {
     try {
       Response data = await DioHelper.getData(
-          url: AppConstants.me, token: CacheHelper.getData(key: 'Token'));
+        url: AppConstants.me,
+        token: CacheHelper.getData(key: 'UserToken'),
+      );
       log("data:  $data");
 
       UserModel user = UserModel.fromJson(data.data);
@@ -190,51 +196,26 @@ class HomeRepoImpl extends homeRepo {
       return left(ServerFailure(ex.toString()));
     }
   }
-    @override
-  Future<Either<Failure, MessageModel2>> submitOrder(Order1 order) async {
+
+  @override
+  Future<Either<Failure, OrderMessageModel>> submitOrder(Order1 order) async {
     try {
       final response = await DioHelper.postData(
         url: AppConstants.add_order,
         body: order.toJson(),
-        token: CacheHelper.getData(key: 'Token'),
+        token: CacheHelper.getData(key: 'UserToken'),
       );
 
-      
-      return Right(MessageModel2.fromJson(response.data));
+      return Right(OrderMessageModel.fromJson(response.data));
     } catch (ex) {
       log('There is an error in submitOrder method in HomeRepoImpl');
-    
+
       if (ex is DioException) {
         return Left(ServerFailure(
-          ex.response?.data['msg'] ??
-              'Something Went Wrong, Please Try Again',
+          ex.response?.data['msg'] ?? 'Something Went Wrong, Please Try Again',
         ));
       }
       return Left(ServerFailure(ex.toString()));
-    }}
-  
-
-   @override
-  Future<Either<Failure, MessageModel2>> submitMaintenanceRequest(FormData orderData) async {
-    try {
-      final response = await DioHelper.postData222(
-        url: AppConstants.add_order,
-        body: orderData,
-        token: CacheHelper.getData(key: 'Token'),
-      );
-
-      
-      return Right(MessageModel2.fromJson(response.data));
-    } catch (ex) {
-      log('There is an error in submitOrder method in HomeRepoImpl');
-      print(ex.toString());
-      if (ex is DioException) {
-        return Left(ServerFailure(
-          ex.response?.data['msg'] ??
-              'Something Went Wrong, Please Try Again',
-        ));
-      }
-      return Left(ServerFailure(ex.toString()));
-    }}
-  
+    }
+  }
 }

@@ -42,6 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log("build chatscreen ${widget.user.pushToken}");
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: PopScope(
@@ -161,9 +162,10 @@ class _ChatScreenState extends State<ChatScreen> {
             stream: APIs.getUserInfo(widget.user),
             builder: (context, snapshot) {
               final data = snapshot.data?.docs;
+
               final list =
                   data?.map((e) => ChatUser.fromJson(e.data())).toList() ?? [];
-
+              // log('data${list.first.pushToken}');
               return Row(
                 children: [
                   //back button
@@ -323,7 +325,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       widget.user, _textController.text, Type.text);
                 } else {
                   //simply send message
-
+                  log('widet.user ${widget.user.toJson()}');
                   APIs.sendMessage(
                       widget.user, _textController.text, Type.text);
                 }

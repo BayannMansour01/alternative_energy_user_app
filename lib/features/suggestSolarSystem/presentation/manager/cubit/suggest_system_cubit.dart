@@ -1,12 +1,23 @@
 import 'dart:math';
 import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/device_model.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/selected_device_model.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/solarSystemBody.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/solarSystemMoldel.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/repo/suggestSystem_repo.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+
+
 part 'suggest_system_state.dart';
 
 class SuggestSystemCubit extends Cubit<SuggestSystemState> {
+
   SuggestSystemCubit() : super(SuggestSystemInitial());
   void updatecard(double page) {
     emit(SuggestSystemUpdatedpage(page));
@@ -20,6 +31,11 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
     emit(SuggestSystemUpdatedPowerRange(range));
   }
  void updatePage(double page) => emit(SuggestSystemUpdatedpage(page));
+
+  SuggestSystemCubit(this.Repo) : super(SuggestSystemInitial());
+
+  final SuggestSysyemRepo Repo;
+
   Map<String, Map<String, int?>> devices = {
     "fridge": {"startingWatt": 600, "watt": 300},
     "light": {"startingWatt": null, "watt": 25},
@@ -31,12 +47,17 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
 
   Map<String, Map<String, dynamic>> userDevices = {
     "fridge": {"num": 2, "from": '12:00PM', "to": "12:00PM"},
+
     "light": {"num": 6, "from": '12:00PM', "to": "12:00PM"},
+
+    "light": {"num": 6, "from": '12:00PM', "to": "12:00M"},
+
     "fan": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
     "tv": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
     "charger": {"num": 3, "from": '12:00PM', "to": "12:00PM"},
     "hover": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
   };
+
   // Map<String, Map<String, dynamic>> userDevices = {
   //   "fridge": {"num": 2, "from": '12:00PM', "to": "12:00PM"},
   //   "light": {"num": 6, "from": '08:00PM', "to": "12:00AM"},
@@ -45,6 +66,77 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
   //   "charger": {"num": 3, "from": '12:00PM', "to": "04:00PM"},
   //   "hover": {"num": 1, "from": '07:00AM', "to": "02:00PM"},
   // };
+
+
+  List<Device> devicesFromServer = [];
+
+  List<SelectedDevice> selectedDevicesList = [];
+
+  Map<String, Map<String, int?>> devicesMap = {};
+
+  Map<String, Map<String, dynamic>> selectedDeviceMap = {};
+
+  void devicesFromListToMap(List<Device> devicesFromServer) {
+    for (var device in devicesFromServer) {
+      int between = (device.minCurrent + device.maxCurrent) ~/ 2;
+      devicesMap[device.name] = {
+        "id": device.id,
+        "startingWatt": device.startCurrent,
+        "watt": between
+      };
+    }
+    devicesMap.forEach((key, value) {
+      print('$key: $value');
+    });
+    emit(DevicesFromListToMap());
+    // Print the resulting map
+  }
+
+  void selectedDevicesFromListToMap(List<SelectedDevice> selectedDevice) {
+    for (var device in selectedDevice) {
+      selectedDeviceMap[device.name] = {
+        "id": device.id,
+        "num": device.num,
+        "from": device.from,
+        "to": device.to,
+      };
+    }
+    selectedDeviceMap.forEach((key, value) {
+      print('$key: $value');
+    });
+    emit(SelectedevicesFromListToMap());
+  }
+
+  void fetchAllDevices() async {
+    var result = await Repo.fetchDevices();
+    result.fold((failure) {
+      emit(getDvicesFilureState(failure.errorMessege));
+    }, (data) {
+      devicesFromServer = data;
+      devicesFromListToMap(devicesFromServer);
+      emit(getDvicessSuccessState(devicesFromServer));
+    });
+  }
+
+  void changeDeviceWatt(int watt, int deviceId) {
+    for (var key in devicesMap.keys) {
+      if (devicesMap[key]?["id"] == deviceId) {
+        devicesMap[key]?["watt"] = watt;
+        break;
+      }
+    }
+
+    devicesMap.forEach((key, value) {
+      print('$key: $value');
+    });
+    emit(DeviceWattChanged());
+  }
+
+  void selectDevices(SelectedDevice devices) {
+    selectedDevicesList.add(devices);
+    emit(addSelelctDevice());
+  }
+
 
   int timeToMinutes(String time) {
     int hour = int.parse(time.split(':')[0]);
@@ -212,7 +304,9 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
   Map<String, dynamic> suggestSystem(
       Map<String, Map<String, dynamic>> userDevices) {
     Map<String, dynamic> powers = calculatePowers(devices, userDevices);
+
     print(powers.toString());
+
 
     int peakPowerSun = powers['peakPowerSun'];
     int peakPowerNight = powers['peakPowerNight'];
@@ -220,9 +314,16 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
     List<String> devicesInPeakSun = powers['devicesInPeakSun'];
     List<String> devicesInPeakNight = powers['devicesInPeakNight'];
 
+
     int systemVoltage =
         calculateSystemVoltage(max(peakPowerNight, peakPowerSun));
 
+    int peakPowerSunStartWatt = 0;
+    int peakPowerNightStartWatt = 0;
+
+
+    int systemVoltage =
+        calculateSystemVoltage(max(peakPowerNight, peakPowerSun));
     int peakPowerSunStartWatt = 0;
     int peakPowerNightStartWatt = 0;
 
@@ -232,24 +333,33 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
       }
     }
 
+
+
     for (String device in devicesInPeakNight) {
       if (devices[device]!['startingWatt'] != null) {
         peakPowerSunStartWatt += devices[device]!['startingWatt']!;
       }
     }
 
+    print(peakPowerSun);
+
     return {
       "SystemVoltage": systemVoltage,
       "Aha": calculateAha(totalPowerNight, systemVoltage),
       "TotalPowerNight": totalPowerNight,
       "PeakPowerNight": peakPowerNight,
+
       "PeakPowerSun": peakPowerSun,
+
+      // "PeakPowerSun": peakPowerSun,
+
       "PV": calculatePv(peakPowerSun, totalPowerNight),
       "InverterWatt": (max(peakPowerNight, peakPowerSun) * 1.15).round(),
       "InverterStartWatt":
           (max(peakPowerNightStartWatt, peakPowerSunStartWatt) * 1.15).round(),
     };
   }
+
 }
 
 
@@ -261,6 +371,29 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
 //       "Sun: ${peakPowers['peakPowerSun']} W _ from: ${minutesToTime(peakPowers['peakStartSun'])} _ to: ${minutesToTime(peakPowers['peakEndSun'])}");
 //   print("Devices in Sun Peak: ${peakPowers['devicesInPeakSun']}");
 
+//   print(
+//       "Night: ${peakPowers['peakPowerNight']} W _ from: ${minutesToTime(peakPowers['peakStartNight'])} _ to: ${minutesToTime(peakPowers['peakEndNight'])}");
+//   print("Devices in Night Peak: ${peakPowers['devicesInPeakNight']}");
+
+
+
+  Future<void> calculateSystem(SolarSystembody body) async {
+    emit(CalculateSystemLoadingState());
+
+    final result = await Repo.calculateSolarSystem(body);
+
+    result.fold(
+        (failure) => emit(CalculateSystemErrorState(failure.errorMessege)),
+        (response) {
+      return emit(CalculateSystemSuccessState(response));
+    });
+  }
+}
+// void main() {
+//   Map<String, dynamic> peakPowers = calculatePeakPower(devices, userDevices);
+//   print(
+//       "Sun: ${peakPowers['peakPowerSun']} W _ from: ${minutesToTime(peakPowers['peakStartSun'])} _ to: ${minutesToTime(peakPowers['peakEndSun'])}");
+//   print("Devices in Sun Peak: ${peakPowers['devicesInPeakSun']}");
 //   print(
 //       "Night: ${peakPowers['peakPowerNight']} W _ from: ${minutesToTime(peakPowers['peakStartNight'])} _ to: ${minutesToTime(peakPowers['peakEndNight'])}");
 //   print("Devices in Night Peak: ${peakPowers['devicesInPeakNight']}");

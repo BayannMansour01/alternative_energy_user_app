@@ -234,7 +234,7 @@ class RegisterViewBody extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: () {
-                                context.push(AppRouter.kRegisterView);
+                                context.push(AppRouter.kLoginView);
                               },
                               child: Text(
                                 'سجل دخول الآن ',

@@ -35,6 +35,7 @@ class UserApp extends StatelessWidget {
             selectedItemColor: AppConstants.blueColor,
             selectedIconTheme: IconThemeData(size: 30)),
         primaryColor: AppConstants.blueColor,
+        colorScheme: ColorScheme.fromSeed(seedColor: AppConstants.blueColor),
         appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(color: Colors.white),
           actionsIconTheme: IconThemeData(color: Colors.white),

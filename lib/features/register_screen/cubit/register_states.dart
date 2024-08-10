@@ -2,7 +2,7 @@ import 'package:alternative_energy_user_app/features/chatScreen/presentation/Scr
 import 'package:alternative_energy_user_app/features/register_screen/models/message_model.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class RegisterStates extends Equatable {
+abstract class RegisterStates {
   @override
   List<Object> get props => [];
 }

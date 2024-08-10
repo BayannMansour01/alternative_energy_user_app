@@ -8,7 +8,7 @@ class Order1 {
     required this.location,
     required this.products,
   });
-Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'type_id': typeId,
       'location': location,
@@ -16,6 +16,7 @@ Map<String, dynamic> toJson() {
     };
   }
 }
+
 class ProductOrder {
   final int id;
   final int amount;
@@ -23,7 +24,7 @@ class ProductOrder {
   final int price;
   final String imageUrl;
 
-  ProductOrder( {
+  ProductOrder({
     required this.price,
     required this.id,
     required this.amount,
@@ -38,7 +39,3 @@ class ProductOrder {
     };
   }
 }
-
- 
-
-

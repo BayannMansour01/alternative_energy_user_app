@@ -37,7 +37,11 @@ class LoginViewBody extends StatelessWidget {
               message: state.failureMsg,
             );
           } else if (state is LoginSuccess) {
-            CacheHelper.saveData(key: 'Token', value: state.messageModel.token);
+            CacheHelper.saveData(
+                key: 'UserToken', value: state.messageModel.token);
+            CacheHelper.saveData(
+                key: 'token_expiry',
+                value: DateTime.now().millisecondsSinceEpoch + 3600 * 1000);
             context.pushReplacement(
               AppRouter.khomeView,
               // extra: state.userModel.token,
@@ -130,7 +134,7 @@ class LoginViewBody extends StatelessWidget {
                               if (cubit.formKey.currentState!.validate()) {
                                 await cubit.login();
                               }
-                              CacheHelper.getData(key: 'Token');
+                              // CacheHelper.getData(key: 'UserToken');
                             },
                           ),
                           const VerticalSpace(3),

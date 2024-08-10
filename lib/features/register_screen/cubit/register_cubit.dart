@@ -36,7 +36,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
       password: password!,
     ).then(
       (firebaseUser) async {
-        log("AAAAAAAAAAAAAAAAAAAa");
+        log("firebase");
         log("${firebaseUser!.user!.email}");
         if (firebaseUser != null) {
           if (await APIs.userExists() == false) {

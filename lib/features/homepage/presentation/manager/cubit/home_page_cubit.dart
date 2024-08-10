@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/chat_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/conversations_screen.dart';
+
+import 'package:alternative_energy_user_app/features/myOrdersScreen/data/models/my_order_model.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/data/models/maintenanceRequest_model.dart';
+
 import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/product_model.dart';
 import 'package:alternative_energy_user_app/features/homepage/data/models/proposed_system_model.dart';
@@ -11,7 +15,6 @@ import 'package:alternative_energy_user_app/features/homepage/data/models/user_m
 import 'package:alternative_energy_user_app/features/homepage/data/repos/home_repo.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/manager/cubit/home_page_state.dart';
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/home_page.dart';
-import 'package:alternative_energy_user_app/features/homepage/presentation/screens/widgets/order_page.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/widgets/prev_jobs_body.dart';
 import 'package:alternative_energy_user_app/features/profile_screen/presentation/screens/widgets/profile_body.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/presentation/screens/SuggestsystemScreen.dart';
@@ -25,8 +28,8 @@ import 'package:image_picker/image_picker.dart';
 class homepageCubit extends Cubit<homepageState> {
   homepageCubit(this.Repo) : super(homepageInitial());
   bool listining = false;
-   String location="";
-   String maintenance_order="";
+
+  String location = "";
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int bottomNavigationBarIndex = 1;
@@ -47,15 +50,16 @@ class homepageCubit extends Cubit<homepageState> {
       icon: Icon(FontAwesomeIcons.archive),
       label: 'اقتراح منظومة',
     )
-    
   ];
   List<Widget> screens = [
     PreviousJobsBody(
-      token: CacheHelper.getData(key: 'Token'),
+      token: CacheHelper.getData(key: 'UserToken'),
     ),
     HomePage(),
     ConversationsScreen(),
+
     SuggestsystemScreen()
+
   ];
 
   void changeBottomNavigationBarIndex(int index) {
@@ -147,14 +151,16 @@ class homepageCubit extends Cubit<homepageState> {
 
   Future<void> logout() async {
     emit(LogoutLoading());
-    var result = await Repo.Loguot(token: CacheHelper.getData(key: 'Token'));
+    var result =
+        await Repo.Loguot(token: CacheHelper.getData(key: 'UserToken'));
     result.fold((failure) {
       emit(LogoutFailure(((failure.errorMessege))));
     }, (data) {
       emit(LogoutSuccess((data)));
     });
   }
-List<ProductOrder> currentOrders = [];
+
+  List<ProductOrder> currentOrders = [];
   Map<int, int> productQuantities = {};
 
   void increaseQuantity(int productId) {
@@ -167,7 +173,8 @@ List<ProductOrder> currentOrders = [];
   }
 
   void decreaseQuantity(int productId) {
-    if (productQuantities.containsKey(productId) && productQuantities[productId]! > 1) {
+    if (productQuantities.containsKey(productId) &&
+        productQuantities[productId]! > 1) {
       productQuantities[productId] = productQuantities[productId]! - 1;
     } else {
       productQuantities[productId] = 1;
@@ -178,16 +185,19 @@ List<ProductOrder> currentOrders = [];
   int getQuantity(int productId) {
     return productQuantities[productId] ?? 1;
   }
+
   void addProductToOrder(ProductOrder orderItem) {
     currentOrders.add(orderItem);
     emit(OrderUpdatedState(currentOrders));
-      print('product added');
-      print(currentOrders.length);
+    print('product added');
+    print(currentOrders.length);
   }
+
   void removeProductFromOrder(int id) {
     currentOrders.removeWhere((item) => item.id == id);
     emit(OrderUpdatedState(currentOrders));
   }
+
   void submitOrder(Order1 order) async {
     emit(SubmitOrderLoading());
     final result = await Repo.submitOrder(order);
@@ -197,49 +207,9 @@ List<ProductOrder> currentOrders = [];
     );
     clearCurrentOrders();
   }
-   void clearCurrentOrders() {
+
+  void clearCurrentOrders() {
     currentOrders.clear();
     emit(homepageOrdersCleared());
-  }
-////////////////////////////////////////////////
-
-
- XFile? imageFile;
-
-  void pickImage() async {
-    try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        imageFile = pickedFile;
-        emit(MaintenanceImagePicked(pickedFile));
-      }
-    } catch (e) {
-      emit(MaintenanceFailure(errMessage: e.toString()));
-    }
-  }
-
-  void submitMaintenanceRequest() async {
-
-    if (maintenance_order.isEmpty 
-    || imageFile == null) {
-      emit(MaintenanceFailure(errMessage: 'يرجى إدخال وصف ورفع صورة'));
-      return;
-    }
-    emit(MaintenanceLoading());
-    try  {
-      FormData formData = FormData.fromMap({
-        'desc': maintenance_order,
-        'image': await MultipartFile.fromFile(imageFile!.path, filename: imageFile!.name),
-        'type_id': 1,
-      });
-
-      final result = await Repo.submitMaintenanceRequest(formData);
-      result.fold(
-        (failure) => emit(MaintenanceFailure(errMessage: failure.errorMessege)),
-        (success) => emit(MaintenanceSuccess(message: success.msg)),
-      );
-    } catch (e) {
-      emit(MaintenanceFailure(errMessage: e.toString()));
-    }
   }
 }

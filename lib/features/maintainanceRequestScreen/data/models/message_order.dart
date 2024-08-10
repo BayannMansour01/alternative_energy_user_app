@@ -1,11 +1,11 @@
-class MessageModel2 {
+class OrderMessageModel {
   final bool status;
   final String msg;
 
-  MessageModel2({required this.status, required this.msg});
+  OrderMessageModel({required this.status, required this.msg});
 
-  factory MessageModel2.fromJson(Map<String, dynamic> json) {
-    return MessageModel2(
+  factory OrderMessageModel.fromJson(Map<String, dynamic> json) {
+    return OrderMessageModel(
       status: json['status'],
       msg: json['msg'] ?? '',
     );
