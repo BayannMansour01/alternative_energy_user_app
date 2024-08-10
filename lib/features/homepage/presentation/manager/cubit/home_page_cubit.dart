@@ -17,6 +17,7 @@ import 'package:alternative_energy_user_app/features/homepage/presentation/manag
 import 'package:alternative_energy_user_app/features/homepage/presentation/screens/home_page.dart';
 import 'package:alternative_energy_user_app/features/previuosjobspage/presentation/screen/widgets/prev_jobs_body.dart';
 import 'package:alternative_energy_user_app/features/profile_screen/presentation/screens/widgets/profile_body.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/presentation/screens/SuggestsystemScreen.dart';
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,6 +45,10 @@ class homepageCubit extends Cubit<homepageState> {
     const BottomNavigationBarItem(
       icon: Icon(FontAwesomeIcons.archive),
       label: 'الأعمال السابقة',
+    ),
+     const BottomNavigationBarItem(
+      icon: Icon(FontAwesomeIcons.archive),
+      label: 'اقتراح منظومة',
     )
   ];
   List<Widget> screens = [
@@ -52,6 +57,9 @@ class homepageCubit extends Cubit<homepageState> {
     ),
     HomePage(),
     ConversationsScreen(),
+
+    SuggestsystemScreen()
+
   ];
 
   void changeBottomNavigationBarIndex(int index) {

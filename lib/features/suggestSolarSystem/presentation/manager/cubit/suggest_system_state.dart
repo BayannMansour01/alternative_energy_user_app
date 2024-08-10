@@ -1,5 +1,6 @@
 part of 'suggest_system_cubit.dart';
 
+
 sealed class SuggestSystemState extends Equatable {
   const SuggestSystemState();
 
@@ -8,6 +9,24 @@ sealed class SuggestSystemState extends Equatable {
 }
 
 final class SuggestSystemInitial extends SuggestSystemState {}
+
+class SuggestSystemUpdatedpage extends SuggestSystemState {
+  final double page;
+
+  SuggestSystemUpdatedpage(this.page);
+}
+
+class SuggestSystemUpdatedHoursRange extends SuggestSystemState {
+  final RangeValues hoursRange;
+
+  SuggestSystemUpdatedHoursRange(this.hoursRange);
+}
+
+class SuggestSystemUpdatedPowerRange extends SuggestSystemState {
+  final RangeValues powerRange;
+
+  SuggestSystemUpdatedPowerRange(this.powerRange);
+}
 
 final class DeviceInitial extends SuggestSystemState {}
 
@@ -40,3 +59,4 @@ class CalculateSystemErrorState extends SuggestSystemState {
   final String errMessage;
   CalculateSystemErrorState(this.errMessage);
 }
+

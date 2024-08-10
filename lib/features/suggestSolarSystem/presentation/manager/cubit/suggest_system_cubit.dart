@@ -1,5 +1,10 @@
 import 'dart:math';
 import 'dart:developer';
+
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/device_model.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/selected_device_model.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/solarSystemBody.dart';
@@ -8,9 +13,25 @@ import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/rep
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+
 part 'suggest_system_state.dart';
 
 class SuggestSystemCubit extends Cubit<SuggestSystemState> {
+
+  SuggestSystemCubit() : super(SuggestSystemInitial());
+  void updatecard(double page) {
+    emit(SuggestSystemUpdatedpage(page));
+  }
+
+  void updateHoursRange(RangeValues range) {
+    emit(SuggestSystemUpdatedHoursRange(range));
+  }
+
+  void updatePowerRange(RangeValues range) {
+    emit(SuggestSystemUpdatedPowerRange(range));
+  }
+ void updatePage(double page) => emit(SuggestSystemUpdatedpage(page));
+
   SuggestSystemCubit(this.Repo) : super(SuggestSystemInitial());
 
   final SuggestSysyemRepo Repo;
@@ -26,12 +47,26 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
 
   Map<String, Map<String, dynamic>> userDevices = {
     "fridge": {"num": 2, "from": '12:00PM', "to": "12:00PM"},
+
+    "light": {"num": 6, "from": '12:00PM', "to": "12:00PM"},
+
     "light": {"num": 6, "from": '12:00PM', "to": "12:00M"},
+
     "fan": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
     "tv": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
     "charger": {"num": 3, "from": '12:00PM', "to": "12:00PM"},
     "hover": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
   };
+
+  // Map<String, Map<String, dynamic>> userDevices = {
+  //   "fridge": {"num": 2, "from": '12:00PM', "to": "12:00PM"},
+  //   "light": {"num": 6, "from": '08:00PM', "to": "12:00AM"},
+  //   "fan": {"num": 1, "from": '12:00AM', "to": "09:00AM"},
+  //   "tv": {"num": 1, "from": '09:30PM', "to": "11:00PM"},
+  //   "charger": {"num": 3, "from": '12:00PM', "to": "04:00PM"},
+  //   "hover": {"num": 1, "from": '07:00AM', "to": "02:00PM"},
+  // };
+
 
   List<Device> devicesFromServer = [];
 
@@ -101,6 +136,7 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
     selectedDevicesList.add(devices);
     emit(addSelelctDevice());
   }
+
 
   int timeToMinutes(String time) {
     int hour = int.parse(time.split(':')[0]);
@@ -268,38 +304,78 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
   Map<String, dynamic> suggestSystem(
       Map<String, Map<String, dynamic>> userDevices) {
     Map<String, dynamic> powers = calculatePowers(devices, userDevices);
+
+    print(powers.toString());
+
+
     int peakPowerSun = powers['peakPowerSun'];
     int peakPowerNight = powers['peakPowerNight'];
     int totalPowerNight = powers['totalPowerNight'];
     List<String> devicesInPeakSun = powers['devicesInPeakSun'];
     List<String> devicesInPeakNight = powers['devicesInPeakNight'];
+
+
+    int systemVoltage =
+        calculateSystemVoltage(max(peakPowerNight, peakPowerSun));
+
+    int peakPowerSunStartWatt = 0;
+    int peakPowerNightStartWatt = 0;
+
+
     int systemVoltage =
         calculateSystemVoltage(max(peakPowerNight, peakPowerSun));
     int peakPowerSunStartWatt = 0;
     int peakPowerNightStartWatt = 0;
+
     for (String device in devicesInPeakSun) {
       if (devices[device]!['startingWatt'] != null) {
         peakPowerSunStartWatt += devices[device]!['startingWatt']!;
       }
     }
+
+
+
     for (String device in devicesInPeakNight) {
       if (devices[device]!['startingWatt'] != null) {
         peakPowerSunStartWatt += devices[device]!['startingWatt']!;
       }
     }
+
     print(peakPowerSun);
+
     return {
       "SystemVoltage": systemVoltage,
       "Aha": calculateAha(totalPowerNight, systemVoltage),
       "TotalPowerNight": totalPowerNight,
       "PeakPowerNight": peakPowerNight,
+
+      "PeakPowerSun": peakPowerSun,
+
       // "PeakPowerSun": peakPowerSun,
+
       "PV": calculatePv(peakPowerSun, totalPowerNight),
       "InverterWatt": (max(peakPowerNight, peakPowerSun) * 1.15).round(),
       "InverterStartWatt":
           (max(peakPowerNightStartWatt, peakPowerSunStartWatt) * 1.15).round(),
     };
   }
+
+}
+
+
+
+// void main() {
+//   Map<String, dynamic> peakPowers = calculatePeakPower(devices, userDevices);
+
+//   print(
+//       "Sun: ${peakPowers['peakPowerSun']} W _ from: ${minutesToTime(peakPowers['peakStartSun'])} _ to: ${minutesToTime(peakPowers['peakEndSun'])}");
+//   print("Devices in Sun Peak: ${peakPowers['devicesInPeakSun']}");
+
+//   print(
+//       "Night: ${peakPowers['peakPowerNight']} W _ from: ${minutesToTime(peakPowers['peakStartNight'])} _ to: ${minutesToTime(peakPowers['peakEndNight'])}");
+//   print("Devices in Night Peak: ${peakPowers['devicesInPeakNight']}");
+
+
 
   Future<void> calculateSystem(SolarSystembody body) async {
     emit(CalculateSystemLoadingState());
@@ -321,6 +397,7 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
 //   print(
 //       "Night: ${peakPowers['peakPowerNight']} W _ from: ${minutesToTime(peakPowers['peakStartNight'])} _ to: ${minutesToTime(peakPowers['peakEndNight'])}");
 //   print("Devices in Night Peak: ${peakPowers['devicesInPeakNight']}");
+
 //   print("Total Night Power: ${peakPowers['totalPowerNight']} Wh");
 //   print("Devices in Total Night Power: ${peakPowers['totalDevicesNight']}");
 // }
