@@ -29,7 +29,6 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   awesome_icons: ^1.1.0
-  flutter_staggered_animations: ^1.0.3
   cached_network_image: ^3.3.1
   carousel_slider: ^4.0.0
   cloud_firestore: ^4.17.4
@@ -48,6 +47,8 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.5
   flutter_notification_channel: ^3.1.0
+  flutter_staggered_animations: ^1.0.3
+  flutter_svg: ^2.0.10+1
   flutter_vpn: ^0.12.0
   gallery_saver_updated: ^3.0.0
   get_it: ^7.7.0

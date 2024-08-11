@@ -1,7 +1,6 @@
 part of 'suggest_system_cubit.dart';
 
-
-sealed class SuggestSystemState extends Equatable {
+sealed class SuggestSystemState {
   const SuggestSystemState();
 
   @override
@@ -60,3 +59,4 @@ class CalculateSystemErrorState extends SuggestSystemState {
   CalculateSystemErrorState(this.errMessage);
 }
 
+class changepagestate extends SuggestSystemState {}

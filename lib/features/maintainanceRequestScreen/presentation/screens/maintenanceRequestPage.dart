@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:dio/dio.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MaintenanceRequestPage extends StatelessWidget {
@@ -32,9 +33,12 @@ class MaintenanceRequestPage extends StatelessWidget {
           listener: (context, state) {
             if (state is MaintenanceSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('تم إرسال طلب الصيانة بنجاح')),
+                SnackBar(
+                    content: Text(
+                  'تم إرسال طلب الصيانة بنجاح',
+                )),
               );
-
+              context.pop();
               BlocProvider.of<MaintananceCubit>(context)
                   .emit(MaintenanceInitial());
             } else if (state is MaintenanceFailure) {
@@ -144,7 +148,7 @@ class MaintenanceRequestPage extends StatelessWidget {
                             foregroundColor: Colors.white,
                             backgroundColor: AppConstants.blueColor, // لون النص
                           ),
-                          child: const Text('نأكيد الطلب'),
+                          child: const Text('تأكيد الطلب'),
                         ),
                       ),
                   ],
