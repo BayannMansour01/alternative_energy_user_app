@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/chat_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/conversations_screen.dart';
@@ -23,6 +24,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class homepageCubit extends Cubit<homepageState> {
@@ -33,33 +35,69 @@ class homepageCubit extends Cubit<homepageState> {
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int bottomNavigationBarIndex = 1;
-  List<BottomNavigationBarItem> bottomNavigationBarItems = [
-    const BottomNavigationBarItem(
-      icon: Icon(Icons.message),
-      label: 'المحادثات',
-    ),
-    const BottomNavigationBarItem(
-      icon: Icon(FontAwesomeIcons.home),
-      label: 'الرئيسية',
-    ),
-    const BottomNavigationBarItem(
-      icon: Icon(FontAwesomeIcons.archive),
-      label: 'الأعمال السابقة',
-    ),
-     const BottomNavigationBarItem(
-      icon: Icon(FontAwesomeIcons.archive),
-      label: 'اقتراح منظومة',
-    )
-  ];
+  // List<BottomNavigationBarItem> bottomNavigationBarItems = [
+  //   BottomNavigationBarItem(
+  //     icon: Icon(Icons.message),
+  //     label: 'المحادثات',
+  //   ),
+  //   BottomNavigationBarItem(
+  //     icon: Icon(FontAwesomeIcons.home),
+  //     label: 'الرئيسية',
+  //   ),
+  //   BottomNavigationBarItem(
+  //     icon: Icon(FontAwesomeIcons.archive),
+  //     label: 'الأعمال السابقة',
+  //   ),
+  //   BottomNavigationBarItem(
+  //     icon: SizedBox(
+  //       width: 25,
+  //       height: 25,
+  //       child: SvgPicture.asset(
+  //         'assets/images/battery.svg', // Your SVG asset path
+  //         color: bottomNavigationBarIndex == 3 ? Colors.blue : Colors.grey,
+  //       ),
+  //     ),
+  //     label: 'اقتراح منظومة',
+  //   )
+  // ];
+  List<BottomNavigationBarItem> get bottomNavigationBarItems {
+    return [
+      BottomNavigationBarItem(
+        icon: Icon(Icons.message),
+        label: 'المحادثات',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(FontAwesomeIcons.home),
+        label: 'الرئيسية',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(FontAwesomeIcons.archive),
+        label: 'الأعمال السابقة',
+      ),
+      BottomNavigationBarItem(
+        icon: SizedBox(
+          width: 25,
+          height: 25,
+          child: SvgPicture.asset(
+            height: 25,
+            'assets/images/battery.svg',
+            color: bottomNavigationBarIndex == 3
+                ? AppConstants.blueColor
+                : Colors.grey,
+          ),
+        ),
+        label: 'اقتراح منظومة',
+      ),
+    ];
+  }
+
   List<Widget> screens = [
     PreviousJobsBody(
       token: CacheHelper.getData(key: 'UserToken'),
     ),
     HomePage(),
     ConversationsScreen(),
-
     SuggestsystemScreen()
-
   ];
 
   void changeBottomNavigationBarIndex(int index) {

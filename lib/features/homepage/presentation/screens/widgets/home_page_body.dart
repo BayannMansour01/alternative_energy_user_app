@@ -54,40 +54,24 @@ class HomePageBody extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           bottomNavigationBar: BottomNavigationBar(
+            // unselectedLabelStyle: TextStyle(
+            //   fontSize: 12,
+            //   overflow: TextOverflow.visible,
+            // ),
+            showUnselectedLabels: true,
             items: cubit.bottomNavigationBarItems,
             onTap: (index) {
               cubit.changeBottomNavigationBarIndex(index);
             },
             currentIndex: cubit.bottomNavigationBarIndex,
-
           ),
           body: cubit.bottomNavigationBarIndex == 0
               ? ConversationsScreen()
               : cubit.bottomNavigationBarIndex == 1
                   ? homeBodyBody(cubit: cubit)
-                   : cubit.bottomNavigationBarIndex == 2
-                  ? JobListScreen()
-                  :SuggestsystemScreen(),
-          floatingActionButton: BlocBuilder<homepageCubit, homepageState>(
-            builder: (context, orderState) {
-    return FloatingActionButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => OrderPage(cubit: cubit,),
-                    ),
-                  );
-                },
-                child: Icon(Icons.shopping_cart_outlined,color: AppConstants.blueColor,),
-              );
-              },
-
-          ),
-          body: cubit.bottomNavigationBarIndex == 0
-              ? ConversationsScreen()
-              : cubit.bottomNavigationBarIndex == 1
-                  ? homeBodyBody(cubit: cubit)
-                  : JobListScreen(),
+                  : cubit.bottomNavigationBarIndex == 2
+                      ? JobListScreen()
+                      : SuggestsystemScreen(),
         );
       },
     );
@@ -201,7 +185,10 @@ class homeBodyBody extends StatelessWidget {
                                   onTap: () {
                                     cubit.fetchAllProducts();
                                   },
-                                  icon: Icons.all_out_sharp,
+                                  icon: Icon(
+                                    Icons.menu,
+                                    color: Colors.white,
+                                  ),
                                   text: "الكل",
                                 ),
                                 // SizedBox(width: 5),
@@ -209,7 +196,11 @@ class homeBodyBody extends StatelessWidget {
                                   onTap: () {
                                     cubit.fetchAllPanales();
                                   },
-                                  icon: Icons.admin_panel_settings_sharp,
+                                  imageicon: ImageIcon(
+                                    size: 25,
+                                    AssetImage('assets/images/solar-panel.png'),
+                                    color: Colors.white,
+                                  ),
                                   text: "الألواح",
                                 ),
                                 // SizedBox(width: 5),
@@ -217,7 +208,11 @@ class homeBodyBody extends StatelessWidget {
                                   onTap: () {
                                     cubit.fetchAllBAtteries();
                                   },
-                                  icon: Icons.battery_5_bar,
+                                  imageicon: ImageIcon(
+                                    size: 25,
+                                    AssetImage('assets/images/accumulator.png'),
+                                    color: Colors.white,
+                                  ),
                                   text: "البطاريات",
                                 ),
                                 // SizedBox(width: 5),
@@ -225,7 +220,11 @@ class homeBodyBody extends StatelessWidget {
                                   onTap: () {
                                     cubit.fetchAllInverters();
                                   },
-                                  icon: Icons.device_hub,
+                                  imageicon: ImageIcon(
+                                      size: 25,
+                                      AssetImage(
+                                          'assets/images/solar-inverter.png'),
+                                      color: Colors.white),
                                   text: "الإنفيرترات",
                                 ),
                               ],
@@ -321,12 +320,15 @@ class productGridView extends StatelessWidget {
 
 class CategoryItem extends StatelessWidget {
   final String text;
-  final IconData icon;
+  final Icon? icon;
+
+  final ImageIcon? imageicon;
   final void Function()? onTap;
   const CategoryItem({
     super.key,
     required this.text,
-    required this.icon,
+    this.icon,
+    this.imageicon,
     this.onTap,
   });
 
@@ -341,10 +343,7 @@ class CategoryItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: CircleAvatar(
-              child: Icon(
-                icon,
-                color: Colors.white,
-              ),
+              child: imageicon ?? icon,
               backgroundColor: AppConstants.blueColor,
               radius: 30,
             ),

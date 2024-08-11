@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class AppConstants {
-  static const String ip = "192.168.1.106";
+  static const String ip = "192.168.60.37";
 
   static const String baseUrl = 'http://${ip}:8000/api/';
 
@@ -31,7 +31,6 @@ abstract class AppConstants {
   static const Color gradient3 = Color.fromRGBO(109, 71, 58, 1);
   static const Color borderColor = Color.fromRGBO(52, 51, 67, 1);
   static const Color whiteColor = Colors.white;
-
   static const blueColor = Color(0xff044586); //rgba(4, 69, 134, 1)
   static const orangeColor = Color(0xfff39709);
   static const yellowColor = Color(0xfffee205);
