@@ -24,9 +24,34 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
     emit(SuggestSystemUpdatedpage(page));
   }
 
+  Map<int, int> DeviceQuantities = {};
+
+  void increaseQuantity(int productId) {
+    if (DeviceQuantities.containsKey(productId)) {
+      DeviceQuantities[productId] = DeviceQuantities[productId]! + 1;
+    } else {
+      DeviceQuantities[productId] = 1;
+    }
+    emit(DeviceAmountChanged());
+  }
+
+  void decreaseQuantity(int productId) {
+    if (DeviceQuantities.containsKey(productId) &&
+        DeviceQuantities[productId]! > 1) {
+      DeviceQuantities[productId] = DeviceQuantities[productId]! - 1;
+    } else {
+      DeviceQuantities[productId] = 1;
+    }
+    emit(DeviceAmountChanged());
+  }
+
+  int getQuantity(int productId) {
+    return DeviceQuantities[productId] ?? 1;
+  }
+
   RangeValues hoursRange = RangeValues(0, 10);
   RangeValues powerRange = RangeValues(0, 20000);
- // يجب أن تحتوي على الأجهزة المحملة من السيرفر
+  // يجب أن تحتوي على الأجهزة المحملة من السيرفر
   Map<int, double> currentValues = {}; // تخزين القيم الحالية لكل جهاز
 
   void updateHoursRange(RangeValues newRange) {
@@ -38,42 +63,45 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
     emit(SuggestSystemUpdatedHoursRange(newRange));
     // }
   }
- double currentValue =0;
- 
 
-void updatePowerRange(RangeValues newRange) {
-  powerRange = newRange;
-  emit(SuggestSystemUpdatedPowerRange(newRange));
-}
- void updateCurrentValue(int deviceId, double value) {
-    currentValues[deviceId] = value;
-    emit(SuggestSystemUpdatedPowerRange(RangeValues(currentValues[deviceId]!, powerRange.end)));
+  double currentValue = 0;
+
+  void updatePowerRange(RangeValues newRange) {
+    powerRange = newRange;
+    emit(SuggestSystemUpdatedPowerRange(newRange));
   }
 
- 
-void updatePowerRangeValues(int minPower, int maxPower) {
+  void updateCurrentValue(int deviceId, double value) {
+    currentValues[deviceId] = value;
+    changeDeviceWatt(value.toInt(), deviceId);
+    emit(SuggestSystemUpdatedPowerRange(
+        RangeValues(currentValues[deviceId]!, powerRange.end)));
+  }
+
+  void updatePowerRangeValues(int minPower, int maxPower) {
     powerRange = RangeValues(minPower.toDouble(), maxPower.toDouble());
     emit(SuggestSystemUpdatedPowerRange(powerRange));
   }
+
   void updatePage(double page) => emit(SuggestSystemUpdatedpage(page));
 
-  Map<String, Map<String, int?>> devices = {
-    "fridge": {"startingWatt": 600, "watt": 300},
-    "light": {"startingWatt": null, "watt": 25},
-    "tv": {"startingWatt": null, "watt": 100},
-    "fan": {"startingWatt": null, "watt": 60},
-    "charger": {"startingWatt": null, "watt": 100},
-    "hover": {"startingWatt": 1600, "watt": 1000},
-  };
+  // Map<String, Map<String, int?>> devices = {
+  //   "fridge": {"startingWatt": 600, "watt": 300},
+  //   "light": {"startingWatt": null, "watt": 25},
+  //   "tv": {"startingWatt": null, "watt": 100},
+  //   "fan": {"startingWatt": null, "watt": 60},
+  //   "charger": {"startingWatt": null, "watt": 100},
+  //   "hover": {"startingWatt": 1600, "watt": 1000},
+  // };
 
-  Map<String, Map<String, dynamic>> userDevices = {
-    "fridge": {"num": 2, "from": '12:00PM', "to": "12:00PM"},
-    "light": {"num": 6, "from": '12:00PM', "to": "12:00PM"},
-    "fan": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
-    "tv": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
-    "charger": {"num": 3, "from": '12:00PM', "to": "12:00PM"},
-    "hover": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
-  };
+  // Map<String, Map<String, dynamic>> userDevices = {
+  //   "fridge": {"num": 2, "from": '12:00PM', "to": "12:00PM"},
+  //   "light": {"num": 6, "from": '12:00PM', "to": "12:00PM"},
+  //   "fan": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
+  //   "tv": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
+  //   "charger": {"num": 3, "from": '12:00PM', "to": "12:00PM"},
+  //   "hover": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
+  // };
 
   // Map<String, Map<String, dynamic>> userDevices = {
   //   "fridge": {"num": 2, "from": '12:00PM', "to": "12:00PM"},
@@ -102,7 +130,7 @@ void updatePowerRangeValues(int minPower, int maxPower) {
       };
     }
     devicesMap.forEach((key, value) {
-      print('$key: $value');
+      // print('$key: $value');
     });
     emit(DevicesFromListToMap());
     // Print the resulting map
@@ -118,7 +146,7 @@ void updatePowerRangeValues(int minPower, int maxPower) {
       };
     }
     selectedDeviceMap.forEach((key, value) {
-      print('$key: $value');
+      // print('$key: $value');
     });
     emit(SelectedevicesFromListToMap());
   }
@@ -141,11 +169,25 @@ void updatePowerRangeValues(int minPower, int maxPower) {
         break;
       }
     }
-
     devicesMap.forEach((key, value) {
-      print('$key: $value');
+      // print('$key: $value');
     });
     emit(DeviceWattChanged());
+  }
+
+  List<int> selectedDevices = [];
+  void toggleDeviceSelection(int deviceId) {
+    if (selectedDevices.contains(deviceId)) {
+      selectedDevices.remove(deviceId);
+    } else {
+      selectedDevices.add(deviceId);
+    }
+    emit(SuggestSystemUpdated());
+  }
+
+  void clearSelections() {
+    selectedDevices.clear();
+    emit(SuggestSystemUpdated());
   }
 
   void selectDevices(SelectedDevice devices) {
@@ -208,7 +250,6 @@ void updatePowerRangeValues(int minPower, int maxPower) {
       int power = (devices[device]!['watt']! * details["num"]).toInt();
       int start = timeToMinutes(details["from"]);
       int end = timeToMinutes(details["to"]);
-
       // إذا كان الوقت من الساعة 12:00PM إلى 12:00PM يعني الجهاز يعمل 24 ساعة
       if (start == end) {
         for (int i = 0; i < 24 * 60; i++) {
@@ -314,7 +355,7 @@ void updatePowerRangeValues(int minPower, int maxPower) {
 
   Map<String, dynamic> suggestSystem(
       Map<String, Map<String, dynamic>> userDevices) {
-    Map<String, dynamic> powers = calculatePowers(devices, userDevices);
+    Map<String, dynamic> powers = calculatePowers(devicesMap, userDevices);
 
     print(powers.toString());
 
@@ -336,25 +377,22 @@ void updatePowerRangeValues(int minPower, int maxPower) {
     int peakPowerNightStartWatt = 0;
 
     for (String device in devicesInPeakSun) {
-      if (devices[device]!['startingWatt'] != null) {
-        peakPowerSunStartWatt += devices[device]!['startingWatt']!;
+      if (devicesMap[device]!['startingWatt'] != null) {
+        peakPowerSunStartWatt += devicesMap[device]!['startingWatt']!;
       }
     }
 
     for (String device in devicesInPeakNight) {
-      if (devices[device]!['startingWatt'] != null) {
-        peakPowerSunStartWatt += devices[device]!['startingWatt']!;
+      if (devicesMap[device]!['startingWatt'] != null) {
+        peakPowerSunStartWatt += devicesMap[device]!['startingWatt']!;
       }
     }
-
-    print(peakPowerSun);
 
     return {
       "SystemVoltage": systemVoltage,
       "Aha": calculateAha(totalPowerNight, systemVoltage),
       "TotalPowerNight": totalPowerNight,
       "PeakPowerNight": peakPowerNight,
-
       "PeakPowerSun": peakPowerSun,
 
       // "PeakPowerSun": peakPowerSun,
@@ -381,7 +419,6 @@ void updatePowerRangeValues(int minPower, int maxPower) {
     emit(CalculateSystemLoadingState());
 
     final result = await Repo.calculateSolarSystem(body);
-
     result.fold(
         (failure) => emit(CalculateSystemErrorState(failure.errorMessege)),
         (response) {

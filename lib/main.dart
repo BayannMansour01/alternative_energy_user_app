@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   setupServiceLocator();
   DioHelper.init();
   await Firebase.initializeApp(
@@ -30,8 +31,8 @@ class UserApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          unselectedItemColor: Colors.grey,
-          unselectedLabelStyle: TextStyle(color: Colors.grey),
+            unselectedItemColor: Colors.grey,
+            unselectedLabelStyle: TextStyle(color: Colors.grey),
             selectedItemColor: AppConstants.blueColor,
             selectedIconTheme: IconThemeData(size: 30)),
         primaryColor: AppConstants.blueColor,

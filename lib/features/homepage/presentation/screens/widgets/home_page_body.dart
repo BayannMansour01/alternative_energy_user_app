@@ -31,61 +31,68 @@ class HomePageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<homepageCubit>(context);
+    final ScrollController _scrollController = ScrollController();
     return BlocConsumer<homepageCubit, homepageState>(
       listener: (context, state) {
         cubit.listining = true;
-        // if (state is! GetProposedSystemSuccess
-        //     // state is! GetProductsSuccess &&
-        //     // state is! GetUserInfoSuccess)
-
-        //     &&
-        //     !CustomProgressIndicator.isOpen) {
-        //   CustomProgressIndicator.showProgressIndicator(context);
-        // } else {
-        //   if (CustomProgressIndicator.isOpen) {
-        //     context.pop();
-        //   }
-        //   if (state is GetProposedSystemFailure) {
-        //     CustomSnackBar.showErrorSnackBar(context,
-        //         message: state.errMessage);
-        //   }
-        // }
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            100.0, // Adjust the position as needed
+            duration: Duration(seconds: 2),
+            curve: Curves.easeInOut,
+          );
+        }
       },
       builder: (context, state) {
         return Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
-            // unselectedLabelStyle: TextStyle(
-            //   fontSize: 12,
-            //   overflow: TextOverflow.visible,
-            // ),
-            showUnselectedLabels: true,
-            items: cubit.bottomNavigationBarItems,
-            onTap: (index) {
-              cubit.changeBottomNavigationBarIndex(index);
-            },
-            currentIndex: cubit.bottomNavigationBarIndex,
-          ),
-          body: cubit.bottomNavigationBarIndex == 0
-              ? ConversationsScreen()
-              : cubit.bottomNavigationBarIndex == 1
-                  ? homeBodyBody(cubit: cubit)
-                  : cubit.bottomNavigationBarIndex == 2
-                      ? JobListScreen()
-                      : SuggestsystemScreen(),
-        );
+            bottomNavigationBar: BottomNavigationBar(
+              // unselectedLabelStyle: TextStyle(
+              //   fontSize: 12,
+              //   overflow: TextOverflow.visible,
+              // ),
+              showUnselectedLabels: true,
+              items: cubit.bottomNavigationBarItems,
+              onTap: (index) {
+                cubit.changeBottomNavigationBarIndex(index);
+              },
+              currentIndex: cubit.bottomNavigationBarIndex,
+            ),
+            body: state is! GetProposedSystemLoading &&
+                    state is! GetProductsLoading &&
+                    state is! GetUserInfoLoading
+                ? cubit.bottomNavigationBarIndex == 0
+                    ? ConversationsScreen()
+                    : cubit.bottomNavigationBarIndex == 1
+                        ? homeBodyBody(cubit: cubit)
+                        : cubit.bottomNavigationBarIndex == 2
+                            ? JobListScreen()
+                            : SuggestsystemScreen()
+                : Scaffold(
+                    appBar: AppBar(
+                      centerTitle: true,
+                      title: Text(
+                        'الصفحة الرئيسية',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ));
       },
     );
   }
 }
 
 class homeBodyBody extends StatelessWidget {
-  const homeBodyBody({
+  homeBodyBody({
     super.key,
     required this.cubit,
   });
 
   final homepageCubit cubit;
 
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<homepageCubit, homepageState>(
@@ -100,6 +107,13 @@ class homeBodyBody extends StatelessWidget {
             ),
           );
           context.pop();
+        }
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            100.0, // Adjust the position as needed
+            duration: Duration(seconds: 2),
+            curve: Curves.easeInOut,
+          );
         }
       },
       builder: (context, state) {
@@ -141,6 +155,7 @@ class homeBodyBody extends StatelessWidget {
                 ? Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: SingleChildScrollView(
+                      // controller: _scrollController,
                       child: SizedBox(
                         height: SizeConfig.screenHeight,
                         child: Column(
@@ -149,6 +164,7 @@ class homeBodyBody extends StatelessWidget {
                             SizedBox(
                               height: 240,
                               child: ScrollSnapList(
+                                listController: _scrollController,
                                 curve: Curves.ease,
                                 initialIndex: 2.0,
                                 allowAnotherDirection: true,
@@ -276,9 +292,18 @@ class homeBodyBody extends StatelessWidget {
                       ),
                     ),
                   )
-                : Center(
-                    child: CircularProgressIndicator(
-                      color: AppConstants.backgroundColor,
+                : Scaffold(
+                    appBar: AppBar(
+                      centerTitle: true,
+                      title: Text(
+                        'الصفحة الرئيسية',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    body: Center(
+                      child: CircularProgressIndicator(
+                        color: AppConstants.backgroundColor,
+                      ),
                     ),
                   ));
       },

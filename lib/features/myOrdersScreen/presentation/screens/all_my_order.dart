@@ -34,12 +34,11 @@ class AllMyOrderPage extends StatelessWidget {
                 ),
               ),
             ),
-            body: state is getMyAllOrederssSuccessState
+            body: state is! getMyAllOredersLoadingState
                 ? ListView.builder(
                     itemCount: cubit.MyOrders.length,
                     itemBuilder: (context, index) {
                       final orderDetails = cubit.MyOrders[index];
-
                       return Card(
                         color: Color.fromARGB(255, 232, 243, 248),
                         margin: EdgeInsets.all(10.0),

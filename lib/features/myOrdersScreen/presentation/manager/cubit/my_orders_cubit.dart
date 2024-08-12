@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:alternative_energy_user_app/features/myOrdersScreen/data/models/my_order_model.dart';
 import 'package:alternative_energy_user_app/features/myOrdersScreen/data/repos/my_orders_repo.dart';
 import 'package:bloc/bloc.dart';
@@ -16,12 +18,13 @@ class MyOrdersCubit extends Cubit<MyOrdersState> {
   }
 
   void fetchAllmyOrders() async {
+    emit(getMyAllOredersLoadingState());
     var result = await Repo.fetchMyOrder();
     result.fold((failure) {
       emit(getMyAllOredersFilureState(failure.errorMessege));
     }, (data) {
       MyOrders = data;
-      // CacheHelper.saveData(key: 'UserID', value: userInfo?.id);
+      log('${MyOrders.length}');
       emit(getMyAllOrederssSuccessState(MyOrders));
     });
   }

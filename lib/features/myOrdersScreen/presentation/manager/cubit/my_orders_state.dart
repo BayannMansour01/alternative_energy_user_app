@@ -14,6 +14,8 @@ class getMyAllOredersFilureState extends MyOrdersState {
   getMyAllOredersFilureState(this.errMessage);
 }
 
+class getMyAllOredersLoadingState extends MyOrdersState {}
+
 class getMyAllOrederssSuccessState extends MyOrdersState {
   final List<MyOrder> orders;
   getMyAllOrederssSuccessState(this.orders);

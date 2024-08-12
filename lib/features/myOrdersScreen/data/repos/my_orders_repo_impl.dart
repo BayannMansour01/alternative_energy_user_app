@@ -23,7 +23,7 @@ class MyOrdersRepoImpl extends MyOrdersRepo {
       for (var item in data.data['orders']) {
         MyOrderDatas.add(MyOrder.fromJson(item['order']));
       }
-      // log("MyOrderDatas:  ${MyOrderDatas.length}");
+
       return right(MyOrderDatas);
     } on Exception catch (e) {
       if (e is DioException) {
