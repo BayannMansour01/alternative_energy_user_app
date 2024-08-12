@@ -36,15 +36,21 @@ class PreviousJobsBody extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return ListView.builder(
-          itemCount: cubit.jobs.length,
-          itemBuilder: (context, index) {
-            return jobItem(
-              token: token,
-              job: cubit.jobs[index],
-            );
-          },
-        );
+        return state is! PreviousJobsLoading
+            ? cubit.jobs.length == 0
+                ? Center(child: Text('لا يوجد أعمال سابقة بعد!'))
+                : ListView.builder(
+                    itemCount: cubit.jobs.length,
+                    itemBuilder: (context, index) {
+                      return jobItem(
+                        token: token,
+                        job: cubit.jobs[index],
+                      );
+                    },
+                  )
+            : Center(
+                child: CircularProgressIndicator(),
+              );
       },
     );
   }
