@@ -15,7 +15,6 @@ class SelectedDevice {
       required this.to});
 
   // factory SelectedDevice.fromJson(Map<String, dynamic> json) {
-
   //   return SelectedDevice(
   //     id: json['id'],
   //     name: json['name'],
