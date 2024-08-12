@@ -19,8 +19,9 @@ class SuggestsystemScreen extends StatelessWidget {
         ),
       ),
       body: BlocProvider(
-        create: (context) =>
-            SuggestSystemCubit(getIt.get<SuggestSystemRepoImpl>()),
+        create: (context) => SuggestSystemCubit(
+          getIt.get<SuggestSystemRepoImpl>(),
+        )..fetchAllDevices(),
         child: DevicesList(),
       ),
     );

@@ -1,5 +1,6 @@
-import 'dart:math';
 import 'dart:developer';
+
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -28,18 +29,20 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
 
   void updateHoursRange(RangeValues newRange) {
     // Ensure newRange values are within bounds
-    if (newRange.start >= 0 && newRange.end <= 10) {
-      hoursRange = newRange;
-      emit(SuggestSystemUpdatedHoursRange(newRange));
-    }
+    // if (newRange.start >= 0 && newRange.end <= 24) {
+    // void log;
+    print('newRange${newRange}');
+    hoursRange = newRange;
+    emit(SuggestSystemUpdatedHoursRange(newRange));
+    // }
   }
 
   void updatePowerRange(RangeValues newRange) {
     // Ensure newRange values are within bounds
-    if (newRange.start >= 0 && newRange.end <= 10000) {
-      powerRange = newRange;
-      emit(SuggestSystemUpdatedPowerRange(newRange));
-    }
+    // if (newRange.start >= 0 && newRange.end <= 10000) {
+    powerRange = newRange;
+    emit(SuggestSystemUpdatedPowerRange(newRange));
+    // }
   }
 
   void updatePage(double page) => emit(SuggestSystemUpdatedpage(page));
@@ -56,7 +59,6 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
   Map<String, Map<String, dynamic>> userDevices = {
     "fridge": {"num": 2, "from": '12:00PM', "to": "12:00PM"},
     "light": {"num": 6, "from": '12:00PM', "to": "12:00PM"},
-    "light": {"num": 6, "from": '12:00PM', "to": "12:00M"},
     "fan": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
     "tv": {"num": 1, "from": '12:00PM', "to": "12:00PM"},
     "charger": {"num": 3, "from": '12:00PM', "to": "12:00PM"},
@@ -168,10 +170,8 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
     int num = details['num'];
     int start = timeToMinutes(details['from']);
     int end = timeToMinutes(details['to']);
-
     int nightStart = timeToMinutes('04:00PM');
     int nightEnd = timeToMinutes('09:00AM');
-
     int totalMinutes = 0;
     if (start == end) {
       totalMinutes = (24 * 60) - (nightStart - nightEnd);
@@ -184,7 +184,6 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
         totalMinutes = end - nightStart;
       }
     }
-
     return (power * num * totalMinutes / 60).round();
   }
 
@@ -223,7 +222,6 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
     // العثور على الاستطاعة العظمى والفترات الزمنية
     int peakPowerSun = 0;
     int peakPowerNight = 0;
-
     int peakStartSun = startSun;
     int peakEndSun = startSun;
     int peakStartNight = startNight;

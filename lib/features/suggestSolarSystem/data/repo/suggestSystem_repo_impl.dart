@@ -23,6 +23,7 @@ class SuggestSystemRepoImpl extends SuggestSysyemRepo {
       for (var item in data.data['devices']) {
         devices.add(Device.fromJson(item));
       }
+
       return right(devices);
     } on Exception catch (e) {
       if (e is DioException) {

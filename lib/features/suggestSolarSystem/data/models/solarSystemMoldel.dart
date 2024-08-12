@@ -14,14 +14,12 @@ class SolarSystem {
   Batteries batteries;
   Inverter inverter;
   int totalCost;
-
   SolarSystem({
     required this.panels,
     required this.batteries,
     required this.inverter,
     required this.totalCost,
   });
-
   factory SolarSystem.fromMap(Map<String, dynamic> json) => SolarSystem(
         panels: Panels.fromMap(json["panels"]),
         batteries: Batteries.fromMap(json["batteries"]),

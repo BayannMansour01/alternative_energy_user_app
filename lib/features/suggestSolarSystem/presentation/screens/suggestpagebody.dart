@@ -8,25 +8,37 @@ import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/rep
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/presentation/manager/cubit/suggest_system_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:input_slider/input_slider.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 class DevicesList extends StatelessWidget {
   DevicesList({super.key});
+  String _formatTimeLabel(double value) {
+    final hour =
+        value.toInt(); // تأكد من أن القيمة يتم تحويلها بشكل صحيح إلى ساعة
+    final isAM = hour < 12 || hour == 24; // التحقق من الفترة AM أو PM
+    final formattedHour =
+        hour == 0 || hour == 24 ? 12 : (hour > 12 ? hour - 12 : hour);
+    final period = isAM ? 'AM' : 'PM';
+    return '$formattedHour:00 $period';
+  }
 
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<SuggestSystemCubit>(context);
+    log('${cubit.devicesFromServer.length}');
     RangeValues hoursRange = cubit.hoursRange;
     RangeValues powerRange = cubit.powerRange;
-
     return BlocConsumer<SuggestSystemCubit, SuggestSystemState>(
       listener: (context, state) {
         if (state is SuggestSystemUpdatedHoursRange) {
           hoursRange = state.hoursRange;
         }
-
         if (state is SuggestSystemUpdatedPowerRange) {
           powerRange = state.powerRange;
+        }
+        if (state is getDvicessSuccessState) {
+          log('getDvicessSuccessState ${state.devices.length}');
         }
       },
       builder: (context, state) {
@@ -77,9 +89,11 @@ class DevicesList extends StatelessWidget {
                                     height: 20,
                                   ),
                                   Center(
-                                    child: Image.asset(
-                                      'assets/images/folders.png',
-                                      width: 100,
+                                    child: Image.network(
+                                      'http://${AppConstants.ip}:8000/' +
+                                          cubit.devicesFromServer[index].image,
+                                      fit: BoxFit.cover,
+                                      // width: 100,
                                       height: SizeConfig.screenHeight * .2,
                                     ),
                                   ),
@@ -94,32 +108,30 @@ class DevicesList extends StatelessWidget {
                                   RangeSlider(
                                     values: hoursRange,
                                     min: 0,
-                                    max: 10,
-                                    divisions: 10,
+                                    max: 24,
+                                    divisions: 24,
                                     labels: RangeLabels(
-                                      hoursRange.start.round().toString(),
-                                      hoursRange.end.round().toString(),
+                                      _formatTimeLabel(hoursRange.start),
+                                      _formatTimeLabel(hoursRange.end),
                                     ),
                                     activeColor: AppConstants.orangeColor,
                                     onChanged: (RangeValues values) {
                                       cubit.updateHoursRange(values);
                                     },
-                                  ),
-                                  // const SizedBox(height: 5),
+                                  ), // const SizedBox(height: 5),
+
                                   const Text('ادخل استطاعة الجهاز ',
                                       style: TextStyle(color: Colors.grey)),
-                                  RangeSlider(
-                                    values: powerRange,
+                                  Slider(
+                                    value: powerRange.end,
                                     min: 0,
                                     max: 10000,
                                     divisions: 100,
-                                    labels: RangeLabels(
-                                      powerRange.start.round().toString(),
-                                      powerRange.end.round().toString(),
-                                    ),
+                                    label: powerRange.end.round().toString(),
                                     activeColor: AppConstants.orangeColor,
-                                    onChanged: (RangeValues values) {
-                                      cubit.updatePowerRange(values);
+                                    onChanged: (double value) {
+                                      cubit.updatePowerRange(
+                                          RangeValues(powerRange.start, value));
                                     },
                                   ),
                                   const SizedBox(
@@ -146,7 +158,7 @@ class DevicesList extends StatelessWidget {
                         ),
                       );
                     },
-                    itemCount: 10,
+                    itemCount: cubit.devicesFromServer.length,
                     itemSize: 230,
                     onItemFocus: (p0) {},
                     dynamicItemSize: true,
