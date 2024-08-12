@@ -14,6 +14,11 @@ class SuggestSystemUpdatedpage extends SuggestSystemState {
 
   SuggestSystemUpdatedpage(this.page);
 }
+class SliderValueChanged extends SuggestSystemState{
+  final double newValue;
+
+  SliderValueChanged( this.newValue);
+}
 
 class SuggestSystemUpdatedHoursRange extends SuggestSystemState {
   final RangeValues hoursRange;

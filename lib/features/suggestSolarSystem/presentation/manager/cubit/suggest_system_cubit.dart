@@ -25,7 +25,9 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
   }
 
   RangeValues hoursRange = RangeValues(0, 10);
-  RangeValues powerRange = RangeValues(0, 10000);
+  RangeValues powerRange = RangeValues(0, 20000);
+ // يجب أن تحتوي على الأجهزة المحملة من السيرفر
+  Map<int, double> currentValues = {}; // تخزين القيم الحالية لكل جهاز
 
   void updateHoursRange(RangeValues newRange) {
     // Ensure newRange values are within bounds
@@ -36,15 +38,23 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
     emit(SuggestSystemUpdatedHoursRange(newRange));
     // }
   }
+ double currentValue =0;
+ 
 
-  void updatePowerRange(RangeValues newRange) {
-    // Ensure newRange values are within bounds
-    // if (newRange.start >= 0 && newRange.end <= 10000) {
-    powerRange = newRange;
-    emit(SuggestSystemUpdatedPowerRange(newRange));
-    // }
+void updatePowerRange(RangeValues newRange) {
+  powerRange = newRange;
+  emit(SuggestSystemUpdatedPowerRange(newRange));
+}
+ void updateCurrentValue(int deviceId, double value) {
+    currentValues[deviceId] = value;
+    emit(SuggestSystemUpdatedPowerRange(RangeValues(currentValues[deviceId]!, powerRange.end)));
   }
 
+ 
+void updatePowerRangeValues(int minPower, int maxPower) {
+    powerRange = RangeValues(minPower.toDouble(), maxPower.toDouble());
+    emit(SuggestSystemUpdatedPowerRange(powerRange));
+  }
   void updatePage(double page) => emit(SuggestSystemUpdatedpage(page));
 
   Map<String, Map<String, int?>> devices = {

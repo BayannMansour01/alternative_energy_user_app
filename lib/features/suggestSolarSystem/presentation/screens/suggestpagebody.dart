@@ -8,7 +8,7 @@ import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/rep
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/presentation/manager/cubit/suggest_system_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:input_slider/input_slider.dart';
+
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 class DevicesList extends StatelessWidget {
@@ -122,16 +122,16 @@ class DevicesList extends StatelessWidget {
 
                                   const Text('ادخل استطاعة الجهاز ',
                                       style: TextStyle(color: Colors.grey)),
-                                  Slider(
-                                    value: powerRange.end,
-                                    min: 0,
-                                    max: 10000,
+                   Slider(
+                                    value: cubit.currentValues[cubit.devicesFromServer[index].id] ?? cubit.devicesFromServer[index].minCurrent.toDouble(),
+                                    min: cubit.devicesFromServer[index].minCurrent.toDouble(),
+                                    max: cubit.devicesFromServer[index].maxCurrent.toDouble(),
                                     divisions: 100,
-                                    label: powerRange.end.round().toString(),
-                                    activeColor: AppConstants.orangeColor,
+                                    label: cubit.currentValues[cubit.devicesFromServer[index].id]?.round().toString() ?? '',
+                                    activeColor: Colors.orange,
                                     onChanged: (double value) {
-                                      cubit.updatePowerRange(
-                                          RangeValues(powerRange.start, value));
+                                      cubit.updateCurrentValue(cubit.devicesFromServer[index].id, value);
+                                      cubit.updatePowerRange(RangeValues(cubit.devicesFromServer[index].minCurrent.toDouble(), value));
                                     },
                                   ),
                                   const SizedBox(
