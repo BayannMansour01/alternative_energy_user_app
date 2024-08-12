@@ -7,6 +7,7 @@ import 'package:alternative_energy_user_app/core/widgets/custom_text_field.dart'
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/selected_device_model.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/repo/suggestSystem_repo_impl.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/presentation/manager/cubit/suggest_system_cubit.dart';
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/presentation/screens/suggestedProductScreens/suggestedProducts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -234,6 +235,10 @@ class DevicesList extends StatelessWidget {
                         cubit.clearSelections();
                         log('selectedDeviceMap ${cubit.selectedDeviceMap}');
                         log('suggestSystem ${cubit.suggestSystem(cubit.selectedDeviceMap)}');
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => Suggestedproducts()),
+                        );
                       },
                       child: const Text('عرض المنظومة المناسبة '),
                     ),
