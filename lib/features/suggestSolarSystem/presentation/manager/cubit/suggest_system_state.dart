@@ -54,7 +54,7 @@ class DeviceWattChanged extends SuggestSystemState {}
 class addSelelctDevice extends SuggestSystemState {}
 
 class CalculateSystemSuccessState extends SuggestSystemState {
-  final SolarSystem response;
+  final Suggestedproducts response;
   CalculateSystemSuccessState(this.response);
 }
 
@@ -70,3 +70,5 @@ class changepagestate extends SuggestSystemState {}
 class DeviceAmountChanged extends SuggestSystemState {}
 
 class SuggestSystemUpdated extends SuggestSystemState {}
+class SuggestSystemLoading extends SuggestSystemState{}
+class SuggestSystemError extends SuggestSystemState{} 

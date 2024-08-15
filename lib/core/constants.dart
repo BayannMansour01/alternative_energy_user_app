@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class AppConstants {
-  static const String ip = "192.168.81.95";
+  static const String ip = "192.168.43.37";
 
   static const String baseUrl = 'http://${ip}:8000/api/';
 
@@ -9,9 +9,7 @@ abstract class AppConstants {
   static const String login = 'auth/login';
   static const String logout = 'auth/logout';
   static const String me = 'auth/me';
-
   static const String getAllProposedSystem = 'ProposedSystem/showAll';
-
   static const String showAllPrevJobs = 'PreviousJobs/showAll';
   static const String searchByTitlePrevJobs = 'PreviousJobs/searchByTitle';
   static const String showDetailesPrevJobs = 'PreviousJobs/show/';
@@ -24,7 +22,7 @@ abstract class AppConstants {
   static const String add_order = 'Orders/store';
   static const String showAllMyorder = 'Orders/showAllMyOrder';
   static const String fetchDevices = '/devices';
-  static const String calculate = '/calculate';
+  static const String calculate = '/calculateSystem';
   static const Color backgroundColor = Color.fromRGBO(24, 24, 32, 1);
   static const Color gradient1 = Color.fromRGBO(187, 63, 221, 1);
   static const Color gradient2 = Color.fromRGBO(251, 109, 169, 1);
