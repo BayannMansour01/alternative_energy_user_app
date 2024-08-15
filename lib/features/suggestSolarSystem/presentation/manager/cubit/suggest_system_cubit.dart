@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'dart:math';
 
+import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/suggestedProducts.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -242,6 +243,8 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
   Map<String, dynamic> calculatePowers(Map<String, Map<String, int?>> devices,
       Map<String, Map<String, dynamic>> userDevices) {
     // إنشاء مصفوفة لتتبع الاستطاعة المطلوبة في كل دقيقة
+    print('devices ${devices}');
+    print('userdevices ${userDevices}');
     List<int> powerUsage = List.filled(24 * 60, 0);
     List<Set<String>> deviceUsage = List.generate(24 * 60, (_) => <String>{});
 
@@ -393,7 +396,7 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
       "Aha": calculateAha(totalPowerNight, systemVoltage),
       "TotalPowerNight": totalPowerNight,
       "PeakPowerNight": peakPowerNight,
-      "PeakPowerSun": peakPowerSun,
+    //  "PeakPowerSun": peakPowerSun,
 
       // "PeakPowerSun": peakPowerSun,
 
@@ -415,17 +418,20 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
 //       "Night: ${peakPowers['peakPowerNight']} W _ from: ${minutesToTime(peakPowers['peakStartNight'])} _ to: ${minutesToTime(peakPowers['peakEndNight'])}");
 //   print("Devices in Night Peak: ${peakPowers['devicesInPeakNight']}");
 
-  Future<void> calculateSystem(SolarSystembody body) async {
+  Future<void> calculateSystem(Map<String,dynamic> body) async {
     emit(CalculateSystemLoadingState());
 
     final result = await Repo.calculateSolarSystem(body);
+  
     result.fold(
         (failure) => emit(CalculateSystemErrorState(failure.errorMessege)),
-        (response) {
-      return emit(CalculateSystemSuccessState(response));
+        (suggestedProduct) {
+          print("SUC");
+      return emit(CalculateSystemSuccessState(suggestedProduct));
     });
   }
 }
+ 
 // void main() {
 //   Map<String, dynamic> peakPowers = calculatePeakPower(devices, userDevices);
 //   print(

@@ -1,3 +1,4 @@
+
 class Product {
   final int id;
   final String name;
@@ -10,7 +11,7 @@ class Product {
   final int? inverterStartWatt;
   final int? inverterVolt;
   final int? panelCapacity;
-  final String? batteryType;
+  final int? batteryType;
   final int? batteryVolt;
   final int? batteryAmper;
   final int categoryId;
@@ -42,7 +43,7 @@ class Product {
       id: json['id'],
       name: json['name'],
       image: json['image'],
-      price: json['price'],
+      price: (json['price']),
       available: json['available'],
       disc: json['disc'],
       quantity: json['quantity'],

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:developer';
+
 import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:alternative_energy_user_app/core/utils/app_router.dart';
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
@@ -22,6 +24,7 @@ class _SplashViewState extends State<SplashView>
 
     _initSlidingAnimation();
     _navigateToHomeView();
+    log ('${AppConstants.ip}');
   }
 
   void _initSlidingAnimation() {
