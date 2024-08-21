@@ -16,8 +16,8 @@ abstract class AppConstants {
 
   static const String showAllProducts = 'Products/showAll';
   static const String showAllPanales = '/Products/search/1';
-  static const String showAllInverters = '/Products/search/2';
-  static const String showAllbatteries = '/Products/search/3';
+  static const String showAllbatteries = '/Products/search/2';
+  static const String showAllInverters = '/Products/search/3';
   static const String detailesProduct = 'Products/show';
   static const String add_order = 'Orders/store';
   static const String showAllMyorder = 'Orders/showAllMyOrder';

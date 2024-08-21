@@ -4,6 +4,8 @@ import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:alternative_energy_user_app/core/errors/failure.dart';
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
 import 'package:alternative_energy_user_app/core/utils/dio_helper.dart';
+import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
+import 'package:alternative_energy_user_app/features/maintainanceRequestScreen/data/models/message_order.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/device_model.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/solarSystemBody.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/solarSystemMoldel.dart';
@@ -41,35 +43,56 @@ class SuggestSystemRepoImpl extends SuggestSysyemRepo {
   }
 
   @override
-Future<Either<Failure, Suggestedproducts>> calculateSolarSystem(
-    Map<String,dynamic> body) async {
-  try {
-    final data = await DioHelper.postData(
-      url: "${AppConstants.calculate}",
-      token: CacheHelper.getData(key: 'UserToken'),
-      body: {
-        "SystemVoltage": body['SystemVoltage'],
-        "InverterWatt": body['InverterWatt'],
-        "InverterStartWatt": body['InverterStartWatt'],
-        "TotalPowerNight": body['TotalPowerNight'],
-        "PeakPowerNight": body['PeakPowerNight'],
-        "pvCapacity": body['PV'],
-        "Aha": body['Aha']
-      },
-    );
-    log('callll${data.data.toString()}');
-    
-    // تحويل البيانات إلى موديل SuggestedProduct
-    final suggestedProduct = Suggestedproducts.fromJson(data.data);
-    return right(suggestedProduct);
-  } on Exception catch (e) {
-    if (e is DioException) {
-      log("Error : ${e.toString()}");
-      return left(ServerFailure.fromDioException(e));
-    }
-    log("Error : ${e.toString()}");
-    return left(ServerFailure(e.toString()));
-  }
-}
+  Future<Either<Failure, Suggestedproducts>> calculateSolarSystem(
+      Map<String, dynamic> body) async {
+    try {
+      final data = await DioHelper.postData(
+        url: "${AppConstants.calculate}",
+        token: CacheHelper.getData(key: 'UserToken'),
+        body: {
+          "SystemVoltage": body['SystemVoltage'],
+          "InverterWatt": body['InverterWatt'],
+          "InverterStartWatt": body['InverterStartWatt'],
+          "TotalPowerNight": body['TotalPowerNight'],
+          "PeakPowerNight": body['PeakPowerNight'],
+          "pvCapacity": body['PV'],
+          "Aha": body['Aha']
+        },
+      );
+      log('callll${data.data.toString()}');
 
+      // تحويل البيانات إلى موديل SuggestedProduct
+      final suggestedProduct = Suggestedproducts.fromJson(data.data);
+      return right(suggestedProduct);
+    } on Exception catch (e) {
+      if (e is DioException) {
+        log("Error : ${e.toString()}");
+        return left(ServerFailure.fromDioException(e));
+      }
+      log("Error : ${e.toString()}");
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, OrderMessageModel>> submitOrder(Order1 order) async {
+    try {
+      log(CacheHelper.getData(key: 'UserToken'));
+      log('${order.toJson()}');
+      final response = await DioHelper.postData(
+        url: AppConstants.add_order,
+        body: order.toJson(),
+        token: CacheHelper.getData(key: 'UserToken'),
+      );
+      return Right(OrderMessageModel.fromJson(response.data));
+    } catch (ex) {
+      log('There is an error in submitOrder method  $ex');
+      if (ex is DioException) {
+        return Left(ServerFailure(
+          ex.response?.data['msg'] ?? 'Something Went Wrong, Please Try Again',
+        ));
+      }
+      return Left(ServerFailure(ex.toString()));
+    }
+  }
 }

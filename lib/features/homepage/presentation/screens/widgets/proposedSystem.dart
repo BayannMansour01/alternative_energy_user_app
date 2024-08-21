@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget ReadyMadeSystemItem(BuildContext context, System proposedSystem) {
-  //Product product = productList[index];
   return SizedBox(
     width: 200,
     height: 200,
@@ -20,29 +19,19 @@ Widget ReadyMadeSystemItem(BuildContext context, System proposedSystem) {
         );
       },
       child: Card(
-        color: AppConstants.orangeColor.withOpacity(0.9),
+        color: AppConstants.orangeColor,
         elevation: 12,
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           child: Column(
             children: [
-              // Image.asset(
-              //   'assets/images/system.png',
-              //   fit: BoxFit.cover,
-              //   width: double.infinity,
-              //   height: 180,
-              // ),
-              const SizedBox(
-                height: 20,
-              ),
-              CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 50,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Image.asset(
-                  'assets/images/LOGO.png',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 180,
+                  'assets/images/solar-panel (1).png',
+                  fit: BoxFit.contain,
+                  width: double.infinity * .5,
+                  height: 150,
                 ),
               ),
               const SizedBox(
@@ -50,12 +39,23 @@ Widget ReadyMadeSystemItem(BuildContext context, System proposedSystem) {
               ),
               Text(
                 "${proposedSystem.name}",
-                style: const TextStyle(fontSize: 15, color: Colors.white),
+                style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
               ),
-              // Text(
-              //   "${proposedSystem.desc}",
-              //   style: const TextStyle(fontSize: 10),
-              // ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                "  ${proposedSystem.desc}",
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Colors.white70,
+                ),
+              ),
             ],
           ),
         ),

@@ -46,10 +46,20 @@ class DevicesList extends StatelessWidget {
         if (state is getDvicessSuccessState) {
           log('getDvicessSuccessState ${state.devices.length}');
         }
+        if (state is CalculateSystemSuccessState) {
+          Suggestedproducts product = state.response;
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => SuggestedproductsScreen(
+                product: product,
+              ),
+            ),
+          );
+        }
       },
       builder: (context, state) {
         return SizedBox(
-          height: SizeConfig.screenHeight,
+          height: SizeConfig.screenHeight * .85,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -72,7 +82,6 @@ class DevicesList extends StatelessWidget {
                     final device = cubit.devicesFromServer[index];
                     final isSelected =
                         cubit.selectedDevices.contains(device.id);
-
                     return SizedBox(
                       width: 230,
                       child: InkWell(
@@ -80,10 +89,8 @@ class DevicesList extends StatelessWidget {
                         child: Stack(
                           children: [
                             Card(
-                              color: isSelected
-                                  ? AppConstants.blueColor
-                                  : const Color.fromRGBO(255, 255, 255, 1),
-                              elevation: 12,
+                              color: Colors.white,
+                              // elevation: 12,
                               child: ClipRRect(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
@@ -222,6 +229,7 @@ class DevicesList extends StatelessWidget {
                   dynamicItemSize: true,
                 ),
               ),
+              Spacer(),
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -236,22 +244,12 @@ class DevicesList extends StatelessWidget {
                         cubit.selectedDevicesFromListToMap(
                             cubit.selectedDevicesList);
                         cubit.suggestSystem(cubit.selectedDeviceMap);
-                        
+
                         log('selectedDeviceMap ${cubit.selectedDeviceMap}');
                         log('suggestSystem ${cubit.suggestSystem(cubit.selectedDeviceMap)}');
-                     
-                       cubit.calculateSystem(cubit.suggestSystem(cubit.selectedDeviceMap) );
                         cubit.clearSelections();
- if (state is CalculateSystemSuccessState){
- Suggestedproducts product =state.response;
-   Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => SuggestedproductsScreen(product: product,)),
-
-                        );
-
- }
-                     
+                        cubit.calculateSystem(
+                            cubit.suggestSystem(cubit.selectedDeviceMap));
                       },
                       child: const Text('عرض المنظومة المناسبة '),
                     ),

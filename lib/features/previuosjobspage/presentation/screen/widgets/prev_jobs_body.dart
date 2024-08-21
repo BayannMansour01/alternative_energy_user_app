@@ -109,14 +109,17 @@ class jobItem extends StatelessWidget {
                   itemCount: job.images.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Image.network(
-                        // 'http://192.168.1.107:8000/' + job.images[index].image,
-                        'http://${AppConstants.ip}:8000/' +
-                            job.images[index].image,
-                        fit: BoxFit.cover,
-                      ),
-                    );
+                        padding: const EdgeInsets.all(4.0),
+                        child: Image.network(
+                            'http://${AppConstants.ip}:8000/' +
+                                job.images[index].image,
+                            fit: BoxFit.cover, errorBuilder:
+                                (BuildContext context, Object error,
+                                    StackTrace? stackTrace) {
+                          // إذا حدث خطأ أثناء تحميل الصورة عبر الإنترنت، استخدم الصورة المحلية بدلاً منها
+                          return Image.asset('assets/images/LOGO.png',
+                              fit: BoxFit.cover);
+                        }));
                   },
                 ),
               ),

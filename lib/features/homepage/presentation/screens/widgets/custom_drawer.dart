@@ -44,7 +44,7 @@ abstract class CustomDrawer {
                       color: AppConstants.blueColor),
                   child: Column(
                     children: [
-                      SizedBox(height: SizeConfig.defaultSize * 5),
+                      SizedBox(height: SizeConfig.defaultSize * 10),
                       const Center(
                         // child: Icon(Icons.person_4_sharp),
                         child: CircleAvatar(
@@ -150,12 +150,6 @@ abstract class CustomDrawer {
                   },
                 ),
                 SizedBox(height: SizeConfig.defaultSize),
-
-                CustomDrawerButton(
-                    text: 'suggest system',
-                    icon: Icons.abc,
-                    onPressed: () => context.push(AppRouter.ksuggestSystem)),
-                // SizedBox(height: 25),
               ],
             ),
           ),

@@ -205,7 +205,6 @@ class HomeRepoImpl extends homeRepo {
         body: order.toJson(),
         token: CacheHelper.getData(key: 'UserToken'),
       );
-
       return Right(OrderMessageModel.fromJson(response.data));
     } catch (ex) {
       log('There is an error in submitOrder method in HomeRepoImpl');
