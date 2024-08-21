@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:alternative_energy_user_app/core/constants.dart';
 import 'package:alternative_energy_user_app/core/utils/cache_helper.dart';
+import 'package:alternative_energy_user_app/core/utils/size_config.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/chat_screen.dart';
 import 'package:alternative_energy_user_app/features/chatScreen/presentation/Screens/conversations_screen.dart';
 
@@ -23,6 +24,7 @@ import 'package:awesome_icons/awesome_icons.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -99,10 +101,53 @@ class homepageCubit extends Cubit<homepageState> {
     ConversationsScreen(),
     SuggestsystemScreen()
   ];
+  List<Widget> get listOfIcons {
+    return [
+      Icon(
+        Icons.message,
+        size: SizeConfig.screenWidth * .072, // تصغير حجم الأيقونات
+        color: bottomNavigationBarIndex == 0
+            ? AppConstants.blueColor
+            : Colors.black26,
+      ),
+      Icon(
+        FontAwesomeIcons.home,
+        size: SizeConfig.screenWidth * .072, // تصغير حجم الأيقونات
+        color: bottomNavigationBarIndex == 1
+            ? AppConstants.blueColor
+            : Colors.black26,
+      ),
+      Icon(
+        FontAwesomeIcons.archive,
+        size: SizeConfig.screenWidth * .072, // تصغير حجم الأيقونات
+        color: bottomNavigationBarIndex == 2
+            ? AppConstants.blueColor
+            : Colors.black26,
+      ),
+      SizedBox(
+        width: 25,
+        height: 25,
+        child: SvgPicture.asset(
+          height: 25,
+          'assets/images/battery.svg',
+          color: bottomNavigationBarIndex == 3
+              ? AppConstants.blueColor
+              : Colors.grey,
+        ),
+      ),
+    ];
+  }
 
+  List<String> listOfStrings = [
+    'المحادثات',
+    'الرئيسية',
+    'الأعمال السابقة',
+    'اقتراح منظومة',
+  ];
   void changeBottomNavigationBarIndex(int index) {
     emit(homepageInitial());
     bottomNavigationBarIndex = index;
+    HapticFeedback.lightImpact();
     emit(ChangeBottomNavigationBarIndex());
   }
 

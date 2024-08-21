@@ -54,7 +54,7 @@ class ProductItem extends StatelessWidget {
               ],
             ),
             // width: 200,
-            // height: 170,
+            // height: SizeConfig.defaultSize * 100,
             margin: EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -66,18 +66,27 @@ class ProductItem extends StatelessWidget {
                         "http://${AppConstants.ip}:8000/${product.image}", // Ensure the image URL is accessible
                         height: SizeConfig.defaultSize * 12,
                         width: double.infinity,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/LOGO.png',
+                            fit: BoxFit.cover,
+                          );
+                        },
                       ),
-                      Text(
-                        product.name,
-                        style: TextStyle(
-                          color: AppConstants.orangeColor,
-                          fontSize: SizeConfig.defaultSize * 1.1,
-                          fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          product.name,
+                          style: TextStyle(
+                            color: AppConstants.orangeColor,
+                            fontSize: SizeConfig.defaultSize * 1.1,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       SizedBox(
-                        height: 15,
+                        height: 10,
                       ),
                       Text(
                         '${product.price} ل.س',
@@ -130,6 +139,7 @@ class ProductItem extends StatelessWidget {
                           },
                           child: Container(
                             width: double.infinity,
+                            height: SizeConfig.defaultSize * 20,
                             decoration: BoxDecoration(
                               color: AppConstants.orangeColor,
                               borderRadius: BorderRadius.vertical(

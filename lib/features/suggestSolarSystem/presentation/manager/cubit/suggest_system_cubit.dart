@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'dart:math';
 
+import 'package:alternative_energy_user_app/features/homepage/data/models/order_model.dart';
 import 'package:alternative_energy_user_app/features/suggestSolarSystem/data/models/suggestedProducts.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -25,6 +26,8 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
     emit(SuggestSystemUpdatedpage(page));
   }
 
+  String location = '';
+  List<ProductOrder> currentOrders = [];
   Map<int, int> DeviceQuantities = {};
 
   void increaseQuantity(int productId) {
@@ -396,7 +399,7 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
       "Aha": calculateAha(totalPowerNight, systemVoltage),
       "TotalPowerNight": totalPowerNight,
       "PeakPowerNight": peakPowerNight,
-    //  "PeakPowerSun": peakPowerSun,
+      //  "PeakPowerSun": peakPowerSun,
 
       // "PeakPowerSun": peakPowerSun,
 
@@ -418,17 +421,26 @@ class SuggestSystemCubit extends Cubit<SuggestSystemState> {
 //       "Night: ${peakPowers['peakPowerNight']} W _ from: ${minutesToTime(peakPowers['peakStartNight'])} _ to: ${minutesToTime(peakPowers['peakEndNight'])}");
 //   print("Devices in Night Peak: ${peakPowers['devicesInPeakNight']}");
 
-  Future<void> calculateSystem(Map<String,dynamic> body) async {
+  Future<void> calculateSystem(Map<String, dynamic> body) async {
     emit(CalculateSystemLoadingState());
 
     final result = await Repo.calculateSolarSystem(body);
-  
+
     result.fold(
         (failure) => emit(CalculateSystemErrorState(failure.errorMessege)),
         (suggestedProduct) {
-          print("SUC");
+      print("SUC");
       return emit(CalculateSystemSuccessState(suggestedProduct));
     });
+  }
+
+  void submitOrder(Order1 order) async {
+    emit(SubmitOrderLoading());
+    final result = await Repo.submitOrder(order);
+    result.fold(
+      (failure) => emit(SubmitOrderFailure(errMessage: failure.errorMessege)),
+      (success) => emit(SubmitOrderSuccess(message: success.msg)),
+    );
   }
 }
  

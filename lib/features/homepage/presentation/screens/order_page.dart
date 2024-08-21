@@ -107,7 +107,7 @@ class OrderPage extends StatelessWidget {
                   );
                   cubit.submitOrder(order);
                 },
-                child: const Text('إرسال الطلب'),
+                child: const Text('تأكيد الطلب'),
               ),
             ),
           );

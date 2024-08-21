@@ -106,7 +106,7 @@ class SystemDetailsPage extends StatelessWidget {
                                 ],
                               ),
                               width: 200,
-                              height: 200,
+                              height: 270,
                               margin: EdgeInsets.all(8),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.vertical(
@@ -114,25 +114,29 @@ class SystemDetailsPage extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Image.network(
-                                      "http://${AppConstants.ip}:8000/${product.image}",
-                                      height: 130,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ),
+                                        "http://${AppConstants.ip}:8000/${product.image}",
+                                        height: 190,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover, errorBuilder:
+                                            (BuildContext context, Object error,
+                                                StackTrace? stackTrace) {
+                                      // إذا حدث خطأ أثناء تحميل الصورة عبر الإنترنت، استخدم الصورة المحلية بدلاً منها
+                                      return Image.asset(
+                                          'assets/images/LOGO.png',
+                                          fit: BoxFit.cover);
+                                    }),
                                     Text(
                                       product.name,
                                       style: TextStyle(
                                         color: AppConstants.orangeColor,
-                                        fontSize: 12,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    SizedBox(height: 10),
+                                    Spacer(),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
-                                        // crossAxisAlignment:
-                                        //     CrossAxisAlignment.start,
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
@@ -140,15 +144,15 @@ class SystemDetailsPage extends StatelessWidget {
                                             ' ${product.price} ل.س',
                                             style: TextStyle(
                                               color: Colors.grey,
-                                              fontSize: 16,
+                                              fontSize: 10,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                           Text(
-                                            'الكمية ${product.pivot.productId}',
+                                            'الكمية ${product.pivot.amount}',
                                             style: TextStyle(
                                               color: Colors.grey,
-                                              fontSize: 16,
+                                              fontSize: 10,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),

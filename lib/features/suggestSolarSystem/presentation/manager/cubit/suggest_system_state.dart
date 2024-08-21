@@ -65,10 +65,41 @@ class CalculateSystemErrorState extends SuggestSystemState {
   CalculateSystemErrorState(this.errMessage);
 }
 
-class changepagestate extends SuggestSystemState {}
-
 class DeviceAmountChanged extends SuggestSystemState {}
 
 class SuggestSystemUpdated extends SuggestSystemState {}
-class SuggestSystemLoading extends SuggestSystemState{}
-class SuggestSystemError extends SuggestSystemState{} 
+
+class SuggestSystemLoading extends SuggestSystemState {}
+
+class SuggestSystemError extends SuggestSystemState {}
+
+class SubmitOrderSuccess extends SuggestSystemState {
+  final String message;
+
+  const SubmitOrderSuccess({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class OrderAmountChanged extends SuggestSystemState {}
+
+class SubmitOrderFailure extends SuggestSystemState {
+  final String errMessage;
+
+  const SubmitOrderFailure({required this.errMessage});
+
+  @override
+  List<Object> get props => [errMessage];
+}
+
+class homepageOrdersCleared extends SuggestSystemState {}
+
+class SubmitOrderLoading extends SuggestSystemState {
+  final List<ProductOrder> orders;
+
+  const SubmitOrderLoading({this.orders = const []});
+
+  @override
+  List<Object> get props => [orders];
+}
