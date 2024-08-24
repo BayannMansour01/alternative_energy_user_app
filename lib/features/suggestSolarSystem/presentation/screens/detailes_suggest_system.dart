@@ -66,7 +66,9 @@ class SuggestedSystemDetailsScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
-                    'السعر الكلي: ${product.totalCost} ل.س',
+                    product.numberOfLithiumBatteries > 0
+                        ? 'السعر الكلي: ${product.inverter.details.price + product.batteries.lithium.price * product.numberOfLithiumBatteries + product.panels.details.price * product.numberOfPanels}'
+                        : 'السعر الكلي: ${product.inverter.details.price + product.batteries.tubular.price * product.numberOfTubularBatteries + product.panels.details.price * product.numberOfPanels}',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -96,20 +98,18 @@ class SuggestedSystemDetailsScreen extends StatelessWidget {
                                 ),
                                 if (product.numberOfTubularBatteries > 0)
                                   ProductOrder(
-                                    id: product.batteries.tubular.id,
-                                    amount: product.numberOfTubularBatteries,
-                                    name: product.batteries.tubular.name,
-                                    imageUrl: product.batteries.tubular.image,
-                                    price: product.batteries.tubular.price,
-                                  ),
+                                      id: product.batteries.tubular.id,
+                                      amount: product.numberOfTubularBatteries,
+                                      name: product.batteries.tubular.name,
+                                      imageUrl: product.batteries.tubular.image,
+                                      price: product.batteries.tubular.price),
                                 if (product.numberOfLithiumBatteries > 0)
                                   ProductOrder(
-                                    id: product.batteries.lithium.id,
-                                    amount: product.numberOfLithiumBatteries,
-                                    name: product.batteries.lithium.name,
-                                    imageUrl: product.batteries.lithium.image,
-                                    price: product.batteries.lithium.price,
-                                  ),
+                                      id: product.batteries.lithium.id,
+                                      amount: product.numberOfLithiumBatteries,
+                                      name: product.batteries.lithium.name,
+                                      imageUrl: product.batteries.lithium.image,
+                                      price: product.batteries.lithium.price),
                                 ProductOrder(
                                   id: product.inverter.details.id,
                                   amount: 1,

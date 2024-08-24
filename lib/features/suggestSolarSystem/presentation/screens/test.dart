@@ -120,7 +120,9 @@ class SuggestedproductsScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                'السعر الكلي: ${product.totalCost}',
+                product.numberOfLithiumBatteries > 0
+                    ? 'السعر الكلي: ${product.inverter.details.price + product.batteries.lithium.price * product.numberOfLithiumBatteries + product.panels.details.price * product.numberOfPanels}'
+                    : 'السعر الكلي: ${product.inverter.details.price + product.batteries.tubular.price * product.numberOfTubularBatteries + product.panels.details.price * product.numberOfPanels}',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
