@@ -18,8 +18,8 @@ class SystemDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double totalCost =
-        system.products.fold(0, (sum, product) => sum + product.price);
+    double totalCost = system.products.fold(
+        0, (sum, product) => sum + (product.price * product.pivot.amount));
 
     return BlocProvider(
       create: (context) => homepageCubit(getIt.get<HomeRepoImpl>()),

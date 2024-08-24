@@ -30,7 +30,7 @@ class ChatUser {
     id = json['id'] ?? '';
     lastActive = json['last_active'] ?? '';
     isOnline = json['is_online'] ?? false;
-    pushToken = json['pushToken'] ?? '';
+    pushToken = json['push_token'] ?? '';
     email = json['email'] ?? '';
     localUserID = json['local_user_id'] ?? -1;
   }
@@ -44,7 +44,7 @@ class ChatUser {
       id: jsonData['id'] ?? '',
       lastActive: jsonData['last_active'] ?? '',
       isOnline: jsonData['is_online'] ?? false,
-      pushToken: jsonData['pushToken'] ?? '',
+      pushToken: jsonData['push_token'] ?? '',
       email: jsonData['email'] ?? '',
       localUserID: jsonData['local_user_id'] ?? -1,
     );
@@ -59,7 +59,7 @@ class ChatUser {
     data['id'] = id;
     data['last_active'] = lastActive;
     data['is_online'] = isOnline;
-    data['pushToken'] = pushToken;
+    data['push_token'] = pushToken;
     data['email'] = email;
     data['local_user_id'] = localUserID;
     return data;

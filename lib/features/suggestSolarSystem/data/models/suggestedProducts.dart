@@ -120,7 +120,7 @@ class ProductDetails {
       inverterStartWatt: json['InverterStartWatt'],
       inverterVolt: json['inverter_volt'],
       panelCapacity: json['panel_capacity'],
-     batteryType: json['battery_type'],
+      batteryType: json['battery_type'],
       batteryVolt: json['battery_volt'],
       batteryAmper: json['battery_amper'],
       categoryId: json['category_id'],

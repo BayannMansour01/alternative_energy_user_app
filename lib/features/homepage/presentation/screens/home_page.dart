@@ -14,7 +14,6 @@ class HomePage extends StatelessWidget {
     super.key,
   });
   // final String token;
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

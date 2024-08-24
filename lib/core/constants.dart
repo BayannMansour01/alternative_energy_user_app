@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class AppConstants {
-  static const String ip = "192.168.43.37";
+  static const String ip = "192.168.1.107";
 
   static const String baseUrl = 'http://${ip}:8000/api/';
 
